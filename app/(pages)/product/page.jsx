@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import ProductCarousel from "@/components/ProductCarousel";
+import Nav from "@/components/header/Nav";
+import Footer from "@/components/footer/Footer";
+import ProductCarousel from "@/components/product/ProductCarousel";
 import React, { useState } from "react";
 import {
   CarouselProvider,

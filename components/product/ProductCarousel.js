@@ -3,9 +3,9 @@ import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { AiTwotoneThunderbolt } from "react-icons/ai";
 import Link from "next/link";
-import { products } from "../utils/productData";
-import ProductDetails from "./ProductDetails";
-
+import { products } from "@/utils/productData";
+import ProductDetails from "../ProductDetails";
+ 
 function ProductCarousel() {
   const [visibleSlides, setVisibleSlides] = useState(1);
   const [slideHeight, setSlideHeight] = useState(190);

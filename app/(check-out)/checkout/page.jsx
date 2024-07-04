@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import Nav from "@/components/header/Nav";
+import Footer from "@/components/footer/Footer";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaCheckCircle, FaRegUser } from "react-icons/fa";
 import { HiOutlinePhone } from "react-icons/hi";
