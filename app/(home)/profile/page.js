@@ -2,7 +2,7 @@
 import ProfileSection from "@/components/layout/profile/ProfileSection";
 import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
 import Title from "@/components/cardTitle/title/Title";
-import profile from "@/components/utils/data/profile";
+import profile from "@/components/utils/data/Profile";
 import cardTitle from "@/components/utils/data/cardTitle";
 const page = () => {
   return( 
