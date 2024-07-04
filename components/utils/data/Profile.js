@@ -1,4 +1,4 @@
-const Profile ={
+const profile ={
       image:"/icon/ProfilePic.png",
       name:"Mahtab Alam",
       phone:"963258741",
@@ -7,4 +7,4 @@ const Profile ={
 
 }
 
-export default Profile
+export default profile
