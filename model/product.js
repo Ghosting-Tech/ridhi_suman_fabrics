@@ -2,36 +2,87 @@ import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new Schema(
   {
-    category: { type: String, required: true },
-    sub_category: { type: String, required: true },
-    title: { type: String, required: true },
+    category: {
+      type: String,
+      required: true,
+    },
+
+    sub_category: {
+      type: String,
+      required: true,
+    },
+
+    title: {
+      type: String,
+      required: true,
+    },
+
     images: [String],
-    discount: { type: Number, required: true },
-    description: { type: String, required: true },
-    visibility: { type: Boolean, required: true },
-    price: { type: Number, required: true },
+
+    discount: {
+      type: Number,
+      required: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+    },
+
+    visibility: {
+      type: Boolean,
+      required: true,
+    },
+
+    price: {
+      type: Number,
+      required: true,
+    },
+
     sizes: [
       {
-        size: { type: String, required: true },
+        size: {
+          type: String,
+          required: true,
+        },
+
         colours: [
           {
-            type: {
-              colour: {
-                type: {
-                  name: { type: String, required: true },
-                  hexCode: { type: String, required: true },
-                },
+            colour: {
+              name: {
+                type: String,
                 required: true,
               },
-              quantity: { type: String, required: true },
+
+              hexCode: {
+                type: String,
+                required: true,
+              },
             },
+
+            quantity: {
+              type: String,
+              required: true,
+            },
+
+            _id: false,
           },
         ],
+        _id: false,
       },
     ],
-    fabric: { type: String, required: true },
-    brand: { type: String, required: true },
+
+    fabric: {
+      type: String,
+      required: true,
+    },
+
+    brand: {
+      type: String,
+      required: true,
+    },
   },
+
   {
     timestamps: true,
     versionKey: false,
