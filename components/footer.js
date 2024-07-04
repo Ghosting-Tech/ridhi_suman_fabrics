@@ -19,14 +19,22 @@ const Footer = () => {
             ))}
           </div>
           <div className="mb-10 px-6">
-            <h3 className="text-lg font-semibold mb-4">{footerInfo.title}</h3>
-            <p className="text-gray-600">{footerInfo.description}</p>
+            <h3 className="text-lg font-semibold mb-4">Ridhi Suman Fabric</h3>
+            <p className="text-gray-600">
+              Aims to make it easier for every community in the world to carry
+              out various buying and selling transactions online. It is one of
+              the worlds online buying and selling sites whose development is
+              relatively fast. You can sell products online at the slabshop
+              besides being able to enjoy the process of buying various products
+              more quickly and effectively. You can sign up for the exclusive
+              slabshop Seller community if you want to launch your own business.
+            </p>
           </div>
         </div>
       </div>
       <div className="border-t border-gray-200 py-2">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm px-6">
-          <span>&copy; {footerInfo.copyright}</span>
+          <span>&copy; Ridhi Suman © 2024-2025, All Rights Reserved</span>
           <div className="flex space-x-4 mt-4 md:mt-0">
             {footerInfo.links.map((link, index) => (
               <Link key={index} href={link.href} className="hover:underline">

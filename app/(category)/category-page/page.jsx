@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Nav from "@/components/Nav";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { AiTwotoneThunderbolt } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";
@@ -298,7 +298,7 @@ function ProductCarousel() {
 
   return (
     <div className="relative lg:pt-4 lg:pb-0 p-4 ">
-      <h2 className="text-xl flex gap-2 justify-center sm:text-4xl font-extrabold text-[#11998E] font-[Aclonica] leading-tight mb-4 mt-12 sm:mb-8">
+      <h2 className="text-xl flex gap-2 justify-center sm:text-4xl font-extrabold text-[#11998E] font-aclonica leading-tight mb-4 mt-12 sm:mb-8">
         Most loved sets of Lehenga choli
       </h2>
       <CarouselProvider
