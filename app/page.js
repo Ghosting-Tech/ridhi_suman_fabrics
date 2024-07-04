@@ -2,8 +2,8 @@
 import Nav from "@/components/Nav";
 import Footer from "../components/Footer";
 import OffBanner from "@/components/OffBanner";
-import Testimonial from "../components/testimonial";
-import Category from "../components/category";
+import Testimonial from "../components/Testimonial";
+import Category from "../components/Category";
 import { useState, useEffect } from "react";
 import ProductCarousel from "../components/ProductCarousel";
 import ProductList from "../components/ProductList";
