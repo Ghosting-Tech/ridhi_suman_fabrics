@@ -1,5 +1,5 @@
 {
-  "name": "ridhi_suman_fabrics",
+  "name": "ridhi-suman",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,14 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "mongodb": "^6.8.0",
-    "mongoose": "^8.3.2",
-    "next": "14.1.4",
+    "@material-tailwind/react": "^2.1.9",
+    "@reduxjs/toolkit": "^2.2.6",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.4",
+    "next": "14.2.4",
+    "pure-react-carousel": "^1.30.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-colorful": "^5.6.1",
+    "react-dom": "^18",
+    "react-icons": "^5.2.1",
+    "sharp": "^0.33.4",
+    "sonner": "^1.5.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",

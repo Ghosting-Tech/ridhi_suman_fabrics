@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI;
+const MONGODB_URI = process.env.NEXT_PUBLIC_MONGO_URI;
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -14,7 +14,7 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function connectDB() {
+async function dbConnect() {
   if (cached.conn) {
     return cached.conn;
   }
@@ -28,7 +28,6 @@ async function connectDB() {
       return mongoose;
     });
   }
-  
   try {
     cached.conn = await cached.promise;
   } catch (e) {
@@ -39,4 +38,4 @@ async function connectDB() {
   return cached.conn;
 }
 
-export default connectDB;
+export default dbConnect;
