@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import categoryData from "../utils/categoryData"; // Adjust the import path as necessary
+import Image from "next/image";
 
 function CategoryCarousel() {
   return (
@@ -11,7 +12,7 @@ function CategoryCarousel() {
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 justify-center">
         {categoryData.map((category, index) => (
           <Link key={index} href={category.href} className="flex flex-col items-center p-2">
-            <img
+            <Image  
               src={category.src}
               alt={category.alt}
               className="rounded-full w-full object-cover aspect-square"

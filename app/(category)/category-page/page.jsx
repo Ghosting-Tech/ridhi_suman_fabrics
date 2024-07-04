@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Nav from "@/components/Nav";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { AiTwotoneThunderbolt } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";

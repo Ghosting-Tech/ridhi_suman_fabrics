@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Nav from "@/components/Nav";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { IoMdListBox } from "react-icons/io";
 
