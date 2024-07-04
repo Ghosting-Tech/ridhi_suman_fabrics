@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Nav from "@/components/Nav";
-import Footer from "@/components/footer";
+import Footer from "@/components/Footer";
 import React, { useState } from "react";
 import ProductCarousel from "@/components/ProductCarousel";
 import Link from "next/link";
