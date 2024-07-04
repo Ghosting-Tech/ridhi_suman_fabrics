@@ -1,5 +1,5 @@
 {
-  "name": "ridhi_suman_fabrics",
+  "name": "ridhi-suman",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.4",
     "next": "14.2.4",
+    "pure-react-carousel": "^1.30.1",
     "react": "^18",
+    "react-colorful": "^5.6.1",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "sharp": "^0.33.4",
