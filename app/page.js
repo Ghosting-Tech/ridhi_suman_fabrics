@@ -12,7 +12,14 @@ import Image from "next/image";
 import bannerData from "../utils/bannerData";
 import bannerDataFooter from "@/utils/bannerDataFooter";
 
-import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
+import {
+  CarouselProvider,
+  Slider,
+  Slide,
+  ButtonBack,
+  ButtonNext,
+} from "pure-react-carousel";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 export default function Home() {
   const [visibleSlides, setVisibleSlides] = useState(1);
@@ -64,6 +71,12 @@ export default function Home() {
                 </Slide>
               ))}
             </Slider>
+            <ButtonBack className="absolute left-8 top-1/2 transform -translate-y-1/2 bg-[#f3f4f66e] text-gray-800 font-bold p-2 rounded-full">
+              <FaAngleLeft />
+            </ButtonBack>
+            <ButtonNext className="absolute right-8 top-1/2 transform -translate-y-1/2 bg-[#f3f4f66e] text-gray-800 font-bold p-2 rounded-full">
+              <FaAngleRight />
+            </ButtonNext>
           </CarouselProvider>
         </div>
         <div className="hidden lg:block lg:w-3/4 p-3">
@@ -83,10 +96,7 @@ export default function Home() {
       <div className="flex w-full">
         {bannerDataFooter.slice(0, 3).map((banner, index) => (
           <div key={index} className="relative w-1/3  ">
-            <img
-              src={banner.src}
-              alt={banner.alt}
-            />
+            <img src={banner.src} alt={banner.alt} />
           </div>
         ))}
       </div>

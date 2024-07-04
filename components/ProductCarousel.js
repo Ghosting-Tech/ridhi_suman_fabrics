@@ -37,7 +37,7 @@ function ProductCarousel() {
 
   return (
     <div className="relative lg:pt-4 lg:pb-0 p-4 bg-gray-50">
-      <h2 className="text-2xl flex gap-2 sm:text-4xl font-extrabold text-black font-[Aclonica] leading-tight mb-4 sm:mb-8">
+      <h2 className="text-2xl flex gap-2 sm:text-4xl font-extrabold text-black font-aclonica leading-tight mb-4 sm:mb-8">
         MOST BOOKED SAREES
         <AiTwotoneThunderbolt className="text-orange-500" />
       </h2>

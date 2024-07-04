@@ -5,7 +5,7 @@ import categoryData from "../utils/categoryData"; // Adjust the import path as n
 function CategoryCarousel() {
   return (
     <div className="relative p-4 sm:p-8 bg-gray-50">
-      <h2 className="text-2xl lg:text-4xl font-bold text-center text-[#0052D4] font-[Aclonica] leading-tight mb-4 sm:mb-8">
+      <h2 className="text-2xl lg:text-4xl font-bold text-center text-[#0052D4] font-aclonica leading-tight mb-4 sm:mb-8">
         Categories you may like
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 justify-center">
@@ -16,7 +16,7 @@ function CategoryCarousel() {
               alt={category.alt}
               className="rounded-full w-full object-cover aspect-square"
             />
-            <p className="text-lg mt-2 sm:mt-4 font-[Aclonica]">{category.label}</p>
+            <p className="text-lg mt-2 sm:mt-4  ">{category.label}</p>
           </Link>
         ))}
       </div>
