@@ -1,4 +1,4 @@
-const HeaderTitle = {
+const cardTitle = {
     profile: {
         name: "PROFILE",
         icon: "/icon/profile.svg"
@@ -9,4 +9,4 @@ const HeaderTitle = {
     }
 };
 
-export default HeaderTitle;
+export default cardTitle;
