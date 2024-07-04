@@ -1,5 +1,5 @@
 import React from 'react';
-import { marqueeItems } from '../utils/marqueeData';
+import { marqueeItems } from '@/utils/marqueeData';
 
 const Marquee = () => (
   <div className="overflow-x-hidden bg-[#FF512F] py-1 w-full">

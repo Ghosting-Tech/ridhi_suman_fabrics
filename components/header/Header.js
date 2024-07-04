@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar, IconButton, Card, MobileNav } from "@material-tailwind/react";
 import { IoIosSearch } from "react-icons/io";
-import { navList } from "../utils/navList";
+import { navList } from "@/utils/navList";
 import {
   Menu,
   MenuHandler,
