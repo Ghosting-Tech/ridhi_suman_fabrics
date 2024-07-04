@@ -93,7 +93,7 @@ const ProfileSection = ({data}) => {
           </label>
           <label className="input input-bordered flex items-center gap-3 flex-nowrap">
             <Image src="/icon/account.svg" width={15} height={15} alt="Account" />
-            <span className="text-base whitespace-nowrap ">Account created on</span>
+            <span className="text-base whitespace-nowrap ">Account create on</span>
             <span className="ml-2 text-lg text-[#b7bac1]">{data.account}</span>
           </label>
         </div>
