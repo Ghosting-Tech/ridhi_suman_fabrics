@@ -2,7 +2,7 @@
 import Nav from "@/components/header/Nav";
 import Footer from "@/components/footer/Footer";
 import OffBanner from "@/components/OffBanner";
-import Testimonial from "@/components/testimonial";
+import Testimonial from "@/components/Testimonial";
 import Category from "@/components/categories/Category";
 import { useState, useEffect } from "react";
 import ProductCarousel from "@/components/product/ProductCarousel";
@@ -28,10 +28,7 @@ export default function Home() {
       <div className="flex w-full">
         {bannerDataFooter.slice(0, 3).map((banner, index) => (
           <div key={index} className="relative w-1/3  ">
-            <img
-              src={banner.src}
-              alt={banner.alt}
-            />
+            <img src={banner.src} alt={banner.alt} />
           </div>
         ))}
       </div>
