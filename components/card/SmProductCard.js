@@ -11,6 +11,7 @@ const SmProductCard = () => {
                     <p className="text-sm text-[#11998E]">₹415.10</p>
                     <p className="text-sm text-gray-500">Quantity: 2</p>
                 </div>
+                
             </div>
         </div>
 
