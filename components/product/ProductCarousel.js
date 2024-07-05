@@ -28,7 +28,7 @@ function ProductCarousel() {
         setVisibleSlides(1);
         setSlideHeight(240);
       }
-    };
+    }; 
 
     updateSlides();
     window.addEventListener("resize", updateSlides);
