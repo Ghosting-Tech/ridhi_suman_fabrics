@@ -1,3 +1,4 @@
+"use client"
 const LeftOverlayContent = ({ isAnimated, setIsAnimated }) => {
     return (
       <div className="p-8 text-center">

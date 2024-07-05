@@ -15,6 +15,7 @@ import { MdOutlineLocalShipping } from "react-icons/md";
 import { AiFillQuestionCircle } from "react-icons/ai";
 
 import { HiOutlineShoppingBag } from "react-icons/hi2";
+import Link from "next/link";
 
 const ProductPage = () => {
   const [quantity1, setQuantity1] = useState(2);
@@ -225,13 +226,13 @@ const ProductPage = () => {
           <hr className="mt-2 mb-5 border-0 h-1 bg-gradient-to-r from-blue-400 to-blue-200" />
           <Typography color="gray" className="mt-1 font-normal">
             Read the{" "}
-            <a href="#" className="text-blue-500">
+            <Link href={"/"} className="text-blue-500">
               CANCELLATION POLICY
-            </a>{" "}
+            </Link>{" "}
             and{" "}
-            <a href="#" className="text-blue-500">
+            <Link href={"/"} className="text-blue-500">
               REFUND POLICY
-            </a>{" "}
+            </Link>{" "}
             before canceling the order.
           </Typography>
           <Button className="bg-red-500 text-white w-full mt-4 p-2 rounded-lg">
