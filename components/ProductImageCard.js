@@ -1,7 +1,7 @@
 import React from "react";
 import ProductDetails from "./ProductDetails";
 
-const ProductCard = ({ product }) => {
+const ProductImageCard = ({ product }) => {
   const renderImages = (images) => {
     const imageWidthClass =
       {
@@ -33,4 +33,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default ProductImageCard;

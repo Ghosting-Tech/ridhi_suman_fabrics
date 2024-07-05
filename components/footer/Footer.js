@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { categories, footerInfo } from "../utils/footerData"; // Adjust the import path as necessary
+import { categories, footerInfo } from "@/utils/footerData"; // Adjust the import path as necessary
 
 const Footer = () => {
   return (

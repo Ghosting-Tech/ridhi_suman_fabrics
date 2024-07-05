@@ -1,6 +1,7 @@
 import { Inter, Aclonica } from "next/font/google";
 import "./globals.css";
 
+
 const inter = Inter({ subsets: ["latin"] });
 const aclonica = Aclonica({ weight: "400", subsets: ["latin"] });
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Navbar, IconButton, Card, MobileNav } from "@material-tailwind/react";
 import { IoIosSearch } from "react-icons/io";
-import { navList } from "../utils/navList";
+import { navList } from "@/utils/navList";
 import {
   Menu,
   MenuHandler,
@@ -111,9 +111,9 @@ const Header = ( ) => {
               ) : (
                 <button
                   className="mr-4 px-4 py-2 bg-blue-500 text-white rounded"
-                  onClick={() => setIsLoggedIn(true)}
+                   
                 >
-                  Login
+                  <Link href={"/login"}>Login</Link>
                 </button>
               )}
               <IconButton

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import Nav from "@/components/header/Nav";
+import Footer from "@/components/footer/Footer";
 import { Breadcrumbs } from "@material-tailwind/react";
 import { AiTwotoneThunderbolt } from "react-icons/ai";
 import { FaHome } from "react-icons/fa";
@@ -147,7 +147,7 @@ const ProductGrid = () => {
 
   return (
     <div className="relative lg:pt-4 lg:pb-0 p-4">
-      <h2 className="text-2xl flex gap-2 justify-center sm:text-4xl font-extrabold text-[#F857A6] font-[Aclonica] leading-tight mb-4 sm:mb-8">
+      <h2 className="text-2xl flex gap-2 justify-center sm:text-4xl font-extrabold text-[#F857A6] font-aclonica leading-tight mb-4 sm:mb-8">
         Top booked lehenga choli
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
