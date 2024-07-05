@@ -272,6 +272,21 @@ function ProductCarousel() {
       sales: "200 Sold",
       category: "Best Seller",
     },
+    {
+      id: 4,
+      images: [
+        "/category/download (1).jpg",
+        "/category/image3.png",
+        "/category/download (2).jpg",
+        "/category/download (2).jpg",
+      ],
+      title: "Gorgeous Designer Lehenga",
+      originalPrice: "₹2500.00",
+      discountedPrice: "₹1500.00",
+      discount: "40% OFF",
+      sales: "200 Sold",
+      category: "Best Seller",
+    },
   ];
 
   const renderImages = (images) => {
@@ -373,10 +388,10 @@ const Page = () => {
               LEHENGA CHOLI
             </h1>
             <Breadcrumbs className="p-0 mt-2 mb-4">
-              <a href="/" className="opacity-60">
+              <Link href={"/"} className="opacity-60">
                 <FaHome />
-              </a>
-              <a href="/category-page">Lehenga Choli</a>
+              </Link>
+              <Link href={"/category-page"}>Lehenga Choli</Link>
             </Breadcrumbs>
           </div>
           <div className="flex items-center justify-end space-x-4">

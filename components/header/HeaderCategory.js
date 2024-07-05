@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const HeaderCategory = () => {
@@ -12,13 +13,13 @@ const HeaderCategory = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center px-6 py-2">
         <div className="flex flex-wrap lg:gap-6 md:gap-4 gap-3 z-30 text-gray-600">
           <span className="text-black">Categories :</span>
-          <a
+          <Link
             href="#"
             className="hover:text-orange-500"
             onClick={togglePopover}
           >
             Sarees
-          </a>
+          </Link>
           {isPopoverVisible && (
             <ul
               role="menu"
@@ -76,24 +77,24 @@ const HeaderCategory = () => {
               </li>
             </ul>
           )}
-          <a href="#" className="hover:text-orange-500">
+          <Link href="#" className="hover:text-orange-500">
             Lehengas
-          </a>
-          <a href="#" className="hover:text-orange-500">
+          </Link>
+          <Link href="#" className="hover:text-orange-500">
             Suits
-          </a>
-          <a href="#" className="hover:text-orange-500">
+          </Link>
+          <Link href="#" className="hover:text-orange-500">
             Kurtis
-          </a>
-          <a href="#" className="hover:text-orange-500">
+          </Link>
+          <Link href="#" className="hover:text-orange-500">
             Dupatta
-          </a>
-          <a href="#" className="hover:text-orange-500">
+          </Link>
+          <Link href="#" className="hover:text-orange-500">
             Chunni
-          </a>
-          <a href="#" className="hover:text-orange-500">
+          </Link>
+          <Link href="#" className="hover:text-orange-500">
             Accessories
-          </a>
+          </Link>
         </div>
       </div>
     </div>
