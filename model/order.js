@@ -4,14 +4,15 @@ const OrderSchema = new Schema(
   {
     cart_items: [{ type: Schema.Types.ObjectId, ref: "Product" }],
     user: { type: Schema.Types.ObjectId, ref: "User" },
-    delivery_date: { type: Number, required: true },
+    delivery_date: { type: Date, required: true },
     payment_method: { type: String, required: true },
     canceled_by: { type: String },
     cancellation_reason: { type: String },
     status: {
       type: String,
-      enum: ["Confirmed", "Packed", "Shipped", "Received"],
+      enum: ["Confirmed", "Packed", "Shipped", "Received", "Canceled"],
       required: true,
+      default: "Confirmed",
     },
   },
   {
