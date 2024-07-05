@@ -16,6 +16,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import Link from "next/link";
+import Link from "next/link";
 
 const ProductPage = () => {
   const [quantity1, setQuantity1] = useState(2);
