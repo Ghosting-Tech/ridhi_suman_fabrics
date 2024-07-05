@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import Product from "@/model/product";
+import SetOfProduct from "@/model/setOfProduct";
 
 import dbConnect from "@/config/db";
 
@@ -8,22 +8,22 @@ export async function PUT(request, { params }) {
   try {
     await dbConnect();
 
-    const { productId } = params;
+    const { id } = params;
 
-    if (!productId) return NextResponse.json("Id not found", { status: 404 });
+    if (!id) return NextResponse.json("Id not found", { status: 404 });
 
     const body = await request.json();
 
-    const updatedProduct = await Product.findByIdAndUpdate(productId, body, {
+    const updatedSet = await SetOfProduct.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,
     });
 
-    if (!updatedProduct) {
+    if (!updatedSet) {
       return NextResponse.json("Product not found", { status: 404 });
     }
 
-    return NextResponse.json(updatedProduct, { status: 200 });
+    return NextResponse.json(updatedSet, { status: 200 });
   } catch (error) {
     console.error("Error updating product:", error);
 
@@ -37,13 +37,13 @@ export async function DELETE(request, { params }) {
   try {
     await dbConnect();
 
-    const { productId } = params;
+    const { id } = params;
 
-    if (!productId) return NextResponse.json("Id not found", { status: 404 });
+    if (!id) return NextResponse.json("Id not found", { status: 404 });
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
+    const deletedSet = await SetOfProduct.findByIdAndDelete(id);
 
-    if (!deletedProduct) {
+    if (!deletedSet) {
       return NextResponse.json("Product not found", { status: 404 });
     }
 
