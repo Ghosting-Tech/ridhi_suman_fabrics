@@ -6,12 +6,12 @@ import dbConnect from "@/config/db";
 
 export async function GET(request, { params }) {
   try {
-    await dbConnect();
-
     const { id } = params;
 
     if (!id)
       return NextResponse.json("Set of product Id not found", { status: 404 });
+
+    await dbConnect();
 
     const setOfProduct = await SetOfProduct.findById(id);
 

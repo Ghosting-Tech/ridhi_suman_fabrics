@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import dbConnect from "@/config/db";
 
-import Category from "@/model/category";
+import Order from "@/model/order";
 
 export async function POST(request) {
   try {
@@ -10,9 +10,9 @@ export async function POST(request) {
 
     const data = await request.json();
 
-    const category = await Category.create(data);
+    const order = await Order.create(data);
 
-    return NextResponse.json(category, { status: 201 });
+    return NextResponse.json(order, { status: 201 });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: err }, { status: 500 });

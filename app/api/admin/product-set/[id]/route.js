@@ -6,11 +6,11 @@ import dbConnect from "@/config/db";
 
 export async function PUT(request, { params }) {
   try {
-    await dbConnect();
-
     const { id } = params;
 
     if (!id) return NextResponse.json("Id not found", { status: 404 });
+
+    await dbConnect();
 
     const body = await request.json();
 
@@ -35,11 +35,11 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    await dbConnect();
-
     const { id } = params;
 
     if (!id) return NextResponse.json("Id not found", { status: 404 });
+
+    await dbConnect();
 
     const deletedSet = await SetOfProduct.findByIdAndDelete(id);
 

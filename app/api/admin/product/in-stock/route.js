@@ -24,9 +24,13 @@ export async function GET(request) {
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
-    console.error("Error fetching products:", error);
-    return NextResponse.json(`Error fetching products: ${error.message}`, {
-      status: 500,
-    });
+    console.error("Error fetching products in-stock:", error);
+
+    return NextResponse.json(
+      `Error fetching products in-stock: ${error.message}`,
+      {
+        status: 500,
+      }
+    );
   }
 }
