@@ -22,10 +22,13 @@ export async function GET() {
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching out of stock products:", error);
 
-    return NextResponse.json(`Error fetching products: ${error.message}`, {
-      status: 500,
-    });
+    return NextResponse.json(
+      `Error fetching out of stock products: ${error.message}`,
+      {
+        status: 500,
+      }
+    );
   }
 }

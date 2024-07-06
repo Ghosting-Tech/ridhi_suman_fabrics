@@ -8,7 +8,7 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const products = await Product.find();
+    const products = await Product.find({ visibility: true });
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {

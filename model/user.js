@@ -5,7 +5,7 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: true,
-      minlength: 2,
+      minlength: 3,
     },
 
     image: {
@@ -16,6 +16,7 @@ const userSchema = new Schema(
     phone_number: {
       type: Number,
       required: true,
+      unique: true,
     },
 
     email: {
@@ -27,6 +28,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      minlength: 8,
     },
 
     wishlist: {
@@ -69,15 +71,20 @@ const userSchema = new Schema(
           pincode: {
             type: String,
             required: true,
+            minlength: 6,
+            maxlength: 6,
           },
         },
       ],
       default: [],
     },
-    orders: {
-      type: [String],
-      default: [],
-    },
+
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   {
     timestamps: true,
