@@ -1,9 +1,9 @@
-// PrimaryInput.jsx
+// InputField.jsx
 import React from "react";
 
 const PrimaryInput = ({ icon: Icon, label, type, name, value, onChange, placeholder, required }) => {
   return (
-    <div className="flex border p-3 rounded-md w-full">
+    <div className={`flex border p-3 rounded-md w-full ${className}`}>
       {Icon && <Icon size={21} color="gray" className="mr-2" />}
       <div className="flex flex-col w-full">
         <label className="text-gray-700">{label}</label>
