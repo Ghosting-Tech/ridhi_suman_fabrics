@@ -1,6 +1,9 @@
 /* styles/globals.css */
 @import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+=======
+>>>>>>> db6515b1781b61eced8f489aa2d5c5185e0bd0c7
 
 @tailwind base;
 @tailwind components;
