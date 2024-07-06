@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import bannerData from "../utils/staticSection"; // Adjust the import path as necessary
+import Image from "next/image";
 
 function OffBanner() {
   return (
@@ -13,11 +14,15 @@ function OffBanner() {
               <Link href={item.href} className="card text-center">
                 <div className="relative text-light">
                   <div className="flex justify-center icon-h-p">
-                    <img
-                      src={item.src}
-                      // className={item.imgClass}
-                      alt={item.alt}
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        layout="fill"
+                        objectFit="contain"
+                        className="rounded-t-lg"
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="card-footer">

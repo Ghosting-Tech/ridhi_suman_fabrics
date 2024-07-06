@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { IoIosSearch } from "react-icons/io";
 import { Typography } from "@material-tailwind/react";
+import Image from "next/image";
 
 export const navList = (
   <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -31,7 +32,7 @@ export const navList = (
         className="p-1 font-normal flex"
       >
         <Link href={"/"} className="text-black flex gap-1">
-          <img src="/icon-2/Wishlist.svg" alt="Wishlist" />
+        <Image src="/icon-2/Wishlist.svg" alt="Wishlist" width={20} height={20} />
           Wishlist
         </Link>
       </Typography>
@@ -42,7 +43,7 @@ export const navList = (
         className="p-1 font-normal flex"
       >
         <Link href={"/"} className="text-black flex gap-1">
-          <img src="/icon-2/shop.svg" alt="Shop" />
+        <Image src="/icon-2/shop.svg" alt="Shop" width={20} height={20} />
           Shop
         </Link>
       </Typography>
@@ -53,7 +54,7 @@ export const navList = (
         className="p-1 font-normal flex"
       >
         <Link href={"/"} className="text-black flex gap-1 items-center relative">
-          <img src="/icon-2/Cart.svg" alt="Cart" />
+        <Image src="/icon-2/Cart.svg" alt="Cart" width={20} height={20} />
           Cart
           <span className="absolute top-[-2px] left-[36px] inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-teal-600 rounded-full transform translate-x-1/2 -translate-y-1/2">
             1

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { products } from '@/utils/productData';
 import ProductDetails from '../ProductDetails';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SingleProductBundle = () => {
   const [product, setProducts] = useState(products);
@@ -41,15 +42,18 @@ const SingleProductBundle = () => {
   const renderImages = (images) => {
     return (
       <div className="flex items-center w-full">
-        {images.map((image, index) => (
-          <img
-            key={index}
+      {images.map((image, index) => (
+        <div key={index} className="relative w-full h-[32rem]">
+          <Image
             src={image}
             alt={`Product Image ${index + 1}`}
-            className="object-cover w-full h-[32rem]"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-lg"
           />
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
     );
   };
 

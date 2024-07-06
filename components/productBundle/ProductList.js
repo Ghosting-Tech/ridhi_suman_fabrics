@@ -5,7 +5,7 @@ import products from "@/utils/productDataBundle";
 import productsBundle from "@/utils/productDataBundle"; // Adjust the import path as necessary
 import ProductImageCard from "../ProductImageCard";
 
- // Adjust the import path as necessary
+// Adjust the import path as necessary
 
 const ProductList = () => {
   return (
@@ -15,7 +15,7 @@ const ProductList = () => {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full px-4">
         {productsBundle.map((product) => (
-          <Link key={product.id} href={`/product-detail-page`}>
+          <Link key={product.id} href={`/product-detail-page/${product.id}`}>
             <ProductImageCard product={product} />
           </Link>
         ))}

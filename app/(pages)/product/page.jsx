@@ -40,6 +40,7 @@ const ImageSlider = ({ images, onThumbnailClick }) => {
               <Image
                 src={image}
                 width={125}
+                layout="responsive"
                 height={200}
                 className="   h-56  pr-1  w-full"
                 alt={`Slide ${index}`}
@@ -99,6 +100,7 @@ const ProductPage = () => {
             <Image
               src={mainImage}
               width={493}
+              layout="responsive"
               height={677}
               className="w-full object-cover  rounded-lg"
               onClick={handleMainImageClick}
@@ -183,7 +185,7 @@ const ProductPage = () => {
               </button>
             </Link>
             <div className="Buy-CartButton border border-black flex items-center justify-center gap-2 hover:cursor-pointer  ">
-              <Image src="/icon/cartIcon.svg" width={17} height={16} />
+              <Image src="/icon/cartIcon.svg"  width={17} height={16} />
               <button>Add to Cart</button>
             </div>
           </div>

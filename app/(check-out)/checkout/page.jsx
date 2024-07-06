@@ -47,7 +47,9 @@ const ProductPage = () => {
           <div className="flex items-center sm:px-4">
             <FaCheckCircle className="text-green-500 mr-2" size={20} />
             <div className="flex items-center">
-              <span className="text-gray-800 text-xl">Shipping Information</span>
+              <span className="text-gray-800 text-xl">
+                Shipping Information
+              </span>
               <span className="mx-2">|</span>
               <span className="text-gray-800 text-xl">Payment Details</span>
             </div>
@@ -57,8 +59,11 @@ const ProductPage = () => {
           <Typography variant="h4" color="blue-gray">
             Fill Your Shipping Address
           </Typography>
-          <Typography color="gray" className="mt-1  flex gap-2 items-center font-normal">
-            <PiPencilSimpleLineThin size={24}/>
+          <Typography
+            color="gray"
+            className="mt-1  flex gap-2 items-center font-normal"
+          >
+            <PiPencilSimpleLineThin size={24} />
             For a better experience, check your item and choose your shipping
             before ordering.
           </Typography>
@@ -152,7 +157,14 @@ const ProductPage = () => {
             <div className="border p-4 rounded-md mt-3 mb-3 flex flex-col">
               <div className="w-full flex justify-between items-center mb-2">
                 <div className="flex items-center gap-2">
-                  <img src="PhonePe.png" width={100} alt="" />
+                  <div className="relative w-24 h-12">
+                    <Image
+                      src="/PhonePe.png"
+                      alt="PhonePe"
+                      layout="fill"
+                      objectFit="contain"
+                    />
+                  </div>
                 </div>
                 <input type="radio" name="payment" />
               </div>
@@ -167,7 +179,14 @@ const ProductPage = () => {
             <div className="border p-4 rounded-md flex flex-col">
               <div className="w-full flex justify-between items-center mb-2">
                 <div className="flex items-center gap-1">
-                  <img src="money.png" alt="" width={40} />
+                  <div className="relative w-10 h-10">
+                    <Image
+                      src="/money.png"
+                      alt="Money"
+                      layout="fill"
+                      objectFit="contain"
+                    />
+                  </div>
                   <span>COD | POD</span>
                 </div>
                 <input type="radio" name="payment" />
@@ -187,68 +206,76 @@ const ProductPage = () => {
           <Typography variant="h4" color="blue-gray">
             Current Order
           </Typography>
-          {/* Product 1 */}
-          <div className="border p-4 mt-5 rounded-md mb-4 flex items-center">
-            <img
-              src="/category/other-site/image1.jpg"
-              alt="Product 1"
-              className="w-20 h-20 object-cover rounded-md mr-4"
-            />
-            <div className="flex-1">
-              <Typography variant="h6" color="blue-gray" className="font-bold">
-                Neve Strix Pro L123 (2021) - TP399K 1TB
-              </Typography>
-              <Typography color="gray" className="mt-1">
-                ₹{price1.toFixed(2)}
-              </Typography>
-              <div className="flex items-center mt-2">
-                <button
-                  className="border p-1 rounded"
-                  onClick={() => handleQuantityChange1(-1)}
-                >
-                  -
-                </button>
-                <span className="mx-2">{quantity1}</span>
-                <button
-                  className="border p-1 rounded"
-                  onClick={() => handleQuantityChange1(1)}
-                >
-                  +
-                </button>
-              </div>
-            </div>
+               {/* Product 1 */}
+      <div className="border p-4 mt-5 rounded-md mb-4 flex items-center">
+        <div className="relative w-20 h-20 mr-4">
+          <Image
+            src="/category/other-site/image1.jpg"
+            alt="Product 1"
+            layout="fill" // Ensures the image fills the container
+            objectFit="cover" // Maintains aspect ratio and ensures image covers the container
+            className="rounded-md"
+          />
+        </div>
+        <div className="flex-1">
+          <Typography variant="h6" color="blue-gray" className="font-bold">
+            Neve Strix Pro L123 (2021) - TP399K 1TB
+          </Typography>
+          <Typography color="gray" className="mt-1">
+            ₹{price1.toFixed(2)}
+          </Typography>
+          <div className="flex items-center mt-2">
+            <button
+              className="border p-1 rounded"
+              onClick={() => handleQuantityChange1(-1)}
+            >
+              -
+            </button>
+            <span className="mx-2">{quantity1}</span>
+            <button
+              className="border p-1 rounded"
+              onClick={() => handleQuantityChange1(1)}
+            >
+              +
+            </button>
           </div>
-          {/* Product 2 */}
-          <div className="border p-4 rounded-md mb-4 flex items-center">
-            <img
-              src="/category/other-site/image2.jpg"
-              alt="Product 2"
-              className="w-20 h-20 object-cover rounded-md mr-4"
-            />
-            <div className="flex-1">
-              <Typography variant="h6" color="blue-gray" className="font-bold">
-                Neve Strix Pro L123 (2021) - TP399K 1TB
-              </Typography>
-              <Typography color="gray" className="mt-1">
-                ₹{price2.toFixed(2)}
-              </Typography>
-              <div className="flex items-center mt-2">
-                <button
-                  className="border p-1 rounded"
-                  onClick={() => handleQuantityChange2(-1)}
-                >
-                  -
-                </button>
-                <span className="mx-2">{quantity2}</span>
-                <button
-                  className="border p-1 rounded"
-                  onClick={() => handleQuantityChange2(1)}
-                >
-                  +
-                </button>
-              </div>
-            </div>
+        </div>
+      </div>
+      {/* Product 2 */}
+      <div className="border p-4 rounded-md mb-4 flex items-center">
+        <div className="relative w-20 h-20 mr-4">
+          <Image
+            src="/category/other-site/image2.jpg"
+            alt="Product 2"
+            layout="fill" // Ensures the image fills the container
+            objectFit="cover" // Maintains aspect ratio and ensures image covers the container
+            className="rounded-md"
+          />
+        </div>
+        <div className="flex-1">
+          <Typography variant="h6" color="blue-gray" className="font-bold">
+            Neve Strix Pro L123 (2021) - TP399K 1TB
+          </Typography>
+          <Typography color="gray" className="mt-1">
+            ₹{price2.toFixed(2)}
+          </Typography>
+          <div className="flex items-center mt-2">
+            <button
+              className="border p-1 rounded"
+              onClick={() => handleQuantityChange2(-1)}
+            >
+              -
+            </button>
+            <span className="mx-2">{quantity2}</span>
+            <button
+              className="border p-1 rounded"
+              onClick={() => handleQuantityChange2(1)}
+            >
+              +
+            </button>
           </div>
+        </div>
+      </div>
           <div className="border-t pt-4">
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
@@ -262,11 +289,11 @@ const ProductPage = () => {
               <span>Total</span>
               <span>₹{total.toFixed(2)}</span>
             </div>
-           <Link href={"/booking-detail-page"}>
-           <Button className="bg-gradient-to-r from-teal-500 to-blue-500 text-white w-full text-lg mt-4 p-2 rounded-lg">
-              Pay ₹{total.toFixed(2)}
-            </Button>
-           </Link>
+            <Link href={"/booking-detail-page"}>
+              <Button className="bg-gradient-to-r from-teal-500 to-blue-500 text-white w-full text-lg mt-4 p-2 rounded-lg">
+                Pay ₹{total.toFixed(2)}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

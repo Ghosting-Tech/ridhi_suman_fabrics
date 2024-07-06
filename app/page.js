@@ -14,11 +14,10 @@ import bannerDataFooter from "@/utils/bannerDataFooter";
 import HeroSection from "@/components/heroSection/HeroSection";
 
 export default function Home() {
-
   return (
     <main>
       <Nav />
-      <HeroSection/>
+      <HeroSection />
       <Category />
       <ProductList />
       <OffBanner />
@@ -27,8 +26,16 @@ export default function Home() {
       <ProductCarousel />
       <div className="flex w-full">
         {bannerDataFooter.slice(0, 3).map((banner, index) => (
-          <div key={index} className="relative w-1/3  ">
-            <img src={banner.src} alt={banner.alt} />
+          <div key={index} className="relative w-1/3">
+            <div className="relative w-full h-[20rem]">
+              <Image
+                src={banner.src}
+                alt={banner.alt}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg"
+              />
+            </div>
           </div>
         ))}
       </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import categoryData from "@/utils/categoryData"; // Adjust the import path as necessary
+import Image from "next/image";
 
 function Category() {
   return (
@@ -9,17 +10,21 @@ function Category() {
         Categories you may like
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 justify-center">
-        {categoryData.map((category, index) => (
-          <Link key={index} href={category.href} className="flex flex-col items-center p-2">
-            <img
+      {categoryData.map((category, index) => (
+        <Link key={index} href={category.href} className="flex flex-col items-center p-2">
+          <div className="relative w-full aspect-square">
+            <Image
               src={category.src}
               alt={category.alt}
-              className="rounded-full w-full object-cover aspect-square"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-full"
             />
-            <p className="text-lg mt-2 sm:mt-4  ">{category.label}</p>
-          </Link>
-        ))}
-      </div>
+          </div>
+          <p className="text-lg mt-2 sm:mt-4">{category.label}</p>
+        </Link>
+      ))}
+    </div>
     </div>
   );
 }
