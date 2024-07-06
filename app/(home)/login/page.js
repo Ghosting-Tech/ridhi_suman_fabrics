@@ -13,29 +13,29 @@ const page = () => {
     <div className="h-screen bg-white relative overflow-hidden rounded-lg">
       <div
         id="signin"
-        className={`bg-white absolute top-0 left-0 h-full w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out z-20 ${
-          isAnimated ? "translate-x-full opacity-0" : ""
+        className={`bg-white absolute top-0 left-0 h-full w-full lg:w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out z-20 ${
+          isAnimated ? "lg:translate-x-full opacity-0" : ""
         }`}
       >
-        <SigninForm />
+        <SigninForm setIsAnimated={setIsAnimated} isAnimated={isAnimated} />
       </div>
 
       <div
         id="signup"
-        className={`absolute top-0 left-0 h-full w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out ${
+        className={`absolute top-0 left-0 h-full w-full lg:w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out ${
           isAnimated
-            ? "translate-x-full opacity-100 z-50 animate-show"
+            ? "lg:translate-x-full opacity-100 z-50 animate-show"
             : "opacity-0 z-10"
         }`}
       >
         <div className="h-full w-full flex justify-center items-center">
-          <SignupForm />
+          <SignupForm setIsAnimated={setIsAnimated} isAnimated={isAnimated} />
         </div>
       </div>
 
       <div
         id="overlay-container"
-        className={`absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-transform duration-700 ease-in-out z-30 ${
+        className={`absolute top-0 left-1/2 w-0 lg:w-1/2 h-full overflow-hidden transition-transform duration-700 ease-in-out z-30 lg:block hidden ${
           isAnimated ? "-translate-x-full" : ""
         }`}
       >

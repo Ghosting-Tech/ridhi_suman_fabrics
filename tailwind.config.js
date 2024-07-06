@@ -16,7 +16,7 @@ module.exports = {
 
       fontFamily: {
         inter: ["Inter", "sans-serif"],
-        aclonica: ["Aclonica", "cursive"],
+        aclonica: ["Aclonica", "sans-serif"],
       },
 
       animation: {
