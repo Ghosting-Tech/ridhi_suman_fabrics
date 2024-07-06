@@ -1,7 +1,7 @@
-// InputField.jsx
+// PrimaryInput.jsx
 import React from "react";
 
-const InputField = ({ icon: Icon, label, type, name, value, onChange, placeholder, required }) => {
+const PrimaryInput = ({ icon: Icon, label, type, name, value, onChange, placeholder, required }) => {
   return (
     <div className="flex border p-3 rounded-md w-full">
       {Icon && <Icon size={21} color="gray" className="mr-2" />}
@@ -21,4 +21,4 @@ const InputField = ({ icon: Icon, label, type, name, value, onChange, placeholde
   );
 };
 
-export default InputField;
+export default PrimaryInput;
