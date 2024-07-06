@@ -1,9 +1,42 @@
-"use state"
+"use client"
 import { useState } from "react";
+import SecondaryInput from "../fields/SecondaryInput";
+import {
+  HiOutlineUpload,
+  HiOutlinePhone,
+  HiOutlineUser,
+  HiOutlineMail,
+  HiOutlineLockClosed,
+} from "react-icons/hi";
+import Image from "next/image";
 
 const SignupForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    profileImage: null,
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const image = URL.createObjectURL(event.target.files[0]);
+      setFormData({
+        ...formData,
+        profileImage: event.target.files[0],
+        selectedImage: image,
+      });
+    }
+  };
 
   return (
     <div className="selection:bg-indigo-500 selection:text-white">
@@ -16,56 +49,89 @@ const SignupForm = () => {
               </h1>
 
               <form className="mt-12" action="" method="POST">
-                <div className="relative">
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                    placeholder="Name"
+                <SecondaryInput
+                  type="text"
+                  label="Name"
+                  field="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+                <div className="mt-10">
+                  <SecondaryInput
+                    type="number"
+                    label="Phone Number"
+                    field="phone"
+                    min={10}
+                    max={10}
+                    value={formData.phone}
+                    onChange={handleInputChange}
                   />
-                  <label
-                    htmlFor="name"
-                    className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                  >
-                    Name
-                  </label>
                 </div>
-                <div className="mt-10 relative">
-                  <input
-                    id="email"
-                    name="email"
-                    type="text"
-                    className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                    placeholder="john@doe.com"
+                <div className="mt-10">
+                  <SecondaryInput
+                    type="email"
+                    label="Email address"
+                    field="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                   />
-                  <label
-                    htmlFor="email"
-                    className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                  >
-                    Email address
-                  </label>
                 </div>
-                <div className="mt-10 relative">
-                  <input
-                    id="password"
+                <div className="mt-10">
+                  <SecondaryInput
                     type="password"
-                    name="password"
-                    className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600"
-                    placeholder="Password"
+                    label="Password"
+                    field="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
                   />
-                  <label
-                    htmlFor="password"
-                    className="absolute left-0 -top-3.5 text-gray-600 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
-                  >
-                    Password
-                  </label>
                 </div>
-
+                <div className="flex flex-col items-center mt-10">
+                  <label
+                    htmlFor="profile"
+                    className="cursor-pointer flex items-center space-x-4 border rounded-md p-4 w-full"
+                  >
+                    {formData.selectedImage ? (
+                      <div className="relative w-12 h-12">
+                        <Image
+                          src={formData.selectedImage}
+                          alt="avatar"
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-full"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center w-12 h-12 bg-gray-200 rounded-full">
+                        <svg
+                          className="w-6 h-6 text-gray-500"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="flex-grow pl-2">
+                      <p className="text-gray-500">Add Profile Image</p>
+                      <p className="text-sm text-gray-400">PNG or JPG</p>
+                    </div>
+                    <div className="ml-auto">
+                      <HiOutlineUpload className="w-6 h-6 text-gray-500" />
+                    </div>
+                  </label>
+                  <input
+                    type="file"
+                    id="profile"
+                    name="profile"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </div>
                 <input
                   type="submit"
                   value="Sign up"
-                  className="mt-20 px-8 py-4 uppercase rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-80 cursor-pointer"
+                  className="mt-10 px-8 py-4 uppercase rounded-full bg-gradient-to-r from-red-500 to-orange-500 hover:bg-gradient-to-r from-red-400 to-orange-400 text-white font-semibold text-center block w-full focus:outline-none focus:ring focus:ring-offset-2 focus:ring-indigo-500 focus:ring-opacity-80 cursor-pointer"
                 />
               </form>
             </div>
