@@ -7,7 +7,7 @@ const SetOfProductSchema = new Schema(
       required: true,
     },
 
-    sub_category: {
+    subCategory: {
       type: Array,
       required: true,
       default: [],
