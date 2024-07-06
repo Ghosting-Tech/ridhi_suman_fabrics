@@ -3,16 +3,24 @@ import ProfileSection from "@/components/layout/profile/ProfileSection";
 import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
 import CardTitle from "@/components/cardTitle/CardTitle.";
 import cardTitle from "@/components/utils/data/cardTitle";
+import Nav from "@/components/header/Nav";
+import Footer from "@/components/footer/Footer";
 
 const page = () => {
   return (
-    <div className="mx-4 flex flex-col gap-5">
-      <CardTitle data={cardTitle.profile} />
-      <div className="flex flex-col lg:flex-row gap-10 justify-between">
-        <ProfileSection />
-        <ProfileWishlist />
+    <>
+      <Nav />
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-grow mx-4 my-5 flex flex-col gap-5">
+          <CardTitle data={cardTitle.profile} />
+          <div className="flex flex-col lg:flex-row gap-10 justify-between">
+            <ProfileSection />
+            <ProfileWishlist />
+          </div>
+        </div>
       </div>
-    </div>
+        <Footer />
+    </>
   );
 };
 

@@ -17,26 +17,17 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import Link from "next/link";
 import Image from "next/image";
+import SmProductCard from "@/components/card/SmProductCard";
+import { products } from "@/utils/productData";
+import CardTitle from "@/components/cardTitle/CardTitle.";
+import cardTitle from "@/components/utils/data/cardTitle";
 
 const ProductPage = () => {
-  const [quantity1, setQuantity1] = useState(2);
-  const [quantity2, setQuantity2] = useState(1);
-
-  const subtotal = 5240.37;
-  const deliveryFee = 120;
-  const total = subtotal + deliveryFee;
-
   return (
     <>
       <Nav />
       <div className="container pt-4 px-5">
-        <div className="flex items-center sm:px-4">
-          <IoMdListBox className="text-blue-500 mr-2" size={30} />
-          <div className="flex items-center">
-            <span className="text-gray-800 text-xl">BOOKING DETAILS</span>
-          </div>
-        </div>
-        <hr className="mt-2 mb-5 border-0 h-1 bg-gradient-to-r from-blue-500 to-blue-200" />
+        <CardTitle  data={cardTitle.booking} />
       </div>
       <div className="container mx-auto p-4 pt-0 flex flex-col lg:flex-row gap-4">
         {/* Order Summary */}
@@ -52,90 +43,39 @@ const ProductPage = () => {
           <Typography color="gray" className="mt-1 font-normal">
             The sum of all total payments for goods there
           </Typography>
-          <div className="border-t mt-4 pt-4">
-            <div className="border p-4 rounded-md mb-4 flex items-center">
-              <div className="relative w-20 h-20 mr-4">
-                <Image
-                  src="/category/other-site/image2.jpg"
-                  alt="Product 1"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-md"
-                />
-              </div>
-              <div className="flex-1">
-                <Typography
-                  variant="h6"
-                  color="blue-gray"
-                  className="font-bold"
-                >
-                  Neve Strix Pro L123 (2021) - TP399K 1TB
-                </Typography>
-                <Typography color="gray" className="mt-1">
-                  ₹415.10
-                </Typography>
-                <Typography color="gray" className="mt-1">
-                  Quantity: {quantity1}
-                </Typography>
-              </div>
-            </div>
-            <div className="border p-4 rounded-md mb-4 flex items-center">
-              <div className="relative w-20 h-20 mr-4">
-                <Image
-                  src="/category/other-site/image1.jpg"
-                  alt="Product 2"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-md"
-                />
-              </div>
-              <div className="flex-1">
-                <Typography
-                  variant="h6"
-                  color="blue-gray"
-                  className="font-bold"
-                >
-                  Neve Strix Pro L123 (2021) - TP399K 1TB
-                </Typography>
-                <Typography color="gray" className="mt-1">
-                  ₹415.10
-                </Typography>
-                <Typography color="gray" className="mt-1">
-                  Quantity: {quantity2}
-                </Typography>
-              </div>
+          <div className=" mt-5">
+            <div className="max-h-[465px] overflow-hidden overflow-y-auto">
+              {products.map((product, index) => (
+                <SmProductCard key={index} product={product} />
+              ))}
             </div>
           </div>
           <div className="border-t pt-4">
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span>₹{subtotal.toFixed(2)}</span>
+              <span>₹ 1245.30</span>
             </div>
             <div className="flex justify-between mb-2">
               <span>Delivery Service</span>
-              <span>₹{deliveryFee.toFixed(2)}</span>
+              <span>₹ 120</span>
             </div>
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>₹{total.toFixed(2)}</span>
+              <span>₹ 1365.30</span>
             </div>
-            <Button className="bg-gradient-to-r from-teal-500 to-blue-500 text-white w-full mt-4 p-2 rounded-lg">
-              Pay ₹{total.toFixed(2)}
-            </Button>
+            <Link href={"/booking-detail-page"}>
+              <Button className="bg-gradient-to-r from-teal-500 to-blue-500 text-white w-full text-lg mt-4 p-2 rounded-lg">
+                Pay ₹ 1365.30
+              </Button>
+            </Link>
           </div>
         </div>
 
         {/* Shipping Information */}
         <div className="w-full lg:w-1/2 bg-white  border-2 border-gray-300 rounded-lg shadow-md p-6">
-          <Typography
-            variant="h4"
-            color="blue-gray"
-            className="flex items-center gap-3"
-          >
-            <MdOutlineLocalShipping color="red" size={30} />
-            SHIPPING INFORMATION
-          </Typography>
-          <hr className="mt-2 mb-5 border-0 h-1 bg-gradient-to-r from-red-400 to-red-200" />
+          <div className="container pt-4  ">
+            <CardTitle size="small" data={cardTitle.shipInfomation} />
+          </div>
           <form className="mt-8 mb-2 w-full">
             <div className="mb-5 grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="flex border p-3 rounded-md">
