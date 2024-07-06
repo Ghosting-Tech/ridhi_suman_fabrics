@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+import bcrypt from "bcrypt";
+
 const userSchema = new Schema(
   {
     name: {
@@ -13,7 +15,7 @@ const userSchema = new Schema(
       required: true,
     },
 
-    phone_number: {
+    phoneNumber: {
       type: Number,
       required: true,
       unique: true,
@@ -41,7 +43,7 @@ const userSchema = new Schema(
       default: [],
     },
 
-    shipping_info: {
+    shippingInfo: {
       type: [
         {
           flat: {
@@ -91,5 +93,22 @@ const userSchema = new Schema(
     versionKey: false,
   }
 );
+
+userSchema.pre("save", function (next) {
+  const user = this;
+
+  if (!user.isModified("password")) return next();
+
+  bcrypt.genSalt(12, function (err, salt) {
+    if (err) return next(err);
+
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err);
+
+      user.password = hash;
+      next();
+    });
+  });
+});
 
 export default mongoose.models.User || mongoose.model("User", userSchema);

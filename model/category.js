@@ -5,11 +5,20 @@ const CategorySchema = new Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
 
-    image: [String],
+    image: {
+      type: String,
+      required: true,
+    },
 
-    sub_categories: [String],
+    subCategories: [
+      {
+        type: String,
+        unique: true,
+      },
+    ],
   },
 
   {

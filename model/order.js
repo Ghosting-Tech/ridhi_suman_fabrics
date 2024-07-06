@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const OrderSchema = new Schema(
   {
-    cart_items: [
+    cartItems: [
       {
         type: Schema.Types.ObjectId,
         ref: "Product",
@@ -14,21 +14,21 @@ const OrderSchema = new Schema(
       ref: "User",
     },
 
-    delivery_date: {
+    deliveryDate: {
       type: Date,
       required: true,
     },
 
-    payment_method: {
+    paymentMethod: {
       type: String,
       required: true,
     },
 
-    canceled_by: {
+    canceledBy: {
       type: String,
     },
 
-    cancellation_reason: {
+    cancellationReason: {
       type: String,
     },
 
