@@ -1,5 +1,6 @@
 import React from "react";
 import ProductDetails from "./ProductDetails";
+import Image from "next/image";
 
 const ProductImageCard = ({ product }) => {
   const renderImages = (images) => {
@@ -13,15 +14,18 @@ const ProductImageCard = ({ product }) => {
 
     return (
       <div className="flex items-center w-full">
-        {images.map((image, index) => (
-          <img
-            key={index}
+      {images.map((image, index) => (
+        <div key={index} className={`relative ${imageWidthClass} h-[32rem] mb-2`}>
+          <Image
             src={image}
             alt={`Product Image ${index + 1}`}
-            className={`object-cover mb-2 h-[32rem] ${imageWidthClass}`}
+            layout="fill"
+            objectFit="cover"
+            className="rounded"
           />
-        ))}
-      </div>
+        </div>
+      ))}
+    </div>
     );
   };
 

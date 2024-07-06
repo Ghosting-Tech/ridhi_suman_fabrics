@@ -4,6 +4,7 @@ import { FaPhoneAlt, FaEdit } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { SlCalender } from "react-icons/sl";
 import { MdOutlineModeEdit } from "react-icons/md";
+import Image from "next/image";
 
 const ProfileSection = () => {
   const [username, setUsername] = useState("Musharraf Jamal");
@@ -43,25 +44,29 @@ const ProfileSection = () => {
   return (
     <div className="mx-auto sm:mt-10 sm:px-6 px-1 py-10 bg-gray-50 rounded-lg shadow-md max-w-2xl w-full">
       <div className="flex flex-col items-center">
-        <div className="relative flex justify-center">
-          <img
-            src={image}
-            alt="profile"
-            className="sm:w-48 sm:h-48 w-28 h-28 rounded-full cursor-pointer"
-            onClick={handleImageClick}
-          />
-          <MdOutlineModeEdit
-            className="absolute sm:top-5 sm:right-2 right-0 top-1 w-6 h-6 bg-gray-200 p-1 rounded-full cursor-pointer"
-            onClick={handleImageClick}
-          />
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-            accept="image/jpeg, image/png, image/jpg"
-          />
-        </div>
+      <div className="relative flex justify-center">
+      <div className="relative sm:w-48 sm:h-48 w-28 h-28">
+        <Image
+          src={image}
+          alt="profile"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-full cursor-pointer"
+          onClick={handleImageClick}
+        />
+      </div>
+      <MdOutlineModeEdit
+        className="absolute sm:top-5 sm:right-2 right-0 top-1 w-6 h-6 bg-gray-200 p-1 rounded-full cursor-pointer"
+        onClick={handleImageClick}
+      />
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleImageChange}
+        accept="image/jpeg, image/png, image/jpg"
+      />
+    </div>
         {editingUsername ? (
           <input
             type="text"

@@ -16,7 +16,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import Link from "next/link";
-import Link from "next/link";
+import Image from "next/image";
 
 const ProductPage = () => {
   const [quantity1, setQuantity1] = useState(2);
@@ -54,11 +54,15 @@ const ProductPage = () => {
           </Typography>
           <div className="border-t mt-4 pt-4">
             <div className="border p-4 rounded-md mb-4 flex items-center">
-              <img
-                src="/category/other-site/image2.jpg"
-                alt="Product 1"
-                className="w-20 h-20 object-cover rounded-md mr-4"
-              />
+              <div className="relative w-20 h-20 mr-4">
+                <Image
+                  src="/category/other-site/image2.jpg"
+                  alt="Product 1"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-md"
+                />
+              </div>
               <div className="flex-1">
                 <Typography
                   variant="h6"
@@ -76,11 +80,15 @@ const ProductPage = () => {
               </div>
             </div>
             <div className="border p-4 rounded-md mb-4 flex items-center">
-              <img
-                src="/category/other-site/image1.jpg"
-                alt="Product 2"
-                className="w-20 h-20 object-cover rounded-md mr-4"
-              />
+              <div className="relative w-20 h-20 mr-4">
+                <Image
+                  src="/category/other-site/image1.jpg"
+                  alt="Product 2"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-md"
+                />
+              </div>
               <div className="flex-1">
                 <Typography
                   variant="h6"

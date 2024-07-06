@@ -5,7 +5,8 @@ import { AiTwotoneThunderbolt } from "react-icons/ai";
 import Link from "next/link";
 import { products } from "@/utils/productData";
 import ProductDetails from "../ProductDetails";
- 
+import Image from "next/image";
+
 function ProductCarousel() {
   const [visibleSlides, setVisibleSlides] = useState(1);
   const [slideHeight, setSlideHeight] = useState(190);
@@ -28,7 +29,7 @@ function ProductCarousel() {
         setVisibleSlides(1);
         setSlideHeight(240);
       }
-    }; 
+    };
 
     updateSlides();
     window.addEventListener("resize", updateSlides);
@@ -53,13 +54,17 @@ function ProductCarousel() {
         <Slider>
           {products.map((product, index) => (
             <Slide index={index} key={product.id}>
-              <Link key={product.id} href={`/product`}>
+              <Link key={product.id} href={`/product`} passHref>
                 <div className="flex flex-col items-center m-2 bg-white rounded-lg shadow-md">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-[32rem] object-cover rounded-t-lg"
-                  />
+                  <div className="relative w-full h-[32rem]">
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      layout="fill"
+                      objectFit="cover"
+                      className="rounded-t-lg"
+                    />
+                  </div>
                   <ProductDetails product={product} />
                 </div>
               </Link>

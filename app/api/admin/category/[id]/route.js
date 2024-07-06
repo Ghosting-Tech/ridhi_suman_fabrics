@@ -1,23 +1,27 @@
-import dbConnect from "@/config/db";
-import Category from "@/model/category";
 import { NextResponse } from "next/server";
+
+import dbConnect from "@/config/db";
+
+import Category from "@/model/category";
 
 export async function PUT(request, { params }) {
   try {
-    await dbConnect();
-
     const { id } = params;
-    const data = await request.json();
 
-    if (!data) {
-      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
-    }
     if (!id) {
       return NextResponse.json(
         { error: "Invalid category id" },
         { status: 400 }
       );
     }
+
+    const data = await request.json();
+
+    if (!data) {
+      return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+    }
+
+    await dbConnect();
 
     const category = await Category.findByIdAndUpdate(id, data, {
       new: true,
@@ -37,10 +41,9 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
 export async function DELETE(request, { params }) {
   try {
-    await dbConnect();
-
     const { id } = params;
 
     if (!id) {
@@ -49,6 +52,8 @@ export async function DELETE(request, { params }) {
         { status: 400 }
       );
     }
+
+    await dbConnect();
 
     const category = await Category.findByIdAndDelete(id);
 
@@ -59,10 +64,7 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    return NextResponse.json(
-      { message: "Category deleted successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json("Category deleted successfully", { status: 200 });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: err.message }, { status: 500 });

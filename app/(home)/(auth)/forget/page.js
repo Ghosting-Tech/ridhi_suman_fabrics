@@ -1,21 +1,42 @@
 "use client";
 // pages/ForgotPassword.js
 import Link from "next/link";
-import React from "react";
-import { HiOutlinePhone } from "react-icons/hi"; // Assuming you have react-icons installed
+import React, { useState } from "react";
+import { HiOutlinePhone } from "react-icons/hi";
+import InputField from "@/components/inputForm/InputField";
+import Image from "next/image";
 
 const ForgotPassword = () => {
+  const [formData, setFormData] = useState({ phone_number: "" });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
     <>
       <div
         className="p-4 min-h-screen overflow-hidden"
         style={{ backgroundImage: "url('/category/Background.png')" }}
       >
-        <Link href={"/"}><img
-          src="/ridhi-logo.png"
-          alt="Header Image"
-          className="sm:w-40 sm:absolute sm:mb-10 mb-1 w-28"
-        /></Link>
+        <Link href="/">
+          <div className="relative sm:w-40 w-28">
+            <Image
+              src="/ridhi-logo.png"
+              alt="Header Image"
+              layout="responsive"
+              width={160} // width and height in pixels
+              height={40} // adjusted according to the actual dimensions
+              className="sm:absolute sm:mb-10 mb-1"
+            />
+          </div>
+        </Link>
         <div className="flex justify-center items-start">
           <div className="bg-white bg-opacity-90 shadow-md rounded-lg p-6 w-full max-w-xl">
             <div className="text-center mb-6">
@@ -26,20 +47,18 @@ const ForgotPassword = () => {
                 Enter your phone number to reset your password
               </p>
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-col items-center gap-4 mb-4 w-full">
-                <div className="flex border p-3 rounded-md w-full">
-                  <HiOutlinePhone size={21} color="gray" className="mr-2" />
-                  <div className="flex flex-col w-full">
-                    <label className="text-gray-700">Phone Number</label>
-                    <input
-                      type="text"
-                      placeholder="Enter your phone number"
-                      className="w-full pt-2 rounded bg-transparent focus:outline-none focus:border-gray-900"
-                      required
-                    />
-                  </div>
-                </div>
+                <InputField
+                  icon={HiOutlinePhone}
+                  type="text"
+                  placeholder="Enter your phone number"
+                  label="Phone Number"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <button
                 className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-md p-2 w-full"
