@@ -24,6 +24,11 @@ const cardTitle = {
         name: "Shipping Information",
         icon: "/icon/shipInfo.svg",
         borderColor: "#33FF57" // example color
+    },
+    dashboard:{
+        name: "DASHBOARD",
+        icon: "/icon/dashboard.svg",
+        borderColor: "#33FF57" // example color
     }
 };
 
