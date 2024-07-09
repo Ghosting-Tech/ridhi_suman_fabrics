@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputField = ({ type, field, label, min, max, style }) => {
+const SecondaryInput = ({ type, field, label, min, max, style }) => {
   // Conditional props for min and max based on field value
   const conditionalProps = field === 'phone' || field === 'name' ? { min, max } : {};
 
@@ -10,7 +10,7 @@ const InputField = ({ type, field, label, min, max, style }) => {
         id={field}
         name={field}
         type={type}
-        className={`peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-indigo-600 `}
+        className={`peer h-10 w-full border-b-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:border-pink-500 `}
         placeholder="Name"
         {...conditionalProps} // Spread conditionalProps to apply min and max conditionally
       />
@@ -24,4 +24,4 @@ const InputField = ({ type, field, label, min, max, style }) => {
   );
 };
 
-export default InputField;
+export default SecondaryInput;

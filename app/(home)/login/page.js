@@ -7,10 +7,10 @@ import RightOverlayContent from "@/components/loginPage/RightOverlayContent";
 
 const page = () => {
   const [isAnimated, setIsAnimated] = useState(false);
-  const overlayBg = "bg-gradient-to-r from-blue-800 via-purple-800 to-indigo-800";
+  const overlayBg = "bg-gradient-to-r from-red-400 to-pink-400";
 
   return (
-    <div className="h-screen bg-white relative overflow-hidden rounded-lg">
+    <div className="h-screen bg-white relative overflow-hidden">
       <div
         id="signin"
         className={`bg-white absolute top-0 left-0 h-full w-full lg:w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out z-20 ${

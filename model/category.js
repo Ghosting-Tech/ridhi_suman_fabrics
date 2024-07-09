@@ -15,8 +15,8 @@ const CategorySchema = new Schema(
 
     subCategories: [
       {
-        type: String,
-        unique: true,
+        name: String,
+        colour: String,
       },
     ],
   },

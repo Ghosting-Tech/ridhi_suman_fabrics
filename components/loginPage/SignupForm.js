@@ -37,7 +37,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
   return (
     <div className="selection:bg-indigo-500 selection:text-white lg:w-8/12 w-11/12">
       <div className="flex flex-col justify-center items-center w-full">
-        <h1 className="text-4xl font-bold text-indigo-600">Create account</h1>
+        <h1 className="text-4xl font-bold text-pink-500">Create account</h1>
 
         <form className="mt-8 w-full" action="" method="POST">
         <div className="flex flex-col items-center">
@@ -113,7 +113,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
           </div>
           
           <div className="mt-10 flex items-center gap-2">
-            <div class="w-full">
+            <div className="w-full">
               <SecondaryInput
                 type="text"
                 label="Phone Number"
@@ -124,7 +124,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
                 onChange={handleInputChange}
               />
             </div>
-            <div class="w-full">
+            <div className="w-full">
               <SecondaryInput
                 type="text"
                 label="OTP"
@@ -142,7 +142,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
           <input
             type="submit"
             value="Sign up"
-            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-500 to-orange-500 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
+            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
           />
         </form>
       </div>

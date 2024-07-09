@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-
 import SetOfProduct from "@/model/setOfProduct";
-
 import dbConnect from "@/config/db";
 
 export async function GET() {
