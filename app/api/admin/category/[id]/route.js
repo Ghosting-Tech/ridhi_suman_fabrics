@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/config/db";
 
 import Category from "@/model/category";
+import removeFile from "@/config/removeFile";
 
 export async function PUT(request, { params }) {
   try {
@@ -55,14 +56,15 @@ export async function DELETE(request, { params }) {
 
     await dbConnect();
 
-    const category = await Category.findByIdAndDelete(id);
-
+    const category = await Category.findById(id);
     if (!category) {
       return NextResponse.json(
         { error: "Category not found" },
         { status: 404 }
       );
     }
+    removeFile(category.image.substr(1, category.image.length));
+    await Category.findByIdAndDelete(id);
 
     return NextResponse.json("Category deleted successfully", { status: 200 });
   } catch (err) {

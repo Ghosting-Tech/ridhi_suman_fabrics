@@ -62,7 +62,7 @@ export const POST = async (req, res) => {
   }
 
   try {
-    const fullPath = await uploadFile(file, "users", name);
+    const fullPath = await uploadFile(file, "users");
 
     await dbConnect();
 

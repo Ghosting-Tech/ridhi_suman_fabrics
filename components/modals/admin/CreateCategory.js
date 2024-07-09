@@ -14,9 +14,9 @@ import { RxCross1 } from "react-icons/rx";
 import { useState } from "react";
 import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
-import lightColors from "@/libs/lightColours";
+import colours from "@/libs/colours";
 
-const CreateCategory = ({ open, setOpen }) => {
+const CreateCategory = ({ open, setOpen, setCategories }) => {
   const handleOpen = () => setOpen(!open);
 
   const [formData, setFormData] = useState({
@@ -28,29 +28,55 @@ const CreateCategory = ({ open, setOpen }) => {
     name: "",
     colour: "",
   });
+  const [pending, setPending] = useState(false);
 
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      const image = URL.createObjectURL(event.target.files[0]);
       setFormData({
         ...formData,
-        image,
+        image: event.target.files[0],
       });
     }
   };
 
-  const handleCreateCategory = async () => {
+  const handleCreateCategory = async (e) => {
     try {
-      const res = await fetch(`/api/admin/category`, {
+      e.preventDefault();
+      if (!formData.name && !formData.image && !formData.subCategories) return;
+      setPending(true);
+      const data = new FormData();
+      data.append("name", formData.name);
+      if (formData.image) {
+        data.append("image", formData.image);
+      }
+      data.append("subCategories", JSON.stringify(formData.subCategories));
+
+      const res = await fetch("/api/admin/category", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: data,
       });
-      console.log(res);
+
+      if (res.ok) {
+        const responseData = await res.json(); // Assuming the response is JSON
+        handleOpen();
+        setFormData({
+          name: "",
+          image: null,
+          subCategories: [],
+        });
+        setCategories((prev) => {
+          return [...prev, responseData];
+        });
+      } else {
+        // handle error
+      }
     } catch (err) {
       console.error(err);
+    } finally {
+      setPending(false);
     }
   };
+
   return (
     <>
       <Dialog
@@ -75,7 +101,10 @@ const CreateCategory = ({ open, setOpen }) => {
             </IconButton>,
           ]}
         />
-        <div className="flex flex-col gap-4 mt-4">
+        <form
+          className="flex flex-col gap-4 mt-4"
+          onSubmit={handleCreateCategory}
+        >
           <div className="flex flex-col items-center">
             <label
               htmlFor="profile"
@@ -84,7 +113,7 @@ const CreateCategory = ({ open, setOpen }) => {
               {formData.image ? (
                 <div className="relative w-12 h-12">
                   <Image
-                    src={formData.image}
+                    src={URL.createObjectURL(formData.image)}
                     alt="avatar"
                     layout="fill"
                     objectFit="cover"
@@ -113,13 +142,23 @@ const CreateCategory = ({ open, setOpen }) => {
             <input
               type="file"
               id="profile"
+              required
               name="profile"
               className="hidden"
               accept="image/*"
               onChange={handleImageChange}
             />
           </div>
-          <Input label="Category name" />
+          <Input
+            label="Category name"
+            value={formData.name}
+            required
+            onChange={(e) => {
+              setFormData((prev) => {
+                return { ...prev, name: e.target.value };
+              });
+            }}
+          />
           <div className="flex gap-2 items-center justify-center">
             <Input
               label="Sub category"
@@ -139,7 +178,7 @@ const CreateCategory = ({ open, setOpen }) => {
                 });
               }}
             >
-              {lightColors.map((color) => {
+              {colours.map((color) => {
                 return (
                   <Option key={color.name} value={color.hex}>
                     <div className="flex items-center gap-2">
@@ -171,18 +210,18 @@ const CreateCategory = ({ open, setOpen }) => {
               <IoIosAddCircleOutline size={35} />
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
             {formData.subCategories.map((category) => {
               return (
                 <div
                   key={category.name}
                   style={{ border: `2px solid ${category.colour}` }}
-                  className={`w-fit flex gap-2 items-center justify-between px-4 py-2 h-full rounded-lg`}
+                  className={`w-fit flex gap-2 items-center justify-between p-1.5 h-full rounded-md`}
                 >
-                  <div className="flex gap-1 items-center">
+                  <div className="flex gap-1 items-center text-xs">
                     <div
                       style={{ background: category.colour }}
-                      className="w-4 h-4 rounded-lg"
+                      className="w-3 h-3 rounded-lg"
                     ></div>
                     {category.name}
                   </div>
@@ -198,7 +237,7 @@ const CreateCategory = ({ open, setOpen }) => {
                       });
                     }}
                   >
-                    <RxCross1 />
+                    <RxCross1 size={12} />
                   </button>
                 </div>
               );
@@ -211,12 +250,13 @@ const CreateCategory = ({ open, setOpen }) => {
             <Button
               variant="gradient"
               color="blue"
-              onClick={handleCreateCategory}
+              disabled={pending}
+              type="submit"
             >
-              Create
+              {pending ? "Creating..." : "Create"}
             </Button>
           </div>
-        </div>
+        </form>
       </Dialog>
     </>
   );

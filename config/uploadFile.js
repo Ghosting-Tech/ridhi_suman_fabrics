@@ -2,7 +2,7 @@ import { v4 } from "uuid";
 import pathModule, { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 
-const uploadFile = async (file, pathLocation, fileName) => {
+const uploadFile = async (file, pathLocation) => {
   const path = `/uploads/${pathLocation}/`;
 
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -28,7 +28,7 @@ const uploadFile = async (file, pathLocation, fileName) => {
   }
 
   try {
-    const uniqueFileName = `${v4()}_${fileName}${pathModule.extname(
+    const uniqueFileName = `${v4()}${pathModule.extname(
       file.name
     )}`;
 
