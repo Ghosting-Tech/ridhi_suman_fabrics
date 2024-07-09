@@ -25,6 +25,15 @@ export const POST = async (req, res) => {
     return NextResponse.json({ error: "Email is required" }, { status: 400 });
   }
 
+  const userExist = await User.findOne({ email });
+
+  if (userExist) {
+    return NextResponse.json(
+      { error: "User email already exists" },
+      { status: 400 }
+    );
+  }
+
   if (!password) {
     return NextResponse.json(
       { error: "Password is required" },
@@ -35,6 +44,15 @@ export const POST = async (req, res) => {
   if (!phoneNumber) {
     return NextResponse.json(
       { error: "Phone Number is required" },
+      { status: 400 }
+    );
+  }
+
+  const phoneExist = await User.findOne({ phoneNumber });
+
+  if (phoneExist) {
+    return NextResponse.json(
+      { error: "Phone number already exists" },
       { status: 400 }
     );
   }

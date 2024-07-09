@@ -87,6 +87,13 @@ const userSchema = new Schema(
         ref: "Order",
       },
     ],
+
+    role: {
+      type: String,
+      default: "user",
+      enum: ["user", "admin"],
+      required: true,
+    },
   },
   {
     timestamps: true,

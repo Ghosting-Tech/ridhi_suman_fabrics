@@ -28,7 +28,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = "/api/auth/register"; // API endpoint for registering user
+    const url = "/api/admin/register"; // API endpoint for registering user
 
     // Prepare form data for sending
     const formDataToSend = new FormData();
