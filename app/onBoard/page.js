@@ -1,16 +1,19 @@
 "use client";
-import { useState } from "react";
-import SignupForm from "@/components/loginPage/SignupForm";
-import SigninForm from "@/components/loginPage/SigninForm";
-import LeftOverlayContent from "@/components/loginPage/LeftOverlayContent";
-import RightOverlayContent from "@/components/loginPage/RightOverlayContent";
 
-const page = () => {
+import { useState } from "react";
+
+import SignupForm from "@/components/layout/onBoard/SignupForm";
+import SigninForm from "@/components/layout/onBoard/SigninForm";
+
+import LeftOverlayContent from "@/components/layout/onBoard/LeftOverlayContent";
+import RightOverlayContent from "@/components/layout/onBoard/RightOverlayContent";
+
+const OnboardPage = () => {
   const [isAnimated, setIsAnimated] = useState(false);
   const overlayBg = "bg-gradient-to-r from-red-400 to-pink-400";
 
   return (
-    <div className="h-screen bg-white relative overflow-hidden">
+    <div className="h-screen bg-white relative overflow-hidden selection:bg-red-200 selection:text-black">
       <div
         id="signin"
         className={`bg-white absolute top-0 left-0 h-full w-full lg:w-1/2 flex justify-center items-center transition-all duration-700 ease-in-out z-20 ${
@@ -56,6 +59,7 @@ const page = () => {
               setIsAnimated={setIsAnimated}
             />
           </div>
+
           <div
             id="overlay-right"
             className={`w-1/2 h-full absolute flex justify-center items-center top-0 right-0 transform transition-transform duration-700 ease-in-out ${
@@ -73,4 +77,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default OnboardPage;
