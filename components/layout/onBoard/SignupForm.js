@@ -1,37 +1,288 @@
 "use client";
-import { useState } from "react";
-import SecondaryInput from "../../fields/SecondaryInput";
-import { HiOutlineUpload } from "react-icons/hi";
+
+import { Input } from "@material-tailwind/react";
+
 import Image from "next/image";
-import { Button } from "@material-tailwind/react";
-import { FaCheckCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { signIn } from "next-auth/react";
+
+import { toast } from "sonner";
+
+import { HiOutlineUpload } from "react-icons/hi";
+import { AiOutlineLoading } from "react-icons/ai";
+import { MdOutlineInstallMobile } from "react-icons/md";
 
 const SignupForm = ({ isAnimated, setIsAnimated }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    password: "",
-    profileImage: null,
-  });
+  const router = useRouter();
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const [profileImage, setProfileImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const [otpInput, setOtpInput] = useState("");
+  const [user, setUser] = useState({});
+
+  const [timer, setTimer] = useState(0);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
 
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      const image = URL.createObjectURL(event.target.files[0]);
-      setFormData({
-        ...formData,
-        profileImage: event.target.files[0],
-        selectedImage: image,
-      });
+      const file = event.target.files[0];
+      const image = URL.createObjectURL(file);
+
+      setProfileImage(file);
+      setSelectedImage(image);
     }
+  };
+
+  // const getOtp = async (id, phoneNumber) => {
+  //   const otp = await fetch(`/api/generate-otp/${id.toString()}`, {
+  //     method: "GET",
+  //   });
+  //   console.log("OTP:", otp);
+
+  //   const otpData = await otp.json();
+
+  //   console.log("OTP Data:", otpData);
+
+  //   await fetch(
+  //     `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otp}`
+  //   );
+
+  //   toast.success("OTP sent successfully");
+  //   setIsOtpSent(true);
+  // };
+
+  const getOtp = (id, phoneNumber) => {
+    const otpPromise = new Promise(async (resolve, reject) => {
+      try {
+        const otpResponse = await fetch(`/api/generate-otp/${id.toString()}`, {
+          method: "GET",
+        });
+
+        if (!otpResponse.ok) {
+          reject(`Error generating OTP.`);
+        }
+
+        const otpData = await otpResponse.json();
+        console.log("OTP Data:", otpData);
+
+        const sendOtpResponse = await fetch(
+          `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otpData}`
+        );
+
+        if (!sendOtpResponse.ok) {
+          reject(`Error sending OTP.`);
+        }
+
+        setIsOtpSent(true);
+        setTimer(60);
+
+        resolve(otpData);
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    toast.promise(otpPromise, {
+      loading: "Sending OTP...",
+      success: "OTP sent successfully",
+      error: "Error sending OTP",
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const url = "/api/register";
+
+    if (!profileImage) {
+      toast.error("Please upload a profile image");
+      return;
+    }
+
+    if (!name) {
+      toast.error("Please enter your name");
+      return;
+    }
+
+    if (!email) {
+      toast.error("Please enter your email");
+      return;
+    }
+
+    if (!password) {
+      toast.error("Please enter your password");
+      return;
+    }
+
+    if (!phoneNumber) {
+      toast.error("Please enter your phone number");
+      return;
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", name);
+    formDataToSend.append("email", email);
+    formDataToSend.append("password", password);
+    formDataToSend.append("phoneNumber", phoneNumber);
+    formDataToSend.append("image", profileImage);
+
+    try {
+      let data;
+
+      const getUserPromise = new Promise(async (resolve, reject) => {
+        const response = await fetch(url, {
+          body: formDataToSend,
+          method: "POST",
+        });
+
+        if (response.ok) {
+          data = await response.json();
+          console.log(data);
+          console.log(data._id);
+          setUser(data);
+          resolve(data);
+        } else {
+          const errorText = await response.json();
+          reject(errorText);
+        }
+      });
+
+      toast.promise(getUserPromise, {
+        loading: "Creating new user...",
+        success: async (data) => {
+          getOtp(data._id.toString(), data.phoneNumber);
+          console.log(data._id);
+          console.log(data.phoneNumber);
+          return "User created successfully";
+        },
+        error: (error) => `${error.error}`,
+      });
+
+      // const response = await fetch(url, {
+      //   body: formDataToSend,
+      //   method: "POST",
+      // });
+
+      // if (response.ok) {
+      //   const data = await response.json();
+
+      //   setUser(data);
+      //   toast.success("User created successfully");
+
+      //   getOtp(data._id.toString(), data.phoneNumber);
+      // } else {
+      //   throw new Error("Error registering user");
+      // }
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  };
+
+  // const verifyOtp = async () => {
+  //   const url = `/api/generate-otp/${user._id.toString()}`;
+
+  //   console.log("OTP Input: ", otpInput);
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ otp: otpInput }),
+  //     });
+
+  //     await response.json();
+
+  //     setIsVerified(true);
+  //   } catch (error) {
+  //     console.error("Error verifying OTP:", error);
+  //   }
+  // };
+
+  const verifyOtp = async () => {
+    const url = `/api/generate-otp/${user._id.toString()}`;
+
+    console.log("OTP Input: ", otpInput);
+
+    const promiseFunction = () =>
+      new Promise(async (resolve, reject) => {
+        try {
+          const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ otp: otpInput }),
+          });
+
+          if (!response.ok) {
+            reject(`Error: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          setIsVerified(true);
+
+          await signIn("credentials", {
+            redirect: false,
+            phoneNumber,
+            password,
+          });
+
+          router.push("/");
+
+          resolve(data);
+        } catch (error) {
+          reject(error);
+        }
+      });
+
+    toast.promise(promiseFunction(), {
+      loading: "Verifying OTP...",
+      success: () => {
+        setIsVerified(true);
+        return "OTP verified successfully";
+      },
+      error: (error) => `Error verifying OTP: ${error.message || error}`,
+    });
+  };
+
+  const handleSignup = async () => {
+    setIsLoading(true);
+
+    if (!isOtpSent) {
+      toast.error("Please set the OTP first");
+      return;
+    }
+
+    const data = await verifyOtp();
+
+    setIsLoading(false);
+    toast.info("Redirecting to home...");
   };
 
   return (
@@ -39,16 +290,16 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
       <div className="flex flex-col justify-center items-center w-full">
         <h1 className="text-4xl font-bold text-pink-500">Create account</h1>
 
-        <form className="mt-8 w-full" action="" method="POST">
+        <form className="mt-8 w-full" onSubmit={handleSubmit} method="POST">
           <div className="flex flex-col items-center">
             <label
-              htmlFor="profile"
+              htmlFor="register-profile"
               className="cursor-pointer flex items-center space-x-4 border rounded-md p-4 w-full"
             >
-              {formData.selectedImage ? (
+              {profileImage ? (
                 <div className="relative w-12 h-12">
                   <Image
-                    src={formData.selectedImage}
+                    src={selectedImage}
                     alt="avatar"
                     layout="fill"
                     objectFit="cover"
@@ -77,8 +328,8 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
             <input
               type="file"
-              id="profile"
-              name="profile"
+              id="register-profile"
+              name="regiter-profile"
               className="hidden"
               accept="image/*"
               onChange={handleImageChange}
@@ -86,73 +337,128 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
           </div>
 
           <div className="mt-6">
-            <SecondaryInput
+            <Input
               type="text"
-              label="Name"
-              field="name"
-              value={formData.name}
-              onChange={handleInputChange}
+              size="regular"
+              variant="standard"
+              label="Full Name"
+              placeholder="Full Name"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              name="register-name"
             />
           </div>
 
           <div className="mt-10">
-            <SecondaryInput
+            <Input
               type="email"
-              label="Email address"
-              field="email"
-              value={formData.email}
-              onChange={handleInputChange}
+              size="regular"
+              variant="standard"
+              label="Email"
+              placeholder="Email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              name="register-email"
             />
           </div>
 
           <div className="mt-10">
-            <SecondaryInput
+            <Input
               type="password"
+              size="regular"
+              variant="standard"
               label="Password"
-              field="password"
-              value={formData.password}
-              onChange={handleInputChange}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              name="register-password"
             />
           </div>
 
           <div className="mt-10 flex items-center gap-2">
             <div className="w-full">
-              <SecondaryInput
-                type="text"
+              <Input
+                type="tel"
+                size="regular"
+                variant="standard"
                 label="Phone Number"
-                field="phone"
-                min={10}
-                max={10}
-                value={formData.phone}
-                onChange={handleInputChange}
+                required
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                name="register-phone"
               />
             </div>
 
-            <div className="w-full">
-              <SecondaryInput
-                type="text"
-                label="OTP"
-                field="phone"
-                min={10}
-                max={10}
-                value={formData.phone}
-                onChange={handleInputChange}
-              />
-            </div>
-
-            <button
-              type="button"
-              className="px-4 py-2 rounded-lg whitespace-nowrap bg-gradient-to-r from-teal-500 to-green-500 hover:scale-105 transition-all text-white cursor-pointer active:scale-100 font-semibold flex items-center gap-1"
-            >
-              Verify <FaCheckCircle />
-            </button>
+            {isOtpSent ? (
+              <div className="w-full">
+                <Input
+                  type="text"
+                  size="regular"
+                  variant="standard"
+                  label="OTP"
+                  placeholder="OTP"
+                  required
+                  name="register-otp"
+                  value={otpInput}
+                  onChange={(e) => setOtpInput(e.target.value)}
+                />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-lg whitespace-nowrap bg-gradient-to-r from-teal-500 to-green-500 hover:scale-105 transition-all text-white cursor-pointer active:scale-100 font-semibold flex items-center gap-1 min-w-28"
+              >
+                {isOtpSent ? (
+                  <AiOutlineLoading
+                    className=" animate-spin mx-auto"
+                    size={24}
+                  />
+                ) : (
+                  <>
+                    Get OTP <MdOutlineInstallMobile />
+                  </>
+                )}
+              </button>
+            )}
           </div>
 
+          {
+            <div className="flex mt-2 justify-end text-sm gap-1">
+              <p>Didn&apos;t received OTP?</p>
+              {timer === 0 ? (
+                <button
+                  type="button"
+                  className="cursor-pointer underline text-red-500 disabled:cursor-default disabled:opacity-50"
+                  onClick={getOtp}
+                  disabled={timer === 0 && !isOtpSent}
+                >
+                  Resend OTP
+                </button>
+              ) : (
+                <p>
+                  Resend in
+                  <span className="text-red-500">
+                    {" "}
+                    {String(timer).padStart(2, "0")}s
+                  </span>
+                </p>
+              )}
+            </div>
+          }
+
           <button
-            type="submit"
-            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
+            disabled={!isOtpSent}
+            type="button"
+            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-default"
+            onClick={handleSignup}
           >
-            Sign Up
+            {isLoading ? (
+              <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
       </div>

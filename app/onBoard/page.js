@@ -11,7 +11,7 @@ import RightOverlayContent from "@/components/layout/onBoard/RightOverlayContent
 const OnboardPage = () => {
   const [isAnimated, setIsAnimated] = useState(false);
   const overlayBg = "bg-gradient-to-r from-red-400 to-pink-400";
-  // https://api.authkey.io/request?authkey=ea048f1e37474761&mobile={phone_number}&country_code=91&sid=8732&company=GhostingTech&otp={otp}
+
   return (
     <div className="h-screen bg-white relative overflow-hidden selection:bg-red-200 selection:text-black">
       <div
