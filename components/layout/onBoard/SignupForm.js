@@ -13,12 +13,12 @@ import { toast } from "sonner";
 import { HiOutlineUpload } from "react-icons/hi";
 import { AiOutlineLoading } from "react-icons/ai";
 import { MdOutlineInstallMobile } from "react-icons/md";
+import { set } from "mongoose";
 
 const SignupForm = ({ isAnimated, setIsAnimated }) => {
   const router = useRouter();
 
   const [isOtpSent, setIsOtpSent] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -57,24 +57,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     }
   };
 
-  // const getOtp = async (id, phoneNumber) => {
-  //   const otp = await fetch(`/api/generate-otp/${id.toString()}`, {
-  //     method: "GET",
-  //   });
-  //   console.log("OTP:", otp);
-
-  //   const otpData = await otp.json();
-
-  //   console.log("OTP Data:", otpData);
-
-  //   await fetch(
-  //     `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otp}`
-  //   );
-
-  //   toast.success("OTP sent successfully");
-  //   setIsOtpSent(true);
-  // };
-
   const getOtp = (id, phoneNumber) => {
     const otpPromise = new Promise(async (resolve, reject) => {
       try {
@@ -87,7 +69,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
         }
 
         const otpData = await otpResponse.json();
-        console.log("OTP Data:", otpData);
 
         const sendOtpResponse = await fetch(
           `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otpData}`
@@ -161,8 +142,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
         if (response.ok) {
           data = await response.json();
-          console.log(data);
-          console.log(data._id);
           setUser(data);
           resolve(data);
         } else {
@@ -175,59 +154,17 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
         loading: "Creating new user...",
         success: async (data) => {
           getOtp(data._id.toString(), data.phoneNumber);
-          console.log(data._id);
-          console.log(data.phoneNumber);
           return "User created successfully";
         },
         error: (error) => `${error.error}`,
       });
-
-      // const response = await fetch(url, {
-      //   body: formDataToSend,
-      //   method: "POST",
-      // });
-
-      // if (response.ok) {
-      //   const data = await response.json();
-
-      //   setUser(data);
-      //   toast.success("User created successfully");
-
-      //   getOtp(data._id.toString(), data.phoneNumber);
-      // } else {
-      //   throw new Error("Error registering user");
-      // }
     } catch (error) {
       console.error("Error registering user:", error);
     }
   };
 
-  // const verifyOtp = async () => {
-  //   const url = `/api/generate-otp/${user._id.toString()}`;
-
-  //   console.log("OTP Input: ", otpInput);
-
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ otp: otpInput }),
-  //     });
-
-  //     await response.json();
-
-  //     setIsVerified(true);
-  //   } catch (error) {
-  //     console.error("Error verifying OTP:", error);
-  //   }
-  // };
-
   const verifyOtp = async () => {
     const url = `/api/generate-otp/${user._id.toString()}`;
-
-    console.log("OTP Input: ", otpInput);
 
     const promiseFunction = () =>
       new Promise(async (resolve, reject) => {
@@ -245,7 +182,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
           }
 
           const data = await response.json();
-          setIsVerified(true);
 
           await signIn("credentials", {
             redirect: false,
@@ -264,7 +200,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     toast.promise(promiseFunction(), {
       loading: "Verifying OTP...",
       success: () => {
-        setIsVerified(true);
         return "OTP verified successfully";
       },
       error: (error) => `Error verifying OTP: ${error.message || error}`,
@@ -279,7 +214,21 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
       return;
     }
 
-    const data = await verifyOtp();
+    await verifyOtp();
+
+    setEmail("");
+    setName("");
+    setPassword("");
+    setPhoneNumber("");
+
+    setProfileImage(null);
+    setSelectedImage(null);
+
+    setTimer(0);
+    setUser({});
+
+    setOtpInput("");
+    setIsOtpSent(false);
 
     setIsLoading(false);
     toast.info("Redirecting to home...");

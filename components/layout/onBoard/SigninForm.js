@@ -17,21 +17,6 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // async function onSubmit(e) {
-  //   e.preventDefault();
-
-  //   const response = await signIn("credentials", {
-  //     redirect: false,
-  //     phoneNumber,
-  //     password,
-  //   });
-
-  //   if (response.ok) {
-  //     router.push("/");
-  //   }
-
-  // }
-
   const onSubmit = async (e) => {
     setIsLoading(true);
 
