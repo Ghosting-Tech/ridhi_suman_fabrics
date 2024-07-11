@@ -6,6 +6,12 @@ import Order from "@/model/order";
 
 export async function GET(request, { params }) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized") {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     const { id } = params;
 
     if (!id) {
@@ -28,6 +34,12 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized") {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     await dbConnect();
 
     const { id } = params;

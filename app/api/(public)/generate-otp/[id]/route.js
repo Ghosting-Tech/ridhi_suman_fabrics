@@ -7,8 +7,6 @@ import User from "@/model/user";
 
 export async function GET(req, { params }) {
   try {
-    await dbConnect();
-
     const { id } = params;
 
     if (!id) {
@@ -29,6 +27,8 @@ export async function GET(req, { params }) {
       otp: parseInt(otp, 10),
       otpExpires: expiresAt,
     };
+
+    await dbConnect();
 
     await User.findByIdAndUpdate(id, data, {
       new: true,

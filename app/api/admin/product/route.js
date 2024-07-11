@@ -3,29 +3,16 @@ import { NextResponse } from "next/server";
 import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
-
-export async function GET() {
-  try {
-    await dbConnect();
-
-    const product = await Product.find();
-
-    if (!product) {
-      return NextResponse.json("Product not found", { status: 404 });
-    }
-
-    return NextResponse.json(product, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching product:", error);
-
-    return NextResponse.json(`Error fetching product: ${error.message}`, {
-      status: 500,
-    });
-  }
-}
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function POST(request) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     const body = await request.json();
 
     await dbConnect();

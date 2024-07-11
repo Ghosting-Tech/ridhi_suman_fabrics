@@ -32,15 +32,21 @@ const userSchema = new Schema(
       minlength: 8,
     },
 
-    wishlist: {
-      type: [String],
-      default: [],
-    },
+    wishlist: [
+      {
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: "Product",
+      },
+    ],
 
-    cart: {
-      type: [],
-      default: [],
-    },
+    cart: [
+      {
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: "Product",
+      },
+    ],
 
     shippingInfo: {
       type: [
