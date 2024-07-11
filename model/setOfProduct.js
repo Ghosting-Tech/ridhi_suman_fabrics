@@ -3,14 +3,9 @@ import mongoose, { Schema } from "mongoose";
 const SetOfProductSchema = new Schema(
   {
     category: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
-    },
-
-    subCategory: {
-      type: Array,
-      required: true,
-      default: [],
     },
 
     title: {
@@ -40,7 +35,12 @@ const SetOfProductSchema = new Schema(
 
     fabric: [String],
 
-    brand: [String],
+    brand: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Brand",
+      },
+    ],
 
     products: [
       {

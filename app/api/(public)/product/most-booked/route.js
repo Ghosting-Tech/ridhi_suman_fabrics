@@ -8,13 +8,35 @@ export async function GET() {
   try {
     await dbConnect();
 
-    const products = await Product.aggregate([
-      { $sort: { orderCount: -1 } },
-      { $limit: 10 },
-      { $project: { orderCount: 0 } },
+    const mostBookedProducts = await Product.aggregate([
+      { $match: { visibility: true } },
+
+      {
+        $addFields: {
+          ordersCount: { $size: "$orders" },
+        },
+      },
+
+      { $sort: { ordersCount: -1 } },
+
+      {
+        $project: {
+          title: 1,
+          category: 1,
+          images: 1,
+          discount: 1,
+          description: 1,
+          visibility: 1,
+          price: 1,
+          fabric: 1,
+          brand: 1,
+          ordersCount: 1,
+          _id: 1,
+        },
+      },
     ]);
 
-    return NextResponse.json(products, { status: 200 });
+    return NextResponse.json(mostBookedProducts, { status: 200 });
   } catch (error) {
     console.error("Error fetching most booked products:", error);
 

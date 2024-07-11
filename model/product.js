@@ -3,7 +3,8 @@ import mongoose, { Schema } from "mongoose";
 const ProductSchema = new Schema(
   {
     category: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
     },
 
@@ -21,6 +22,7 @@ const ProductSchema = new Schema(
 
     discount: {
       type: Number,
+      default: 0,
       required: true,
     },
 
@@ -78,8 +80,8 @@ const ProductSchema = new Schema(
     },
 
     brand: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: "Brand",
     },
 
     orders: [

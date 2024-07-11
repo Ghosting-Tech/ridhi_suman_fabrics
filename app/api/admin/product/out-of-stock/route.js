@@ -1,34 +1,62 @@
 import { NextResponse } from "next/server";
-
 import Product from "@/model/product";
-
 import dbConnect from "@/config/db";
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+
+    const page = parseInt(searchParams.get("page")) || 1;
+    const limit = parseInt(searchParams.get("limit")) || 10;
+
+    const skip = (page - 1) * limit;
+
     await dbConnect();
 
     const products = await Product.find({
-      $and: [
-        {
-          sizes: {
-            $elemMatch: {
-              "colours.quantity": 0,
-            },
-          },
+      sizes: {
+        $elemMatch: {
+          "colours.quantity": 0,
         },
-      ],
-    });
+      },
+    })
+      .select("-sizes -orders -createdAt -updatedAt -description -visibility")
+      .skip(skip)
+      .limit(limit)
+      .exec();
 
-    return NextResponse.json(products, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching out of stock products:", error);
+    const totalProducts = await Product.countDocuments({
+      sizes: {
+        $elemMatch: {
+          "colours.quantity": 0,
+        },
+      },
+    });
+    const totalPages = Math.ceil(totalProducts / limit);
 
     return NextResponse.json(
-      `Error fetching out of stock products: ${error.message}`,
       {
-        status: 500,
-      }
+        data: products,
+        pagination: {
+          totalProducts,
+          totalPages,
+          currentPage: page,
+          pageSize: limit,
+        },
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching out of stock products:", error);
+    return NextResponse.json(
+      `Error fetching out of stock products: ${error.message}`,
+      { status: 500 }
     );
   }
 }

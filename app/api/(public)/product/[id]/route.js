@@ -3,20 +3,32 @@ import { NextResponse } from "next/server";
 import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function GET(request, { params }) {
   try {
-    await dbConnect();
+    let isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized") {
+      isAdmin = false;
+    }
 
     const { id } = params;
 
     if (!id) return NextResponse.json("Product Id not found", { status: 404 });
 
-    const product = await Product.findById(id);
+    await dbConnect();
 
-    if (!product) {
-      return NextResponse.json("Product not found", { status: 404 });
+    let product;
+
+    if (isAdmin) {
+      product = await Product.findById(id);
+    } else {
+      product = await Product.findOne({ _id: id, visibility: true });
     }
+
+    product.orderCount = product.orders.length;
+    product.orders = undefined;
 
     return NextResponse.json(product, { status: 200 });
   } catch (error) {

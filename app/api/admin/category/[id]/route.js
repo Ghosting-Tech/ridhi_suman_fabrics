@@ -3,19 +3,27 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/config/db";
 
 import Category from "@/model/category";
+
 import removeFile from "@/config/removeFile";
 import uploadFile from "@/config/uploadFile";
-
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function PUT(request, { params }) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     const { id } = params;
 
     if (!id) {
-      return NextResponse.json({ error: "Invalid category id" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid category id" },
+        { status: 400 }
+      );
     }
-
-    await dbConnect();
 
     const data = await request.formData();
     const name = data.get("name");
@@ -26,12 +34,16 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: "Invalid data." }, { status: 400 });
     }
 
-    // If the image is not a file, use the existing image
+    await dbConnect();
+
     if (!(file instanceof File)) {
       const category = await Category.findById(id);
 
       if (!category) {
-        return NextResponse.json({ error: "Category not found" }, { status: 404 });
+        return NextResponse.json(
+          { error: "Category not found" },
+          { status: 404 }
+        );
       }
 
       const updatedCategory = await Category.findByIdAndUpdate(
@@ -43,7 +55,6 @@ export async function PUT(request, { params }) {
       return NextResponse.json(updatedCategory, { status: 200 });
     }
 
-    // Upload new image and update category with new image URL
     const image = await uploadFile(file, "category");
 
     const category = await Category.findByIdAndUpdate(
@@ -53,7 +64,10 @@ export async function PUT(request, { params }) {
     );
 
     if (!category) {
-      return NextResponse.json({ error: "Category not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Category not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(category, { status: 200 });
@@ -65,6 +79,12 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     const { id } = params;
 
     if (!id) {

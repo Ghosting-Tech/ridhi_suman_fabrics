@@ -3,9 +3,16 @@ import { NextResponse } from "next/server";
 import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function PUT(request, { params }) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     const { productId } = params;
 
     if (!productId) return NextResponse.json("Id not found", { status: 404 });
@@ -35,6 +42,12 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
     const { productId } = params;
 
     if (!productId) return NextResponse.json("Id not found", { status: 404 });

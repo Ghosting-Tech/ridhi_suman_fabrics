@@ -3,14 +3,51 @@ import { NextResponse } from "next/server";
 import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
+import { checkAuthorization } from "@/config/checkAuthorization";
 
-export async function GET() {
+export async function GET(request) {
   try {
+    let isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized") {
+      isAdmin = false;
+    }
+
+    const searchParams = request.nextUrl.searchParams;
+
+    const page = searchParams.get("page") || 1;
+    const pageSize = searchParams.get("size") || 10;
+
+    const skip = (page - 1) * pageSize;
+
     await dbConnect();
 
-    const products = await Product.find({ visibility: true });
+    let products, totalProducts;
 
-    return NextResponse.json(products, { status: 200 });
+    if (isAdmin) {
+      products = await Product.find().skip(skip).limit(pageSize);
+
+      totalProducts = await Product.countDocuments();
+    } else {
+      products = await Product.find({ visibility: true })
+        .skip(skip)
+        .limit(pageSize);
+
+      totalProducts = await Product.countDocuments({ visibility: true });
+    }
+
+    return NextResponse.json(
+      {
+        data: products,
+        meta: {
+          page: page,
+          pageSize: pageSize,
+          totalPages: Math.ceil(totalProducts / pageSize),
+          totalResults: totalProducts,
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching products:", error);
 
