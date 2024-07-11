@@ -31,22 +31,12 @@ const colours = [
   { name: "LightSteelBlue", hex: "#C1D7FF" },
   { name: "SlateBlue", hex: "#8B83FF" },
   { name: "MediumSlateBlue", hex: "#9E95FF" },
-  { name: "DarkSlateBlue", hex: "#7157D8" },
   { name: "Lavender", hex: "#E3E3FA" },
   { name: "Thistle", hex: "#E5BFE5" },
   { name: "Plum", hex: "#E8A3E8" },
   { name: "Violet", hex: "#FA93FA" },
   { name: "Orchid", hex: "#EB81EB" },
   { name: "Magenta", hex: "#FF4DFF" },
-  { name: "MediumOrchid", hex: "#C775D3" },
-  { name: "DarkOrchid", hex: "#B865CC" },
-  { name: "DarkViolet", hex: "#AF5FD3" },
-  { name: "BlueViolet", hex: "#9A5BE2" },
-  { name: "Purple", hex: "#A366D6" },
-  { name: "Indigo", hex: "#7F66CB" },
-  { name: "DarkMagenta", hex: "#AF66AF" },
-  { name: "RebeccaPurple", hex: "#7F4FBF" },
-  { name: "MidnightBlue", hex: "#3840A3" },
   { name: "MintCream", hex: "#E0FFF0" },
   { name: "HoneyDew", hex: "#E5FFF0" },
   { name: "SeaShell", hex: "#FFFAF0" },
@@ -77,7 +67,7 @@ const colours = [
   { name: "OliveDrab", hex: "#9FD665" },
   { name: "Peru", hex: "#D39B67" },
   { name: "DarkKhaki", hex: "#D6B763" },
-  { name: "DarkSalmon", hex: "#FF9D85" }
+  { name: "DarkSalmon", hex: "#FF9D85" },
 ];
 
 export default colours;

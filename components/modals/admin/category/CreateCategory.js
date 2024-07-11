@@ -15,6 +15,7 @@ import { useState } from "react";
 import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 import colours from "@/libs/colours";
+import { toast, Toaster } from "sonner";
 
 const CreateCategory = ({ open, setOpen, setCategories }) => {
   const handleOpen = () => setOpen(!open);
@@ -42,7 +43,19 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
   const handleCreateCategory = async (e) => {
     try {
       e.preventDefault();
-      if (!formData.name && !formData.image && !formData.subCategories) return;
+      if (!formData.image) {
+        toast.warning("Category Image is required");
+        return;
+      }
+      if (!formData.name) {
+        toast.warning("Category name is required");
+        return;
+      }
+
+      if (formData.subCategories.length < 1) {
+        toast.warning("Add minimum one sub category.");
+        return;
+      }
       setPending(true);
       const data = new FormData();
       data.append("name", formData.name);
@@ -58,6 +71,7 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
 
       if (res.ok) {
         const responseData = await res.json(); // Assuming the response is JSON
+        toast.success(`Created ${formData.name} category`);
         handleOpen();
         setFormData({
           name: "",
@@ -68,10 +82,10 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
           return [...prev, responseData];
         });
       } else {
-        // handle error
+        toast.error(`Error creating category ${formData.name}`);
       }
     } catch (err) {
-      console.error(err);
+      toast.error(err);
     } finally {
       setPending(false);
     }
@@ -142,7 +156,6 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
             <input
               type="file"
               id="profile"
-              required
               name="profile"
               className="hidden"
               accept="image/*"
@@ -152,14 +165,13 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
           <Input
             label="Category name"
             value={formData.name}
-            required
             onChange={(e) => {
               setFormData((prev) => {
                 return { ...prev, name: e.target.value };
               });
             }}
           />
-          <div className="flex gap-2 items-center justify-center">
+          <div className="flex flex-col lg:flex-row gap-2 items-center justify-center">
             <Input
               label="Sub category"
               value={subCategory.name}
@@ -169,45 +181,47 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
                 });
               }}
             />
-            <Select
-              label="Choose a colour"
-              value={subCategory.colour}
-              onChange={(e) => {
-                setSubCategory((prev) => {
-                  return { ...prev, colour: e };
-                });
-              }}
-            >
-              {colours.map((color) => {
-                return (
-                  <Option key={color.name} value={color.hex}>
-                    <div className="flex items-center gap-2">
-                      <div
-                        style={{ background: color.hex }}
-                        className="w-4 h-4 rounded-lg"
-                      ></div>
-                      {color.name}
-                    </div>
-                  </Option>
-                );
-              })}
-            </Select>
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                if (!subCategory.colour && !subCategory.name) {
-                  return;
-                }
-                setFormData((prev) => {
-                  return {
-                    ...prev,
-                    subCategories: [...prev.subCategories, subCategory],
-                  };
-                });
-                setSubCategory({ name: "", colour: "" });
-              }}
-            >
-              <IoIosAddCircleOutline size={35} />
+            <div class="flex gap-2 items-center justify-center w-full">
+              <Select
+                label="Choose a colour"
+                value={subCategory.colour}
+                onChange={(e) => {
+                  setSubCategory((prev) => {
+                    return { ...prev, colour: e };
+                  });
+                }}
+              >
+                {colours.map((color) => {
+                  return (
+                    <Option key={color.name} value={color.hex}>
+                      <div className="flex items-center gap-2">
+                        <div
+                          style={{ background: color.hex }}
+                          className="w-4 h-4 rounded-lg"
+                        ></div>
+                        {color.name}
+                      </div>
+                    </Option>
+                  );
+                })}
+              </Select>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  if (!subCategory.colour && !subCategory.name) {
+                    return;
+                  }
+                  setFormData((prev) => {
+                    return {
+                      ...prev,
+                      subCategories: [...prev.subCategories, subCategory],
+                    };
+                  });
+                  setSubCategory({ name: "", colour: "" });
+                }}
+              >
+                <IoIosAddCircleOutline size={35} />
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-4 flex-wrap">

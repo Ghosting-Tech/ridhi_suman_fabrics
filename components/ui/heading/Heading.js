@@ -6,7 +6,7 @@ const Heading = ({ icon, title, buttons }) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
           {icon && icon}
-          <h2 className="text-lg">{title}</h2>
+          <h2 className="text-sm lg:text-lg">{title}</h2>
         </div>
         <div className="flex gap-4 items-center">
           {buttons &&
