@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+
 import Product from "@/model/product";
+
 import dbConnect from "@/config/db";
 import { checkAuthorization } from "@/config/checkAuthorization";
 

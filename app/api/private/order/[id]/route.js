@@ -48,14 +48,22 @@ export async function PUT(request, { params }) {
     const { id } = params;
     const data = await request.json();
 
+    const status = data.status;
+
     if (!id) {
       return NextResponse.json("Invalid order id", { status: 400 });
     }
 
-    const order = await Order.findByIdAndUpdate(id, data, {
-      new: true,
-      runValidators: true,
-    });
+    const order = await Order.findByIdAndUpdate(
+      id,
+      {
+        status,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!order) {
       return NextResponse.json("Order not found", { status: 404 });

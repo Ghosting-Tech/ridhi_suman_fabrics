@@ -1,6 +1,8 @@
-import dbConnect from "@/config/db";
-import User from "@/model/user";
 import { NextResponse } from "next/server";
+
+import User from "@/model/user";
+
+import dbConnect from "@/config/db";
 
 export async function DELETE() {
   try {
