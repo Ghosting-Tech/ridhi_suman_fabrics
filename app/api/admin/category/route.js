@@ -5,6 +5,8 @@ import dbConnect from "@/config/db";
 import Category from "@/model/category";
 import uploadFile from "@/config/uploadFile";
 
+import { checkAuthorization } from "@/config/checkAuthorization";
+
 export async function POST(request) {
   try {
     const isAdmin = await checkAuthorization(request);
@@ -16,6 +18,7 @@ export async function POST(request) {
     await dbConnect();
 
     const data = await request.formData();
+
     const name = data.get("name");
     const file = data.get("image");
 
@@ -24,6 +27,7 @@ export async function POST(request) {
     if (!name || !subCategories) {
       return NextResponse.json({ error: "Invalid data." }, { status: 400 });
     }
+
     if (!file) {
       return NextResponse.json({ error: "Invalid image." }, { status: 400 });
     }

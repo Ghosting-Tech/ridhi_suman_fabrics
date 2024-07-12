@@ -80,7 +80,7 @@ const ProductSchema = new Schema(
     },
 
     brand: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: "Brand",
     },
 
@@ -97,6 +97,8 @@ const ProductSchema = new Schema(
     versionKey: false,
   }
 );
+
+ProductSchema.index({ description: "text", title: "text", fabric: "text" });
 
 export default mongoose.models.Product ||
   mongoose.model("Product", ProductSchema);

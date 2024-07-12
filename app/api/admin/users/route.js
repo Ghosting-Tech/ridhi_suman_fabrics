@@ -1,18 +1,11 @@
 import { NextResponse } from "next/server";
 
-import Order from "@/model/order";
-
 import dbConnect from "@/config/db";
-import { checkAuthorization } from "@/config/checkAuthorization";
+
+import User from "@/model/user";
 
 export async function GET(request) {
   try {
-    const isAdmin = await checkAuthorization(request);
-
-    if (isAdmin === "Unauthorized" || !isAdmin) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
-    }
-
     const { searchParams } = new URL(request.url);
 
     const page = parseInt(searchParams.get("page")) || 1;
@@ -22,20 +15,22 @@ export async function GET(request) {
 
     await dbConnect();
 
-    const orders = await Order.find()
-      .skip(parseInt(skip))
-      .limit(parseInt(pageSize))
-      .populate("user")
+    const users = await User.find()
+      .skip(skip)
+      .limit(limit)
+      .select(
+        "-password -otp -updatedAt -createdAt -shippingInfo -cart -wishlist"
+      )
       .exec();
 
-    const totalOrders = await Order.countDocuments();
-    const totalPages = Math.ceil(totalOrders / limit);
+    const totalUsers = await User.countDocuments();
+    const totalPages = Math.ceil(totalUsers / limit);
 
     return NextResponse.json(
       {
-        data: orders,
+        data: users,
         pagination: {
-          totalOrders,
+          totalUsers,
           totalPages,
           currentPage: page,
           pageSize: limit,

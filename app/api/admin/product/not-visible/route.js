@@ -23,8 +23,9 @@ export async function GET(request) {
 
     const products = await Product.find({ visibility: false })
       .select("-sizes -orders -createdAt -updatedAt -description -visibility")
-      .skip(skip)
-      .limit(limit)
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .populate("category")
       .exec();
 
     const totalProducts = await Product.countDocuments({ visibility: false });

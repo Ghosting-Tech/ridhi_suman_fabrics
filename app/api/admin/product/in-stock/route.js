@@ -33,8 +33,10 @@ export async function GET(request) {
         },
       ],
     })
-      .skip(skip)
-      .limit(limit)
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+      .populate("category")
       .exec();
 
     const totalProducts = await Product.countDocuments({

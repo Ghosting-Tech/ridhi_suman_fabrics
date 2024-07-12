@@ -3,16 +3,9 @@ import { NextResponse } from "next/server";
 import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
-import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function GET(request, { params }) {
   try {
-    let isAdmin = await checkAuthorization(request);
-
-    if (isAdmin === "Unauthorized") {
-      isAdmin = false;
-    }
-
     const searchParams = request.nextUrl.searchParams;
 
     const page = searchParams.get("page") || 1;
@@ -34,19 +27,19 @@ export async function GET(request, { params }) {
       products = await Product.find({
         category: id,
       })
-        .select("-sizes -orders")
+        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
         .sort({ price: sortOrder })
-        .skip(skip)
-        .limit(pageSize)
+        .skip(parseInt(skip))
+        .limit(parseInt(pageSize))
         .exec();
     } else {
       products = await Product.find({
         category: id,
         visibility: true,
       })
-        .select("-sizes -orders")
+        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
         .sort({ price: sortOrder })
-        .skip(skip)
+        .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
     }

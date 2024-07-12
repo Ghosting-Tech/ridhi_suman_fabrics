@@ -25,13 +25,19 @@ export async function GET(request) {
     let products, totalProducts;
 
     if (isAdmin) {
-      products = await Product.find().skip(skip).limit(pageSize);
+      products = await Product.find()
+        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+        .populate("category")
+        .skip(parseInt(skip))
+        .limit(parseInt(pageSize));
 
       totalProducts = await Product.countDocuments();
     } else {
       products = await Product.find({ visibility: true })
-        .skip(skip)
-        .limit(pageSize);
+        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+        .populate("category")
+        .skip(parseInt(skip))
+        .limit(parseInt(pageSize));
 
       totalProducts = await Product.countDocuments({ visibility: true });
     }
