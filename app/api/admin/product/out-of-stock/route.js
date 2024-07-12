@@ -26,9 +26,10 @@ export async function GET(request) {
         },
       },
     })
-      .select("-sizes -orders -createdAt -updatedAt -description -visibility")
-      .skip(skip)
-      .limit(limit)
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+      .populate("category")
       .exec();
 
     const totalProducts = await Product.countDocuments({
@@ -54,6 +55,7 @@ export async function GET(request) {
     );
   } catch (error) {
     console.error("Error fetching out of stock products:", error);
+
     return NextResponse.json(
       `Error fetching out of stock products: ${error.message}`,
       { status: 500 }

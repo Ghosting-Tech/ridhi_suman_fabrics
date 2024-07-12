@@ -1,15 +1,22 @@
 import { NextResponse } from "next/server";
 
 import removeFile from "@/config/removeFile";
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export const DELETE = async (request) => {
+  const isAdmin = await checkAuthorization(request);
+
+  if (isAdmin === "Unauthorized") {
+    return NextResponse.json("Unauthorized Request", { status: 401 });
+  }
+
   if (request.method !== "DELETE") {
     return NextResponse.json({ error: "Method Not Allowed" });
   }
 
   const filePath = request.url.split("=")[1].replaceAll(/%2F/g, "/");
 
-  const updatedFilePath = filePath.substr(1, filePath.length)
+  const updatedFilePath = filePath.substr(1, filePath.length);
 
   if (!filePath || typeof filePath !== "string") {
     return NextResponse.json({ error: "Something went wrong!" });

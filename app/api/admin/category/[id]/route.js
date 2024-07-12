@@ -6,6 +6,7 @@ import Category from "@/model/category";
 
 import removeFile from "@/config/removeFile";
 import uploadFile from "@/config/uploadFile";
+
 import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function PUT(request, { params }) {
@@ -26,8 +27,10 @@ export async function PUT(request, { params }) {
     }
 
     const data = await request.formData();
+
     const name = data.get("name");
     const file = data.get("image");
+
     const subCategories = JSON.parse(data.get("subCategories"));
 
     if (!name || !subCategories) {
@@ -97,13 +100,16 @@ export async function DELETE(request, { params }) {
     await dbConnect();
 
     const category = await Category.findById(id);
+
     if (!category) {
       return NextResponse.json(
         { error: "Category not found" },
         { status: 404 }
       );
     }
+
     removeFile(category.image.substr(1, category.image.length));
+
     await Category.findByIdAndDelete(id);
 
     return NextResponse.json("Category deleted successfully", { status: 200 });

@@ -13,7 +13,6 @@ import { toast } from "sonner";
 import { HiOutlineUpload } from "react-icons/hi";
 import { AiOutlineLoading } from "react-icons/ai";
 import { MdOutlineInstallMobile } from "react-icons/md";
-import { set } from "mongoose";
 
 const SignupForm = ({ isAnimated, setIsAnimated }) => {
   const router = useRouter();

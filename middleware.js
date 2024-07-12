@@ -12,8 +12,6 @@ export async function middleware(request) {
     const token = await getToken({ req: request, secret });
     const url = request.nextUrl;
 
-    // console.log(token)
-
     const res = NextResponse.next();
 
     // Add CORS headers
