@@ -1,3 +1,5 @@
+import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
+import Heading from "@/components/ui/heading/Heading";
 import {
   Button,
   Card,
@@ -5,10 +7,13 @@ import {
   CardFooter,
   Checkbox,
   Dialog,
+  IconButton,
   Input,
   Typography,
 } from "@material-tailwind/react";
 import React, { useState } from "react";
+import { RiAdminFill } from "react-icons/ri";
+import { RxCross1 } from "react-icons/rx";
 import { toast } from "sonner";
 
 const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
@@ -31,53 +36,71 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
     }
   };
   const createAdminAccount = async (e) => {
-    try {
-      e.preventDefault();
+    e.preventDefault();
 
-      if (!formData.name) {
-        toast.warning("Name is required");
-        return;
-      }
-      if (!formData.phoneNumber) {
-        toast.warning("Phone number is required");
-        return;
-      }
-      if (formData.password) {
-        toast.warning("Password is required");
-        return;
-      }
-      if (!formData.image) {
-        toast.warning("Image is required");
-        return;
-      }
-      if (!noteChecked) {
-        toast.warning("Click on I agree before creating new admin account!");
-        return;
-      }
-      const data = new FormData();
-      data.append("name", formData.name);
-      data.append("phoneNumber", formData.phoneNumber);
-      data.append("password", formData.password);
-      if (formData.image) {
-        data.append("image", formData.image);
-      }
-      const response = await fetch("/api/admin/sub-admin", {
-        method: "POST",
-        body: data,
-      });
-
-      if (response.ok) {
-        const newAdmin = await response.json();
-        setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
-        toast.success(`${data.phoneNumber} admin created successfully!`);
-        setOpen(false); // Close the dialog after creating an account
-        setData({ image: null, phoneNumber: "", password: "", name: "" }); // Reset the form
-      } else {
-        toast.error("Failed to create admin account");
-      }
-    } catch (err) {
-      toast.error(err.message);
+    if (!formData.name) {
+      toast.error("Name is required");
+      return;
     }
+    if (!formData.phoneNumber) {
+      toast.error("Phone number is required");
+      return;
+    }
+    if (!formData.password) {
+      toast.error("Password is required");
+      return;
+    }
+    if (!formData.image) {
+      toast.error("Image is required");
+      return;
+    }
+    if (!noteChecked) {
+      toast.warning("Click on I agree before creating new admin account!");
+      return;
+    }
+
+    const promise = new Promise(async (resolve, reject) => {
+      try {
+        const data = new FormData();
+        data.append("name", formData.name);
+        data.append("phoneNumber", formData.phoneNumber);
+        data.append("password", formData.password);
+        if (formData.image) {
+          data.append("image", formData.image);
+        }
+
+        const response = await fetch("/api/admin/sub-admin", {
+          method: "POST",
+          body: data,
+        });
+
+        const newAdmin = await response.json();
+
+        console.log(newAdmin);
+
+        if (response.ok) {
+          setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
+          setOpen(false); // Close the dialog after creating an account
+          setFormData({ image: null, phoneNumber: "", password: "", name: "" }); // Reset the form
+          resolve(newAdmin); // Resolve the promise with the new admin data
+        } else {
+          reject(newAdmin); // Reject the promise with the error response
+        }
+      } catch (err) {
+        reject(err); // Reject the promise with the caught error
+      }
+    });
+
+    toast.promise(promise, {
+      loading: "Creating admin...",
+      success: (data) => `${data.name} admin created successfully!`,
+      error: (err) => `${err}`,
+    });
+
+    promise.catch((err) => {
+      console.log(err);
+      // toast.error(err.message);
+    });
   };
   return (
     <Dialog
@@ -91,14 +114,25 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
         onSubmit={createAdminAccount}
       >
         <CardBody className="flex flex-col gap-4">
-          <Typography variant="h4" color="blue-gray">
-            Create Admin Account
-          </Typography>
+          <Heading
+            icon={
+              <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block text-white">
+                <RiAdminFill size={20} />
+              </div>
+            }
+            title={"Create Admin Account"}
+            buttons={[
+              <IconButton variant="text" onClick={handleOpen}>
+                <RxCross1 size={20} />
+              </IconButton>,
+            ]}
+          />
           <Typography className="-mb-2" variant="h6">
             Name
           </Typography>
           <Input
             label="Ridhi suman"
+            color="pink"
             size="lg"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -108,6 +142,9 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           </Typography>
           <Input
             label="123456789"
+            color="pink"
+            minLength={10}
+            maxLength={10}
             size="lg"
             value={formData.phoneNumber}
             onChange={(e) =>
@@ -119,6 +156,7 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           </Typography>
           <Input
             label="******"
+            color="pink"
             size="lg"
             type="password"
             value={formData.password}
@@ -152,9 +190,14 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           />
         </CardBody>
         <CardFooter className="pt-0">
-          <Button variant="gradient" fullWidth type="submit">
+          <DefaultBtn
+            title={"Create Account"}
+            clickHandler={() => setOpen(true)}
+            type="submit"
+          />
+          {/* <Button variant="gradient" color="pink" fullWidth type="submit">
             Create Account
-          </Button>
+          </Button> */}
         </CardFooter>
       </form>
     </Dialog>

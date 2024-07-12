@@ -1,10 +1,11 @@
 import React from "react";
 
-const DefaultBtn = ({ icon, title, clickHandler }) => {
+const DefaultBtn = ({ icon, title, clickHandler, type="button" }) => {
   return (
     <button
       key={title}
-      className={`flex items-center gap-1 px-4 py-2 rounded-md bg-gradient-to-r from-red-400 to-pink-400 text-white hover:shadow-lg transition-all duration-500 text-xs lg:text-sm`}
+      type={type}
+      className={`w-full justify-center flex items-center gap-1 px-4 py-2 rounded-md bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-md shadow-pink-100 hover:scale-95 transition-all duration-500 text-xs lg:text-sm`}
       onClick={clickHandler}
     >
       {title} {icon && icon}
