@@ -123,6 +123,16 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
       return;
     }
 
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
+      toast.error("Please enter a valid phone number");
+      return;
+    }
+
     const formDataToSend = new FormData();
     formDataToSend.append("name", name);
     formDataToSend.append("email", email);

@@ -82,7 +82,7 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
             />
 
             <Input
-              type="text"
+              type="password"
               size="regular"
               variant="standard"
               label="Your Password"

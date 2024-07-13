@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 
-import SignupForm from "@/components/layout/onBoard/SignupForm";
-import SigninForm from "@/components/layout/onBoard/SigninForm";
+import SignupForm from "@/components/layout/onBoard/login/SignupForm";
+import SigninForm from "@/components/layout/onBoard/login/SigninForm";
 
-import LeftOverlayContent from "@/components/layout/onBoard/LeftOverlayContent";
-import RightOverlayContent from "@/components/layout/onBoard/RightOverlayContent";
+import LeftOverlayContent from "@/components/layout/onBoard/login/LeftOverlayContent";
+import RightOverlayContent from "@/components/layout/onBoard/login/RightOverlayContent";
 
 const OnboardPage = () => {
   const [isAnimated, setIsAnimated] = useState(false);
