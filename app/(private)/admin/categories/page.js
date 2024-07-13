@@ -39,7 +39,7 @@ const Page = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/admin/category/");
+      const response = await fetch("/api/category/");
       const data = await response.json();
       setCategories(data);
     } catch (error) {
@@ -74,7 +74,12 @@ const Page = () => {
           loading ? "hidden" : "block"
         } transition-all duration-700`}
       >
-        <DeleteCategory open={openDeleteDialog} setOpen={setOpenDeleteDialog} deleteCategory={deleteCategory} setCategories={setCategories} />
+        <DeleteCategory
+          open={openDeleteDialog}
+          setOpen={setOpenDeleteDialog}
+          deleteCategory={deleteCategory}
+          setCategories={setCategories}
+        />
         {/* Create category dialog */}
         <CreateCategory
           open={openCreateDialog}
