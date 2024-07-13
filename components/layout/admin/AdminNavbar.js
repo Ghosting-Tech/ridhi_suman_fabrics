@@ -1,0 +1,149 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import {
+  Navbar,
+  Collapse,
+  IconButton,
+  List,
+  Input,
+  Button,
+} from "@material-tailwind/react";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
+import {
+  Cog6ToothIcon,
+  PowerIcon,
+  ShoppingBagIcon,
+  ShoppingCartIcon,
+  UserCircleIcon,
+  UsersIcon,
+} from "@heroicons/react/24/solid";
+import Image from "next/image";
+import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+function NavList() {
+  const router = useRouter();
+  return (
+    <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-4">
+      <div className="w-full xl:w-80">
+        <Input
+          icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+          label="Search Product..."
+        />
+      </div>
+
+      <div className="lg:flex grid grid-cols-1 sm:grid-cols-3 gap-4 w-full xl:w-fit">
+        <Link href={"/admin/dashboard"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <UserCircleIcon className="h-5 w-5" />
+            Dashboard
+          </Button>
+        </Link>
+        <Link href={"/admin/categories"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <Cog6ToothIcon className="h-5 w-5" />
+            Category
+          </Button>
+        </Link>
+        <Link href={"/admin/products"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <ShoppingBagIcon className="h-5 w-5" />
+            Products
+          </Button>
+        </Link>
+        <Link href={"/admin/sets"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <ShoppingCartIcon className="h-5 w-5" />
+            Sets
+          </Button>
+        </Link>
+        <Link href={"/admin/sub-admin"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <UsersIcon className="h-5 w-5" />
+            Sub Admin
+          </Button>
+        </Link>
+        <Button
+          onClick={async () => {
+            await signOut();
+            router.push("/login");
+          }}
+          className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+          variant="text"
+          color="red"
+          size="sm"
+        >
+          <PowerIcon className="h-5 w-5" />
+          Log Out
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default function AdminNavbar() {
+  const [openNav, setOpenNav] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setOpenNav(false)
+    );
+  }, []);
+
+  return (
+    <div className="w-full shadow-sm px-4 py-2">
+      <div className="flex items-center justify-between text-blue-gray-900">
+        <Image src="/ridhi-logo.png" alt="brand" width={150} height={150} />
+        <div className="hidden xl:block w-full">
+          <NavList />
+        </div>
+        <IconButton
+          variant="text"
+          color="blue-gray"
+          className="xl:hidden"
+          onClick={() => setOpenNav(!openNav)}
+        >
+          {openNav ? (
+            <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+          ) : (
+            <Bars3Icon className="h-6 w-6" strokeWidth={2} />
+          )}
+        </IconButton>
+      </div>
+      <Collapse open={openNav}>
+        <NavList />
+      </Collapse>
+    </div>
+  );
+}

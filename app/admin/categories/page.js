@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { FaTshirt } from "react-icons/fa";
 import { RiApps2AddFill } from "react-icons/ri";
-import CategoryCard from "@/components/admin-category/CategoryCard";
 import Footer from "@/components/footer/Footer";
 import Nav from "@/components/header/Nav";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
@@ -10,9 +9,8 @@ import Heading from "@/components/ui/heading/Heading";
 
 import CreateCategory from "@/components/modals/admin/category/CreateCategory";
 import EditCategory from "@/components/modals/admin/category/EditCategory";
-import { toast, Toaster } from "sonner";
-import { Button } from "@material-tailwind/react";
 import DeleteCategory from "@/components/modals/admin/category/DeleteCategory";
+import CategoryCard from "@/components/layout/admin/CategoryCard";
 
 const Page = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
@@ -39,11 +37,12 @@ const Page = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/admin/category/");
+      const response = await fetch("/api/category");
       const data = await response.json();
       setCategories(data);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -74,7 +73,12 @@ const Page = () => {
           loading ? "hidden" : "block"
         } transition-all duration-700`}
       >
-        <DeleteCategory open={openDeleteDialog} setOpen={setOpenDeleteDialog} deleteCategory={deleteCategory} setCategories={setCategories} />
+        <DeleteCategory
+          open={openDeleteDialog}
+          setOpen={setOpenDeleteDialog}
+          deleteCategory={deleteCategory}
+          setCategories={setCategories}
+        />
         {/* Create category dialog */}
         <CreateCategory
           open={openCreateDialog}
@@ -90,9 +94,8 @@ const Page = () => {
           setOpen={setOpenEditDialog}
         />
 
-        <Nav />
         <div className="my-4">
-          <div className="w-11/12 mx-auto mb-4">
+          <div className="px-8 mb-4">
             <Heading
               icon={
                 <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
@@ -103,7 +106,7 @@ const Page = () => {
               buttons={btns}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 w-11/12 mx-auto gap-8 place-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 px-10 mx-auto gap-8 place-items-center">
             {categories.map((category) => (
               <CategoryCard
                 key={category._id}
@@ -116,7 +119,6 @@ const Page = () => {
             ))}
           </div>
         </div>
-        <Footer />
       </main>
     </>
   );

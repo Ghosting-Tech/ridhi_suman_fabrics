@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 import colours from "@/libs/colours";
+import { toast } from "sonner";
 
 const EditCategory = ({ open, setOpen, category, setCategories }) => {
   const handleOpen = () => setOpen(!open);
@@ -55,7 +56,14 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
       e.preventDefault();
       console.log("Clicked updated category");
   
-      if (!formData.name && !formData.image && !formData.subCategories.length) return;
+      if (!formData.image) {
+        toast.warning("Category Image is required");
+        return;
+      }
+      if (!formData.name) {
+        toast.warning("Category name is required");
+        return;
+      }
   
       // Check if the image is an instance of File
       if (formData.image instanceof File) {

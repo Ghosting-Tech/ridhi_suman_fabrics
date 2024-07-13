@@ -1,5 +1,5 @@
 import React from "react";
-import SmProductCard from "@/components/card/SmProductCard";
+import SmProductCard from "@/components/cards/SmProductCard";
 import CardTitle from "@/components/cardTitle/CardTitle.";
 import cardTitle from "@/components/utils/data/cardTitle";
 import { products } from "@/utils/productData";

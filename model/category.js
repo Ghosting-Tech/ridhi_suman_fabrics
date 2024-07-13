@@ -13,12 +13,17 @@ const CategorySchema = new Schema(
       required: true,
     },
 
-    subCategories: [
-      {
-        name: String,
-        colour: String,
+    subCategories: {
+      type: Array,
+      default: [],
+      items: {
+        type: Object,
+        properties: {
+          name: { type: String },
+          colour: { type: String },
+        },
       },
-    ],
+    },
   },
 
   {

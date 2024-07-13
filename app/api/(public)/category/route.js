@@ -9,7 +9,7 @@ export async function GET() {
     await dbConnect();
 
     const categories = await Category.find().select(
-      "-subCategories -createdAt -updatedAt"
+      "-createdAt -updatedAt"
     );
 
     return NextResponse.json(categories, { status: 200 });
