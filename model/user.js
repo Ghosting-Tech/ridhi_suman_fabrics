@@ -48,6 +48,11 @@ const userSchema = new Schema(
       },
     ],
 
+    createdBy: {
+      type: String,
+      default: "user"
+    },
+
     shippingInfo: {
       type: [
         {
