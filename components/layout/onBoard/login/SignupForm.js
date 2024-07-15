@@ -36,6 +36,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
   useEffect(() => {
     let interval;
+
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer((prev) => prev - 1);
@@ -43,6 +44,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     } else {
       clearInterval(interval);
     }
+
     return () => clearInterval(interval);
   }, [timer]);
 
@@ -192,11 +194,15 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
           const data = await response.json();
 
-          await signIn("credentials", {
+          const isSignIn = await signIn("credentials", {
             redirect: false,
             phoneNumber,
             password,
           });
+
+          if (!isSignIn.ok) {
+            reject("Something went wrong: Cannot Sign In");
+          }
 
           router.push("/");
 
@@ -208,9 +214,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
     toast.promise(promiseFunction(), {
       loading: "Verifying OTP...",
-      success: () => {
-        return "OTP verified successfully";
-      },
+      success: "OTP verified successfully",
       error: (error) => `Error verifying OTP: ${error.message || error}`,
     });
   };

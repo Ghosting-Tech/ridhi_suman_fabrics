@@ -8,30 +8,12 @@ import dbConnect from "@/config/db";
 
 export const options = {
   pages: {
-    newUser: "/test",
-    signIn: "/test2",
+    signIn: "/login",
   },
 
   providers: [
     CredentialsProvider({
       name: "Credentials",
-
-      // credentials: {
-      //   _id: {
-      //     label: "_id",
-      //     type: "text",
-      //   },
-
-      //   phoneNumber: {
-      //     label: "phoneNumber",
-      //     type: "text",
-      //   },
-
-      //   password: {
-      //     label: "password",
-      //     type: "password",
-      //   },
-      // },
 
       async authorize(credentials, req) {
         try {
@@ -72,25 +54,6 @@ export const options = {
   ],
 
   callbacks: {
-    // async jwt(token, account) {
-    //   console.log("user:" + account);
-    //   console.log("token:" + token);
-    //   if (user) {
-    //     token._id = user._id;
-    //     token.phoneNumber = user.phoneNumber;
-    //   }
-
-    //   return token;
-    // },
-
-    // async session(session, token, user) {
-    //   // console.log(session);
-    //   console.log(token);
-    //   session.user._id = token._id;
-
-    //   return session;
-    // },
-
     async session({ session, token, user }) {
       if (token) {
         session.user._id = token._id;

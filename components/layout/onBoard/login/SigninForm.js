@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { set } from "mongoose";
 
 const SigninForm = ({ isAnimated, setIsAnimated }) => {
   const router = useRouter();
@@ -53,12 +54,22 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
 
     toast.promise(promiseFunction(), {
       loading: "Logging in...",
+
       success: () => {
         router.push("/");
         setIsLoading(false);
+
+        setPhoneNumber("");
+        setPassword("");
+
         return "Logged in successfully";
       },
-      error: (error) => `${error.message || error}`,
+
+      error: (error) => {
+        setIsLoading(false);
+
+        return `${error.message || error || "Something went wrong"}`;
+      },
     });
   };
 
@@ -95,7 +106,7 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
           </div>
 
           <Link
-            href={"/forget"}
+            href={"/forgot-password"}
             className="mt-4 block text-sm text-right font-medium text-blue-600 hover:underline focus:outline-none"
           >
             Forgot your password?

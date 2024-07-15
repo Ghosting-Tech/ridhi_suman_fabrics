@@ -8,6 +8,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       minlength: 3,
+      lowercase: true,
     },
 
     image: {
@@ -50,7 +51,7 @@ const userSchema = new Schema(
 
     createdBy: {
       type: String,
-      default: "user"
+      default: "user",
     },
 
     shippingInfo: {

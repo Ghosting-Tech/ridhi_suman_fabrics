@@ -41,9 +41,10 @@ const OrderSchema = new Schema(
 
     status: {
       type: String,
-      enum: ["Confirmed", "Packed", "Shipped", "Delivered", "Canceled"],
+      enum: ["confirmed", "packed", "shipped", "delivered", "canceled"],
       required: true,
-      default: "Confirmed",
+      default: "confirmed",
+      lowercase: true,
     },
   },
 

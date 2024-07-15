@@ -2,9 +2,6 @@
 
 import { useState } from "react";
 
-import LeftOverlayContent from "@/components/layout/onBoard/login/LeftOverlayContent";
-import RightOverlayContent from "@/components/layout/onBoard/login/RightOverlayContent";
-
 import AuthForm from "./AuthForm";
 import AuthOverlaySlider from "./AuthOverlaySlider";
 

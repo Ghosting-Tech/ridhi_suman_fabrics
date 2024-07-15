@@ -9,15 +9,9 @@ const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
 
 export async function GET(request, { params }) {
   try {
-    const token = await getToken({ req: request, secret });
-
     const { id } = params;
 
     if (!id) return NextResponse.json("Invalid user id", { status: 400 });
-
-    if (token._id !== id) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
-    }
 
     await dbConnect();
 

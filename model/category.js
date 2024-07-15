@@ -6,6 +6,8 @@ const CategorySchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
     },
 
     image: {
@@ -15,7 +17,11 @@ const CategorySchema = new Schema(
 
     subCategories: [
       {
-        name: String,
+        name: {
+          type: String,
+          lowercase: true,
+        },
+
         colour: String,
       },
     ],

@@ -11,11 +11,13 @@ const ProductSchema = new Schema(
     subCategory: {
       type: String,
       required: true,
+      lowercase: true,
     },
 
     title: {
       type: String,
       required: true,
+      lowercase: true,
     },
 
     images: [String],
@@ -77,11 +79,12 @@ const ProductSchema = new Schema(
     fabric: {
       type: String,
       required: true,
+      lowercase: true,
     },
 
     brand: {
       type: String,
-      ref: "Brand",
+      lowercase: true,
     },
 
     orders: [

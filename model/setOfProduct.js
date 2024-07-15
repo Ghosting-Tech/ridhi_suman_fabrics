@@ -11,6 +11,7 @@ const SetOfProductSchema = new Schema(
     title: {
       type: String,
       required: true,
+      lowercase: true,
     },
 
     discount: {
@@ -33,12 +34,18 @@ const SetOfProductSchema = new Schema(
       required: true,
     },
 
-    fabric: [String],
+    fabric: [
+      {
+        type: String,
+        required: true,
+        lowercase: true,
+      },
+    ],
 
     brand: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Brand",
+        type: String,
+        lowercase: true,
       },
     ],
 

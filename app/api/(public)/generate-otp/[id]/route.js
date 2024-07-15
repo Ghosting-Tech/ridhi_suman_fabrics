@@ -1,9 +1,12 @@
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 import dbConnect from "@/config/db";
 
 import User from "@/model/user";
+
+const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
 
 export async function GET(req, { params }) {
   try {
@@ -80,7 +83,16 @@ export async function PUT(req, { params }) {
 
     await user.save();
 
-    return NextResponse.json("OTP verified successfully", { status: 200 });
+    const token = jwt.sign(
+      { userId: user._id, isVerified: user.isVerified },
+      secret,
+      { expiresIn: "1h" }
+    );
+
+    return NextResponse.json(
+      { message: "OTP verified successfully", token },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error verifying OTP:", error);
     return NextResponse.json(`Error verifying OTP: ${error.message}`, {

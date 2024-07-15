@@ -1,5 +1,3 @@
-import OverlayContent from "../OverlayContent";
-
 const RightOverlayContent = ({ isAnimated, setIsAnimated }) => {
   return (
     <div className="p-8 text-center space-y-8">
@@ -21,14 +19,6 @@ const RightOverlayContent = ({ isAnimated, setIsAnimated }) => {
       >
         Sign Up
       </button>
-
-      <OverlayContent
-        isAnimated={isAnimated}
-        setIsAnimated={setIsAnimated}
-        heading="Don't have an account?"
-        paragraph="Start your journey in one click"
-        buttonLabel="Sign Up"
-      />
     </div>
   );
 };

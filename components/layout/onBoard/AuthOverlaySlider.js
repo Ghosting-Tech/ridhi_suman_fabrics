@@ -20,7 +20,6 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
             paragraph={"Sign in with your Phone number & password"}
           >
             <OverlayContentBtn
-              isAnimated={isAnimated}
               setIsAnimated={setIsAnimated}
               buttonLabel="Sign In"
             />
@@ -31,7 +30,6 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
             paragraph={"Fill your new password and confirm it"}
           >
             <OverlayContentBtn
-              isAnimated={isAnimated}
               setIsAnimated={setIsAnimated}
               buttonLabel="Sign In"
             />
@@ -51,7 +49,6 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
             paragraph="Start your journey in one click"
           >
             <OverlayContentBtn
-              isAnimated={isAnimated}
               setIsAnimated={setIsAnimated}
               buttonLabel="Sign Up"
             />
@@ -62,7 +59,6 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
             paragraph={"Enter your phone number to reset your password"}
           >
             <OverlayContentBtn
-              isAnimated={isAnimated}
               setIsAnimated={setIsAnimated}
               buttonLabel="Sign Up"
             />
