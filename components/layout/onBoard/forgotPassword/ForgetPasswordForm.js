@@ -1,10 +1,12 @@
 "use client";
 
 import { Input } from "@material-tailwind/react";
-import { AiOutlineLoading } from "react-icons/ai";
 
+import Link from "next/link";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+
+import OnboardBtn from "@/components/ui/buttons/OnboardBtn";
 
 const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
   const [otp, setOTP] = useState("");
@@ -43,10 +45,16 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
     }
   };
 
+  const handleOtpChange = (e) => {
+    let value = e.target.value.replace(/[^\d]/g, "");
+
+    if (value.length <= 6) {
+      setOTP(value);
+    }
+  };
+
   const getOtp = async () => {
     try {
-      setIsLoading(true);
-
       if (!phoneNumber) {
         toast.error("Please enter your phone number");
         return;
@@ -57,13 +65,16 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
         return;
       }
 
+      setIsLoading(true);
+
       const userResponse = await fetch(`/api/user/number/${phoneNumber}`);
 
       const data = await userResponse.json();
 
       if (!userResponse.ok) {
-        toast.error(data);
         setIsLoading(false);
+        toast.error(data);
+
         return;
       }
 
@@ -153,8 +164,6 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
             const data = await response.json();
 
-            console.log(data);
-
             if (!response.ok) {
               reject(`${data}`);
               setIsLoading(false);
@@ -174,11 +183,16 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
       toast.promise(promiseFunction(), {
         loading: "Verifying OTP...",
+
         success: () => {
           setIsLoading(false);
 
+          setOTP("");
+          setPhoneNumber("");
+
           return "OTP verified successfully";
         },
+
         error: (error) => {
           setIsLoading(false);
 
@@ -209,6 +223,7 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
               name="forgot-number"
               value={phoneNumber}
               onChange={handleNumberChange}
+              error={phoneNumber && phoneNumber.length < 10}
             />
 
             {showOTP && (
@@ -221,7 +236,8 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
                 required
                 name="forgot-otp"
                 value={otp}
-                onChange={(e) => setOTP(e.target.value)}
+                onChange={handleOtpChange}
+                error={otp && otp.length < 6}
               />
             )}
           </div>
@@ -251,29 +267,42 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
           )}
 
           {showOTP ? (
-            <button
+            // <button
+            //   type="button"
+            //   className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+            //   disabled={isLoading}
+            //   onClick={verifyOtp}
+            // >
+            //   {isLoading ? (
+            //     <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
+            //   ) : (
+            //     "Verify OTP"
+            //   )}
+            // </button>
+            <OnboardBtn
               type="button"
-              className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
+              label="Verify OTP"
               onClick={verifyOtp}
-            >
-              {isLoading ? (
-                <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
-              ) : (
-                "Verify OTP"
-              )}
-            </button>
+              isLoading={isLoading}
+            />
           ) : (
-            <button
+            // <button
+            //   type="button"
+            //   className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+            //   onClick={getOtp}
+            // >
+            //   {isLoading ? (
+            //     <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
+            //   ) : (
+            //     "Get OTP"
+            //   )}
+            // </button>
+            <OnboardBtn
               type="button"
-              className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
+              label="Get OTP"
               onClick={getOtp}
-            >
-              {isLoading ? (
-                <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
-              ) : (
-                "Get OTP"
-              )}
-            </button>
+              isLoading={isLoading}
+            />
           )}
         </div>
       </div>
@@ -281,14 +310,12 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
       <div className="flex gap-1 items-center mt-4 text-sm justify-center">
         <div>Remember your password?</div>
 
-        <button
+        <Link
           className=" text-blue-600 hover:underline focus:outline-none font-medium underline hover:scale-105 transition-transform"
-          onClick={(e) => {
-            setIsAnimated(!isAnimated);
-          }}
+          href="/login"
         >
           Sign In
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ const AuthForm = ({ isAnimated, setIsAnimated }) => {
           isAnimated ? "lg:translate-x-full opacity-0" : ""
         }`}
       >
-        {path === "/onBoard" ? (
+        {path === "/login" ? (
           <SigninForm isAnimated={isAnimated} setIsAnimated={setIsAnimated} />
         ) : (
           <ForgetPasswordForm
@@ -36,7 +36,7 @@ const AuthForm = ({ isAnimated, setIsAnimated }) => {
         }`}
       >
         <div className="h-full w-full flex justify-center items-center">
-          {path === "/onBoard" ? (
+          {path === "/login" ? (
             <SignupForm isAnimated={isAnimated} setIsAnimated={setIsAnimated} />
           ) : (
             <ResetPasswordForm

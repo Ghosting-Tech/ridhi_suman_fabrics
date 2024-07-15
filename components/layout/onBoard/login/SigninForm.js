@@ -1,14 +1,14 @@
 "use client";
 
 import { Input } from "@material-tailwind/react";
-import { AiOutlineLoading } from "react-icons/ai";
 
 import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { set } from "mongoose";
+
+import OnboardBtn from "@/components/ui/buttons/OnboardBtn";
 
 const SigninForm = ({ isAnimated, setIsAnimated }) => {
   const router = useRouter();
@@ -19,8 +19,6 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (e) => {
-    setIsLoading(true);
-
     e.preventDefault();
 
     if (!phoneNumber) {
@@ -32,6 +30,8 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
       toast.error("Please enter your password");
       return;
     }
+
+    setIsLoading(true);
 
     const promiseFunction = () =>
       new Promise(async (resolve, reject) => {
@@ -90,6 +90,7 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
               name="login-number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              error={phoneNumber && phoneNumber.length < 10}
             />
 
             <Input
@@ -102,6 +103,7 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
               name="login-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              error={password && password.length < 8}
             />
           </div>
 
@@ -112,7 +114,7 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
             Forgot your password?
           </Link>
 
-          <button
+          {/* <button
             type="submit"
             className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
           >
@@ -121,7 +123,14 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
             ) : (
               "Sign In"
             )}
-          </button>
+          </button> */}
+
+          <OnboardBtn
+            type="submit"
+            label="Sign In"
+            onClick={onSubmit}
+            isLoading={isLoading}
+          />
         </form>
       </div>
 

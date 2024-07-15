@@ -53,6 +53,11 @@ export async function middleware(request) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
+    // Redirect authenticated users away from forgot-password page
+    if (token && url.pathname.startsWith("/forgot-password")) {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
     // Redirect users with role "user" away from admin pages
     if (token && token.role === "user" && url.pathname.startsWith("/admin")) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -78,6 +83,7 @@ export const config = {
     "/sets/:path*",
     "/categories/:path*",
     "/login",
+    "/forgot-password",
     "/admin/:path*",
     "/user/:path*",
   ],

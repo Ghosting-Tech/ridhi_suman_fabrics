@@ -14,6 +14,8 @@ import { HiOutlineUpload } from "react-icons/hi";
 import { AiOutlineLoading } from "react-icons/ai";
 import { MdOutlineInstallMobile } from "react-icons/md";
 
+import OnboardBtn from "@/components/ui/buttons/OnboardBtn";
+
 const SignupForm = ({ isAnimated, setIsAnimated }) => {
   const router = useRouter();
 
@@ -55,6 +57,24 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
       setProfileImage(file);
       setSelectedImage(image);
+    }
+  };
+
+  const handleNumberChange = (e) => {
+    let value = e.target.value.replace(/[^\d]/g, "");
+
+    value = value.replace(/^0+/, "");
+
+    if (value.length <= 10) {
+      setPhoneNumber(value);
+    }
+  };
+
+  const handleOtpChange = (e) => {
+    let value = e.target.value.replace(/[^\d]/g, "");
+
+    if (value.length <= 6) {
+      setOtpInput(value);
     }
   };
 
@@ -163,10 +183,12 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
       toast.promise(getUserPromise, {
         loading: "Creating new user...",
+
         success: async (data) => {
           getOtp(data._id.toString(), data.phoneNumber);
           return "User created successfully";
         },
+
         error: (error) => `${error.error}`,
       });
     } catch (error) {
@@ -214,36 +236,50 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
     toast.promise(promiseFunction(), {
       loading: "Verifying OTP...",
-      success: "OTP verified successfully",
-      error: (error) => `Error verifying OTP: ${error.message || error}`,
+
+      success: () => {
+        setEmail("");
+        setName("");
+        setPassword("");
+        setPhoneNumber("");
+
+        setProfileImage(null);
+        setSelectedImage(null);
+
+        setTimer(0);
+        setUser({});
+
+        setOtpInput("");
+        setIsOtpSent(false);
+
+        setIsLoading(false);
+
+        return "OTP verified successfully";
+      },
+
+      error: (error) => {
+        setIsLoading(false);
+
+        return `${error.error || "Something went wrong"}`;
+      },
     });
   };
 
   const handleSignup = async () => {
-    setIsLoading(true);
-
     if (!isOtpSent) {
-      toast.error("Please set the OTP first");
+      toast.error("Please Get OTP on your phone number");
       return;
     }
 
+    if (!otpInput) {
+      toast.error("Please enter the OTP sent to your phone number");
+      return;
+    }
+
+    setIsLoading(true);
+
     await verifyOtp();
 
-    setEmail("");
-    setName("");
-    setPassword("");
-    setPhoneNumber("");
-
-    setProfileImage(null);
-    setSelectedImage(null);
-
-    setTimer(0);
-    setUser({});
-
-    setOtpInput("");
-    setIsOtpSent(false);
-
-    setIsLoading(false);
     toast.info("Redirecting to home...");
   };
 
@@ -253,7 +289,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
         <h1 className="text-4xl font-bold text-pink-500">Create account</h1>
 
         <form className="mt-8 w-full" onSubmit={handleSubmit} method="POST">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mb-6">
             <label
               htmlFor="register-profile"
               className="cursor-pointer flex items-center space-x-4 border rounded-md p-4 w-full"
@@ -298,7 +334,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
             />
           </div>
 
-          <div className="mt-6">
+          <div className="space-y-10">
             <Input
               type="text"
               size="regular"
@@ -309,10 +345,9 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               name="register-name"
+              error={!isOtpSent && name && name.length < 3}
             />
-          </div>
 
-          <div className="mt-10">
             <Input
               type="email"
               size="regular"
@@ -323,10 +358,12 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               name="register-email"
+              error={
+                (!isOtpSent && email && !email.includes("@")) ||
+                !email.includes(".")
+              }
             />
-          </div>
 
-          <div className="mt-10">
             <Input
               type="password"
               size="regular"
@@ -336,11 +373,10 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               name="register-password"
+              error={!isOtpSent && password && password.length < 8}
             />
-          </div>
 
-          <div className="mt-10 flex items-center gap-2">
-            <div className="w-full">
+            <div className="flex items-center gap-2">
               <Input
                 type="tel"
                 size="regular"
@@ -348,15 +384,14 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
                 label="Phone Number"
                 required
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={handleNumberChange}
                 name="register-phone"
+                error={!isOtpSent && phoneNumber && phoneNumber.length < 10}
               />
-            </div>
 
-            {isOtpSent ? (
-              <div className="w-full">
+              {isOtpSent ? (
                 <Input
-                  type="text"
+                  type="number"
                   size="regular"
                   variant="standard"
                   label="OTP"
@@ -364,26 +399,27 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
                   required
                   name="register-otp"
                   value={otpInput}
-                  onChange={(e) => setOtpInput(e.target.value)}
+                  onChange={handleOtpChange}
+                  error={!isOtpSent && otpInput && otpInput.length < 6}
                 />
-              </div>
-            ) : (
-              <button
-                type="submit"
-                className="px-4 py-2 rounded-lg whitespace-nowrap bg-gradient-to-r from-teal-500 to-green-500 hover:scale-105 transition-all text-white cursor-pointer active:scale-100 font-semibold flex items-center gap-1 min-w-28"
-              >
-                {isOtpSent ? (
-                  <AiOutlineLoading
-                    className=" animate-spin mx-auto"
-                    size={24}
-                  />
-                ) : (
-                  <>
-                    Get OTP <MdOutlineInstallMobile />
-                  </>
-                )}
-              </button>
-            )}
+              ) : (
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg whitespace-nowrap bg-gradient-to-r from-teal-500 to-green-500 hover:scale-105 transition-all text-white cursor-pointer active:scale-100 font-semibold flex items-center gap-1 min-w-28"
+                >
+                  {isOtpSent ? (
+                    <AiOutlineLoading
+                      className=" animate-spin mx-auto"
+                      size={24}
+                    />
+                  ) : (
+                    <>
+                      Get OTP <MdOutlineInstallMobile />
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
           </div>
 
           {
@@ -410,10 +446,9 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
             </div>
           }
 
-          <button
-            disabled={!isOtpSent}
+          {/* <button
             type="button"
-            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-default"
+            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
             onClick={handleSignup}
           >
             {isLoading ? (
@@ -421,7 +456,14 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
             ) : (
               "Sign Up"
             )}
-          </button>
+          </button> */}
+
+          <OnboardBtn
+            type="button"
+            label="Sign Up"
+            isLoading={isLoading}
+            onClick={handleSignup}
+          />
         </form>
       </div>
 

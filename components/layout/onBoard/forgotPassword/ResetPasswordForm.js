@@ -1,7 +1,6 @@
 "use client";
 
 import { Input } from "@material-tailwind/react";
-import { AiOutlineLoading } from "react-icons/ai";
 
 import { signIn } from "next-auth/react";
 
@@ -9,7 +8,9 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const SigninForm = ({ isAnimated, setIsAnimated }) => {
+import OnboardBtn from "@/components/ui/buttons/OnboardBtn";
+
+const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
   const router = useRouter();
 
   const [password, setPassword] = useState("");
@@ -32,8 +33,6 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
   }, [password, confirmPassword]);
 
   const onSubmit = async (e) => {
-    setIsLoading(true);
-
     e.preventDefault();
 
     if (!password) {
@@ -46,13 +45,14 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
       return;
     }
 
+    setIsLoading(true);
+
     const token = localStorage.getItem("reset-token");
 
     const formDataToSend = new FormData();
+
     formDataToSend.append("token", token);
     formDataToSend.append("password", password);
-
-    console.log("Form Data: ", formDataToSend);
 
     let data;
 
@@ -65,7 +65,6 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
           });
 
           data = await response.json();
-          console.log("Data: ", data);
 
           if (!response.ok) {
             reject(data);
@@ -100,6 +99,8 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
 
         localStorage.removeItem("reset-token");
 
+        setIsAnimated((prev) => !prev);
+
         return "Password Reset Successfully";
       },
 
@@ -130,6 +131,12 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
               name="reset-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              error={
+                password &&
+                password.length < 8 &&
+                confirmPassword &&
+                password !== confirmPassword
+              }
             />
 
             <Input
@@ -142,24 +149,36 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
               name="confirm-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              error={
+                confirmPassword &&
+                confirmPassword.length < 8 &&
+                password &&
+                password !== confirmPassword
+              }
             />
           </div>
 
-          <button
+          {/* <button
             type="submit"
             className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
-            disabled={password !== confirmPassword || isLoading}
+            disabled={isLoading}
           >
             {isLoading ? (
               <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
             ) : (
               "Update Password"
             )}
-          </button>
+          </button> */}
+          <OnboardBtn
+            type="submit"
+            label="Update Password"
+            onClick={onSubmit}
+            isLoading={isLoading}
+          />
         </form>
       </div>
     </div>
   );
 };
 
-export default SigninForm;
+export default ResetPasswordForm;

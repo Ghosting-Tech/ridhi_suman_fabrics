@@ -14,7 +14,7 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
           isAnimated ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {path === "/onBoard" ? (
+        {path === "/login" ? (
           <OverlayContent
             heading={"Already have an account?"}
             paragraph={"Sign in with your Phone number & password"}
@@ -28,12 +28,7 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
           <OverlayContent
             heading={"Set a new password"}
             paragraph={"Fill your new password and confirm it"}
-          >
-            <OverlayContentBtn
-              setIsAnimated={setIsAnimated}
-              buttonLabel="Sign In"
-            />
-          </OverlayContent>
+          />
         )}
       </div>
 
@@ -43,7 +38,7 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
           isAnimated ? "translate-x-[20%]" : "translate-x-0"
         }`}
       >
-        {path === "/onBoard" ? (
+        {path === "/login" ? (
           <OverlayContent
             heading="Don't have an account?"
             paragraph="Start your journey in one click"
@@ -57,12 +52,7 @@ const AuthOverlaySlider = ({ isAnimated, setIsAnimated }) => {
           <OverlayContent
             heading={"Forgot your password?"}
             paragraph={"Enter your phone number to reset your password"}
-          >
-            <OverlayContentBtn
-              setIsAnimated={setIsAnimated}
-              buttonLabel="Sign Up"
-            />
-          </OverlayContent>
+          />
         )}
       </div>
     </>
