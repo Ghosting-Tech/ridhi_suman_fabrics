@@ -114,17 +114,6 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
             Forgot your password?
           </Link>
 
-          {/* <button
-            type="submit"
-            className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer"
-          >
-            {isLoading ? (
-              <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
-            ) : (
-              "Sign In"
-            )}
-          </button> */}
-
           <OnboardBtn
             type="submit"
             label="Sign In"

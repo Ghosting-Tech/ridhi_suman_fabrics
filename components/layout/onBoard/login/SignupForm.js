@@ -446,18 +446,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
             </div>
           }
 
-          {/* <button
-            type="button"
-            className="mt-10 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
-            onClick={handleSignup}
-          >
-            {isLoading ? (
-              <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
-            ) : (
-              "Sign Up"
-            )}
-          </button> */}
-
           <OnboardBtn
             type="button"
             label="Sign Up"

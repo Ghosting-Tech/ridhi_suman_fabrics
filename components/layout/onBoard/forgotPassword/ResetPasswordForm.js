@@ -27,7 +27,7 @@ const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
       if (password && confirmPassword && password === confirmPassword) {
         toast.success("Passwords matched");
       }
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(handler);
   }, [password, confirmPassword]);
@@ -42,6 +42,21 @@ const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
     if (!confirmPassword) {
       toast.error("Please enter your phone number");
+      return;
+    }
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (confirmPassword.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -158,17 +173,6 @@ const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
             />
           </div>
 
-          {/* <button
-            type="submit"
-            className="mt-8 py-4 transition-all duration-500 uppercase rounded-full bg-gradient-to-r from-red-400 to-pink-400 hover:scale-105 active:scale-100 text-white font-semibold w-full cursor-pointer disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <AiOutlineLoading className=" animate-spin mx-auto" size={24} />
-            ) : (
-              "Update Password"
-            )}
-          </button> */}
           <OnboardBtn
             type="submit"
             label="Update Password"
