@@ -15,16 +15,25 @@ const CategorySchema = new Schema(
       required: true,
     },
 
-    subCategories: [
-      {
-        name: {
-          type: String,
-          lowercase: true,
-        },
+    subCategories: {
+      type: Array,
+      default: [],
 
-        colour: String,
+      items: {
+        type: Object,
+
+        properties: {
+          name: {
+            type: String,
+            lowercase: true,
+          },
+
+          colour: {
+            type: String,
+          },
+        },
       },
-    ],
+    },
   },
 
   {

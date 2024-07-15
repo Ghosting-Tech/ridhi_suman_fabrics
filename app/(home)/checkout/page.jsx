@@ -14,7 +14,7 @@ import InputField from "@/components/inputForm/InputField";
 import cardTitle from "@/components/utils/data/cardTitle";
 import { Button, Typography } from "@material-tailwind/react";
 import CardTitle from "@/components/cardTitle/CardTitle.";
-import SmProductCard from "@/components/card/SmProductCard";
+import SmProductCard from "@/components/cards/SmProductCard";
 import Link from "next/link";
 import { products } from "@/utils/productData";
 

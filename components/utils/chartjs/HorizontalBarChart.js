@@ -1,8 +1,8 @@
 import React from "react";
-import { Pie } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 
-const PieChart = ({ data }) => {
+const HorizontalBarChart = ({ data }) => {
   const chartData = {
     labels: [
       "Categories",
@@ -16,6 +16,8 @@ const PieChart = ({ data }) => {
     ],
     datasets: [
       {
+        label: "Bar chart",
+        labelDisabled: true,
         data: [
           data.categoriesCount,
           data.subCategoriesCount,
@@ -41,19 +43,34 @@ const PieChart = ({ data }) => {
   };
 
   const options = {
+    indexAxis: "y",
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          display: false, // Remove grid lines on x-axis
+        },
+      },
+      y: {
+        grid: {
+          display: false, // Remove grid lines on y-axis
+        },
+      },
+    },
     responsive: true,
     plugins: {
       legend: {
+        display: false,
         position: "top",
-        //   display: false
       },
       title: {
         display: false,
-        text: "Pie Chart Example",
+        text: "Bar Chart",
       },
     },
   };
-  return <Pie data={chartData} options={options} />;
+
+  return <Bar data={chartData} options={options} />;
 };
 
-export default PieChart;
+export default HorizontalBarChart;

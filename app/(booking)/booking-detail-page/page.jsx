@@ -17,7 +17,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import Link from "next/link";
 import Image from "next/image";
-import SmProductCard from "@/components/card/SmProductCard";
+import SmProductCard from "@/components/cards/SmProductCard";
 import { products } from "@/utils/productData";
 import CardTitle from "@/components/cardTitle/CardTitle.";
 import cardTitle from "@/components/utils/data/cardTitle";

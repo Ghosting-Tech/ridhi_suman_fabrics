@@ -15,7 +15,7 @@ import { useState } from "react";
 import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 import colours from "@/libs/colours";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 const CreateCategory = ({ open, setOpen, setCategories }) => {
   const handleOpen = () => setOpen(!open);
@@ -49,11 +49,6 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
       }
       if (!formData.name) {
         toast.warning("Category name is required");
-        return;
-      }
-
-      if (formData.subCategories.length < 1) {
-        toast.warning("Add minimum one sub category.");
         return;
       }
       setPending(true);

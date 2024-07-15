@@ -144,9 +144,8 @@ const Page = () => {
         </div>
       </Dialog>
 
-      <Nav />
       <div className="flex justify-center items-start min-h-[89vh]">
-        <Card className="w-3/4 p-4 mt-10">
+        <Card className="w-full md:w-3/4 p-0 md:p-4 mt-10 shadow-none md:shadow-lg">
           <div className="flex justify-between items-center px-4 mb-2">
             <Heading
               icon={
@@ -168,19 +167,19 @@ const Page = () => {
               setAdmins={setAdmins}
             />
           </div>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
+          <ul className="grid grid-cols-1 lg:grid-cols-2 gap-4 place-items-center">
             {admins.map((admin) => (
               <li
                 className="w-full flex justify-between p-4 rounded-lg hover:bg-gray-100 transition-all"
                 key={admin._id}
               >
-                <div className="flex items-center">
+                <div className="flex items-center w-full">
                   <ListItemPrefix>
                     <Avatar variant="circular" alt="admin" src={admin.image} />
                   </ListItemPrefix>
-                  <div className="flex flex-col">
-                    <div className="text-sm">{admin.name}</div>
-                    <div className="font-semibold text-pink-500">
+                  <div className="flex flex-col max-w-24 lg:max-w-36 xl:max-w-full">
+                    <div className="text-sm w-full truncate">{admin.name}</div>
+                    <div className="font-semibold text-pink-500 text-sm md:text-md">
                       {admin.phoneNumber}
                     </div>
                   </div>

@@ -33,7 +33,7 @@ export async function PUT(request, { params }) {
 
     const subCategories = JSON.parse(data.get("subCategories"));
 
-    if (!name || !subCategories) {
+    if (!name) {
       return NextResponse.json({ error: "Invalid data." }, { status: 400 });
     }
 
