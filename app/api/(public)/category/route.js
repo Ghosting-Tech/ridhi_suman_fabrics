@@ -5,7 +5,7 @@ import dbConnect from "@/config/db";
 import Category from "@/model/category";
 import { checkAuthorization } from "@/config/checkAuthorization";
 
-export async function GET() {
+export async function GET(request) {
   try {
     let isAdmin = await checkAuthorization(request);
 
