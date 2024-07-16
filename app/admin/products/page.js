@@ -20,7 +20,7 @@ const Page = () => {
           }
           title={"Manage Categories"}
           buttons={[
-            <Button className="rounded" variant="gradient" color="pink">
+            <Button className="rounded" variant="gradient" color="pink" key={"btn-1"}>
               <Link href={"/admin/products/create-product"}>
                 Create Product
               </Link>

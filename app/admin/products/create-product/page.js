@@ -332,9 +332,9 @@ const Page = () => {
             </div>
           </div>
           {formData.sizes.length > 0 &&
-            formData.sizes.map((size) => {
+            formData.sizes.map((size, index) => {
               return (
-                <div className="p-4 rounded-lg flex flex-col gap-4 bg-gray-100">
+                <div key={index} className="p-4 rounded-lg flex flex-col gap-4 bg-gray-100">
                   <div className="flex justify-between items-center">
                     <div>Size: {size.size}</div>
                     <div className="flex space-x-2">
