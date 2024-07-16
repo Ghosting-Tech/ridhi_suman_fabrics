@@ -3,14 +3,19 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/config/db";
 
 import Category from "@/model/category";
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function GET() {
   try {
+    let isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized") {
+      isAdmin = false;
+    }
+
     await dbConnect();
 
-    const categories = await Category.find().select(
-      "-createdAt -updatedAt"
-    );
+    const categories = await Category.find().select("-createdAt -updatedAt");
 
     return NextResponse.json(categories, { status: 200 });
   } catch (err) {
