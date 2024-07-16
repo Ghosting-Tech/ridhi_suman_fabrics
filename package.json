@@ -11,10 +11,11 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@material-tailwind/react": "^2.1.9",
+    "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "chart.js": "^4.4.3",
-    "codemod": "^0.11.22",
+    "codemod": "^0.11.28",
     "dotenv": "^16.4.5",
     "formidable": "^3.5.1",
     "jsonwebtoken": "^9.0.2",
@@ -27,6 +28,7 @@
     "react-colorful": "^5.6.1",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
+    "react-redux": "^9.1.2",
     "sharp": "^0.33.4",
     "sonner": "^1.5.0",
     "uuid": "^10.0.0"
