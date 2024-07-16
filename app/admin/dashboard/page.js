@@ -8,6 +8,7 @@ import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 
 const DashboardPage = () => {
+  
   const [loading, setLoading] = useState(true);
 
   const [data, setData] = useState({

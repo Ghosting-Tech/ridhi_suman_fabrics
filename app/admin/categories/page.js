@@ -107,7 +107,6 @@ const Page = () => {
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 px-10 mx-auto gap-8 place-items-center">
-            {categories.map((category) => (
               <CategoryCard
                 key={category._id}
                 category={category}

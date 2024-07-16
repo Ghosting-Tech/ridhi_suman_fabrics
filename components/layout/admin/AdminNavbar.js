@@ -96,7 +96,6 @@ function NavList() {
         <Button
           onClick={async () => {
             await signOut();
-            router.push("/login");
           }}
           className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
           variant="text"
