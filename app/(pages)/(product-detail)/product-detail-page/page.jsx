@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import Nav from "@/components/header/Nav";
-import Footer from "@/components/footer/Footer";
-import ProductCarousel from "@/components/product/ProductCarousel";
+import Nav from "@/components/layout/home/header/Nav";
+import Footer from "@/components/layout/home/Footer";
+import ProductCarousel from "@/components/carousel/ProductCarousel";
 import React, { useState } from "react";
 import Link from "next/link";
 
@@ -35,7 +35,6 @@ const ProductPage = () => {
       discountedPrice: "$105.00",
       sales: "70 sold",
     },
-   
   ];
 
   const [selectedSize, setSelectedSize] = useState(null);
@@ -47,56 +46,56 @@ const ProductPage = () => {
         {/* Start Pic Part */}
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-1 mx-2 pb-4 pr-1 justify-center md:w-1/2 max-h-[175vh] overflow-y-auto ">
           {products.map((product, index) => (
-             <div
-             key={product.id}
-             className="flex flex-col items-center bg-white rounded-lg shadow-md mb-3 pb-2"
-           >
-             <div className="relative w-full h-[25rem] rounded-t-lg overflow-hidden">
-               <Image
-                 src={product.image}
-                 alt={product.title}
-                 layout="fill"
-                 objectFit="cover"
-               />
-             </div>
-             <div className="p-1 flex flex-col items-start w-full">
-               <div className="flex items-center justify-between w-full mt-2">
-                 <span className="text-white bg-purple-500 text-xs font-semibold px-2 py-1 rounded">
-                   {product.category}
-                 </span>
-                 <span className="text-red-500 bg-pink-100 text-xs font-semibold px-2 py-1 rounded">
-                   {product.discount}
-                 </span>
-               </div>
-               <h3 className="text-lg font-bold mt-2">{product.title}</h3>
-               <div className="flex items-center justify-between w-full mt-2">
-                 <span className="text-gray-500 line-through">
-                   {product.originalPrice}
-                 </span>
-                 <span className="text-red-500 font-bold">
-                   {product.discountedPrice}
-                 </span>
-               </div>
-               <div className="w-full flex flex-col justify-between items-center mt-2">
-                 <div className="w-full flex justify-between items-center mt-2">
-                   <div className="w-full flex justify-between items-center bg-gray-200 rounded-full h-2.5">
-                     <div
-                       className="bg-gradient-to-r from-red-500 to-orange-500 h-2.5 rounded-full"
-                       style={{ width: "50%" }}
-                     ></div>
-                     <span className="ml-2 text-gray-500 text-sm">
-                       {product.sales}
-                     </span>
-                   </div>
-                 </div>
-               </div>
-               <div className="w-full mt-auto">
-                 <button className="bg-[#52057B] text-white mt-4 w-full px-4 py-2 rounded-lg">
-                   View Single
-                 </button>
-               </div>
-             </div>
-           </div>
+            <div
+              key={product.id}
+              className="flex flex-col items-center bg-white rounded-lg shadow-md mb-3 pb-2"
+            >
+              <div className="relative w-full h-[25rem] rounded-t-lg overflow-hidden">
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <div className="p-1 flex flex-col items-start w-full">
+                <div className="flex items-center justify-between w-full mt-2">
+                  <span className="text-white bg-purple-500 text-xs font-semibold px-2 py-1 rounded">
+                    {product.category}
+                  </span>
+                  <span className="text-red-500 bg-pink-100 text-xs font-semibold px-2 py-1 rounded">
+                    {product.discount}
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold mt-2">{product.title}</h3>
+                <div className="flex items-center justify-between w-full mt-2">
+                  <span className="text-gray-500 line-through">
+                    {product.originalPrice}
+                  </span>
+                  <span className="text-red-500 font-bold">
+                    {product.discountedPrice}
+                  </span>
+                </div>
+                <div className="w-full flex flex-col justify-between items-center mt-2">
+                  <div className="w-full flex justify-between items-center mt-2">
+                    <div className="w-full flex justify-between items-center bg-gray-200 rounded-full h-2.5">
+                      <div
+                        className="bg-gradient-to-r from-red-500 to-orange-500 h-2.5 rounded-full"
+                        style={{ width: "50%" }}
+                      ></div>
+                      <span className="ml-2 text-gray-500 text-sm">
+                        {product.sales}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full mt-auto">
+                  <button className="bg-[#52057B] text-white mt-4 w-full px-4 py-2 rounded-lg">
+                    View Single
+                  </button>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
 
@@ -152,9 +151,9 @@ const ProductPage = () => {
           {/* Buy and Cart Button */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 h-auto md:h-[52px]">
             <Link href="/checkout">
-            <button className="Buy-CartButton bg-[#52057B] text-white">
-              Buy Now
-            </button>
+              <button className="Buy-CartButton bg-[#52057B] text-white">
+                Buy Now
+              </button>
             </Link>
             <div className="Buy-CartButton border border-black flex items-center justify-center gap-2 hover:cursor-pointer">
               <Image src="/icon/cartIcon.svg" width={17} height={16} />

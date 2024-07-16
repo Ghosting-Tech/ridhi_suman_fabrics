@@ -1,5 +1,5 @@
 "use client";
-import Nav from "@/components/header/Nav";
+import Nav from "@/components/layout/home/header/Nav";
 import CreateSubAdmin from "@/components/modals/admin/sub-admin/CreateSubAdmin";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import Heading from "@/components/ui/heading/Heading";
@@ -111,7 +111,11 @@ const Page = () => {
             }
             title={"Delete Admin Account"}
             buttons={[
-              <IconButton variant="text" onClick={handleChangeDeleteDialog}>
+              <IconButton
+                key={1}
+                variant="text"
+                onClick={handleChangeDeleteDialog}
+              >
                 <RxCross1 size={20} />
               </IconButton>,
             ]}
@@ -156,6 +160,7 @@ const Page = () => {
               title={"All Admins"}
               buttons={[
                 <DefaultBtn
+                  key={1}
                   title={"Create new admin"}
                   clickHandler={() => setOpen(true)}
                 />,

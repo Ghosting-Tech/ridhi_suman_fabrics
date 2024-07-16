@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import Nav from "@/components/header/Nav";
-import Footer from "@/components/footer/Footer";
-import ProductCarousel from "@/components/product/ProductCarousel";
+import Nav from "@/components/layout/home/header/Nav";
+import Footer from "@/components/layout/home/Footer";
+import ProductCarousel from "@/components/carousel/ProductCarousel";
 import React, { useState } from "react";
 import {
   CarouselProvider,
@@ -185,7 +185,7 @@ const ProductPage = () => {
               </button>
             </Link>
             <div className="Buy-CartButton border border-black flex items-center justify-center gap-2 hover:cursor-pointer  ">
-              <Image src="/icon/cartIcon.svg"  width={17} height={16} />
+              <Image src="/icon/cartIcon.svg" width={17} height={16} />
               <button>Add to Cart</button>
             </div>
           </div>

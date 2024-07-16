@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import Nav from "@/components/header/Nav";
-import Footer from "@/components/footer/Footer";
+import Nav from "@/components/layout/home/header/Nav";
+import Footer from "@/components/layout/home/Footer";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { IoMdListBox } from "react-icons/io";
 
@@ -27,7 +27,7 @@ const ProductPage = () => {
     <>
       <Nav />
       <div className="container pt-4 px-5">
-        <CardTitle  data={cardTitle.booking} />
+        <CardTitle data={cardTitle.booking} />
       </div>
       <div className="container mx-auto p-4 pt-0 flex flex-col lg:flex-row gap-4">
         {/* Order Summary */}

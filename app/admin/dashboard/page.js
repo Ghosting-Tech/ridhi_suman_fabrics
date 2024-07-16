@@ -1,6 +1,6 @@
 "use client";
 import DashboardCard from "@/components/layout/admin/DashboardCard";
-import Nav from "@/components/header/Nav";
+import Nav from "@/components/layout/home/header/Nav";
 import HorizontalBarChart from "@/components/utils/chartjs/HorizontalBarChart";
 import PieChart from "@/components/utils/chartjs/PieChart";
 import { useEffect, useState } from "react";

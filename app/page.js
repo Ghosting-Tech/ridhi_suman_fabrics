@@ -1,17 +1,16 @@
 "use client";
-import Nav from "@/components/header/Nav";
-import Footer from "@/components/footer/Footer";
+import Nav from "@/components/layout/home/header/Nav";
+import Footer from "@/components/layout/home/Footer";
 import OffBanner from "@/components/OffBanner";
-import Testimonial from "@/components/Testimonial";
+import Testimonial from "@/components/layout/home/Testimonial";
 import Category from "@/components/categories/Category";
-import { useState, useEffect } from "react";
-import ProductCarousel from "@/components/product/ProductCarousel";
+import ProductCarousel from "@/components/carousel/ProductCarousel";
 import ProductList from "@/components/productBundle/ProductList";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import Image from "next/image";
 import bannerDataFooter from "@/utils/bannerDataFooter";
 
-import HeroSection from "@/components/heroSection/HeroSection";
+import HeroSection from "@/components/layout/home/HeroSection";
 
 export default function Home() {
   return (

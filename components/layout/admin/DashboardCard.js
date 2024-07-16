@@ -9,7 +9,7 @@ const Card = ({ label, value, color, image }) => (
       color: `${color}`,
     }}
   >
-    <Image src={image} height={65} width={65} className="object-cover" />
+    <Image alt="" src={image} height={65} width={65} className="object-cover" />
     <div>
       <div className="text-2xl font-bold">{value}</div>
       <div>{label}</div>

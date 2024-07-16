@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Nav from "@/components/header/Nav";
-import Footer from "@/components/footer/Footer";
+import Nav from "@/components/layout/home/header/Nav";
+import Footer from "@/components/layout/home/Footer";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaCheckCircle, FaRegUser } from "react-icons/fa";
 import { HiOutlinePhone } from "react-icons/hi";
@@ -10,7 +10,7 @@ import { LiaCitySolid } from "react-icons/lia";
 import { MdOutlineRealEstateAgent } from "react-icons/md";
 import { TbMapPinCode, TbTruckDelivery } from "react-icons/tb";
 import { PiPencilSimpleLineThin } from "react-icons/pi";
-import InputField from "@/components/inputForm/InputField";
+// import InputField from "@/components/inputForm/InputField";
 import cardTitle from "@/components/utils/data/cardTitle";
 import { Button, Typography } from "@material-tailwind/react";
 import CardTitle from "@/components/cardTitle/CardTitle.";
@@ -50,7 +50,7 @@ const ProductPage = () => {
           </Typography>
           <form className="mt-8 mb-2 w-full">
             <div className="mb-5 grid grid-cols-1 md:grid-cols-2 gap-3">
-              <InputField
+              {/* <InputField
                 label="Fullname"
                 placeholder="Enter your fullname"
                 type="text"
@@ -113,7 +113,7 @@ const ProductPage = () => {
                 onChange={handleChange}
                 icon={TbTruckDelivery}
                 className="md:col-span-2"
-              />
+              /> */}
             </div>
             <Typography variant="h4" color="blue-gray">
               Payment Method

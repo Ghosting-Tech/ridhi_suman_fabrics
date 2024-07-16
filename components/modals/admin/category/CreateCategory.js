@@ -105,7 +105,7 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
           }
           title={"Create categories"}
           buttons={[
-            <IconButton variant="text" onClick={handleOpen}>
+            <IconButton key={1} variant="text" onClick={handleOpen}>
               <RxCross1 size={20} />
             </IconButton>,
           ]}

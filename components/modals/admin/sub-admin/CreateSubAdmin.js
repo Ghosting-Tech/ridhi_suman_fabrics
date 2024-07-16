@@ -1,8 +1,6 @@
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import Heading from "@/components/ui/heading/Heading";
 import {
-  Button,
-  Card,
   CardBody,
   CardFooter,
   Checkbox,
@@ -35,6 +33,7 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
       });
     }
   };
+
   const createAdminAccount = async (e) => {
     e.preventDefault();
 
@@ -42,18 +41,22 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
       toast.error("Name is required");
       return;
     }
+
     if (!formData.phoneNumber) {
       toast.error("Phone number is required");
       return;
     }
+
     if (!formData.password) {
       toast.error("Password is required");
       return;
     }
+
     if (!formData.image) {
       toast.error("Image is required");
       return;
     }
+
     if (!noteChecked) {
       toast.warning("Click on I agree before creating new admin account!");
       return;
@@ -62,9 +65,11 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
     const promise = new Promise(async (resolve, reject) => {
       try {
         const data = new FormData();
+
         data.append("name", formData.name);
         data.append("phoneNumber", formData.phoneNumber);
         data.append("password", formData.password);
+
         if (formData.image) {
           data.append("image", formData.image);
         }
@@ -76,18 +81,16 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
 
         const newAdmin = await response.json();
 
-        console.log(newAdmin);
-
         if (response.ok) {
           setAdmins((prevAdmins) => [...prevAdmins, newAdmin]);
-          setOpen(false); // Close the dialog after creating an account
-          setFormData({ image: null, phoneNumber: "", password: "", name: "" }); // Reset the form
-          resolve(newAdmin); // Resolve the promise with the new admin data
+          setOpen(false);
+
+          setFormData({ image: null, phoneNumber: "", password: "", name: "" });
         } else {
-          reject(newAdmin); // Reject the promise with the error response
+          reject(newAdmin);
         }
       } catch (err) {
-        reject(err); // Reject the promise with the caught error
+        reject(err);
       }
     });
 
@@ -122,7 +125,7 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
             }
             title={"Create Admin Account"}
             buttons={[
-              <IconButton variant="text" onClick={handleOpen}>
+              <IconButton key={1} variant="text" onClick={handleOpen}>
                 <RxCross1 size={20} />
               </IconButton>,
             ]}
@@ -195,9 +198,6 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
             clickHandler={() => setOpen(true)}
             type="submit"
           />
-          {/* <Button variant="gradient" color="pink" fullWidth type="submit">
-            Create Account
-          </Button> */}
         </CardFooter>
       </form>
     </Dialog>

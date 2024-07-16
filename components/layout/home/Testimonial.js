@@ -9,7 +9,7 @@ import {
   ButtonNext,
 } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
-import { testimonials } from "../utils/testimonialData"; // Adjust the import path as necessary
+import { testimonials } from "../../../utils/testimonialData"; // Adjust the import path as necessary
 
 function Testimonial() {
   return (

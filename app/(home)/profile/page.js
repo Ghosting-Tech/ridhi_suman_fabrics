@@ -3,8 +3,8 @@ import ProfileSection from "@/components/layout/profile/ProfileSection";
 import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
 import CardTitle from "@/components/cardTitle/CardTitle.";
 import cardTitle from "@/components/utils/data/cardTitle";
-import Nav from "@/components/header/Nav";
-import Footer from "@/components/footer/Footer";
+import Nav from "@/components/layout/home/header/Nav";
+import Footer from "@/components/layout/home/Footer";
 
 const page = () => {
   return (
@@ -19,7 +19,7 @@ const page = () => {
           </div>
         </div>
       </div>
-        <Footer />
+      <Footer />
     </>
   );
 };

@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 import { FaTshirt } from "react-icons/fa";
 import { RiApps2AddFill } from "react-icons/ri";
-import Footer from "@/components/footer/Footer";
-import Nav from "@/components/header/Nav";
+import Nav from "@/components/layout/home/header/Nav";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import Heading from "@/components/ui/heading/Heading";
 
@@ -24,6 +23,7 @@ const Page = () => {
 
   const btns = [
     <DefaultBtn
+      key={1}
       icon={<RiApps2AddFill />}
       title={"Create category"}
       clickHandler={() => {

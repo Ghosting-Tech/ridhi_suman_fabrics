@@ -45,7 +45,7 @@ const EditCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
           }
           title={"Category details"}
           buttons={[
-            <IconButton variant="text" onClick={handleOpen}>
+            <IconButton key={1} variant="text" onClick={handleOpen}>
               <RxCross1 size={20} />
             </IconButton>,
           ]}
