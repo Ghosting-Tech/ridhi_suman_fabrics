@@ -1,15 +1,17 @@
+import { NextResponse } from "next/server";
+
 import { v4 } from "uuid";
 import pathModule, { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 
 const uploadFile = async (file, pathLocation) => {
-  const path = `/uploads/${pathLocation}/`;
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  const uploadDir = join(process.cwd(), "public", path);
+  const path = `uploads/${pathLocation}/`;
 
   try {
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const uploadDir = join(process.cwd(), "public", path);
+
     await stat(uploadDir);
   } catch (e) {
     if (e.code === "ENOENT") {
@@ -20,17 +22,12 @@ const uploadFile = async (file, pathLocation) => {
         e
       );
 
-      return NextResponse.json(
-        { error: "Something went wrong." },
-        { status: 500 }
-      );
+      return NextResponse.json("Something went wrong.", { status: 500 });
     }
   }
 
   try {
-    const uniqueFileName = `${v4()}${pathModule.extname(
-      file.name
-    )}`;
+    const uniqueFileName = `${v4()}${pathModule.extname(file.name)}`;
 
     await writeFile(
       pathModule.join(process.cwd(), `public/${path}` + uniqueFileName),
@@ -41,7 +38,7 @@ const uploadFile = async (file, pathLocation) => {
   } catch (error) {
     console.log("Error occurred ", error);
 
-    return NextResponse.json({ Message: "Failed", status: 500 });
+    return NextResponse.json("Failed to upload image", { status: 500 });
   }
 };
 
