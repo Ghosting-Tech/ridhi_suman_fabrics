@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import Nav from "@/components/layout/home/header/Nav";
+import Nav from "@/components/layout/home/NavHeader/Nav";
 import Footer from "@/components/layout/home/Footer";
 import ProductCarousel from "@/components/carousel/ProductCarousel";
 import React, { useState } from "react";

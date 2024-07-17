@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Nav from "@/components/layout/home/header/Nav";
+import Nav from "@/components/layout/home/NavHeader/Nav";
 import Footer from "@/components/layout/home/Footer";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { IoMdListBox } from "react-icons/io";

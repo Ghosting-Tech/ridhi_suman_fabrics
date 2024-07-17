@@ -5,13 +5,14 @@ import pathModule, { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 
 const uploadFile = async (file, pathLocation) => {
-  const path = `uploads/${pathLocation}/`;
+  const path = `/uploads/${pathLocation}/`;
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  const uploadDir = join(process.cwd(), "public", path);
+  console.log("uploadDir", uploadDir);
 
   try {
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    const uploadDir = join(process.cwd(), "public", path);
-
     await stat(uploadDir);
   } catch (e) {
     if (e.code === "ENOENT") {
@@ -22,7 +23,10 @@ const uploadFile = async (file, pathLocation) => {
         e
       );
 
-      return NextResponse.json("Something went wrong.", { status: 500 });
+      return NextResponse.json(
+        { error: "Something went wrong." },
+        { status: 500 }
+      );
     }
   }
 
@@ -34,11 +38,13 @@ const uploadFile = async (file, pathLocation) => {
       buffer
     );
 
+    console.log(path + uniqueFileName);
+
     return `${path}${uniqueFileName}`;
   } catch (error) {
     console.log("Error occurred ", error);
 
-    return NextResponse.json("Failed to upload image", { status: 500 });
+    return NextResponse.json({ Message: "Failed", status: 500 });
   }
 };
 
