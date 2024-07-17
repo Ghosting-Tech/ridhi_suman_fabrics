@@ -1,5 +1,5 @@
 "use client";
-import Nav from "@/components/layout/home/header/Nav";
+import Nav from "@/components/layout/home/NavHeader/Nav";
 import CreateSubAdmin from "@/components/modals/admin/sub-admin/CreateSubAdmin";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import Heading from "@/components/ui/heading/Heading";

@@ -25,11 +25,17 @@ export async function POST(request) {
     const subCategories = JSON.parse(data.get("subCategories"));
 
     if (!name) {
-      return NextResponse.json({ error: "Invalid data." }, { status: 400 });
+      return NextResponse.json("Invalid data.", { status: 400 });
     }
 
     if (!file) {
-      return NextResponse.json({ error: "Invalid image." }, { status: 400 });
+      return NextResponse.json("Invalid image.", { status: 400 });
+    }
+
+    const categoryExists = await Category.findOne({ name });
+
+    if (categoryExists) {
+      return NextResponse.json("Category already exists.", { status: 400 });
     }
 
     const image = await uploadFile(file, "category");

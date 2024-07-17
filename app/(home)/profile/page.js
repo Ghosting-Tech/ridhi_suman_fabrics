@@ -3,7 +3,7 @@ import ProfileSection from "@/components/layout/profile/ProfileSection";
 import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
 import CardTitle from "@/components/cardTitle/CardTitle.";
 import cardTitle from "@/components/utils/data/cardTitle";
-import Nav from "@/components/layout/home/header/Nav";
+import Nav from "@/components/layout/home/NavHeader/Nav";
 import Footer from "@/components/layout/home/Footer";
 
 const page = () => {

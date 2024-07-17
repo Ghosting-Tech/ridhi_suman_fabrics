@@ -1,85 +1,76 @@
-
+import { Carousel } from "@material-tailwind/react";
 import React from "react";
-import bannerData from "@/utils/bannerData";
-import { useState, useEffect } from "react";
-import {
-  CarouselProvider,
-  Slider,
-  Slide,
-  ButtonBack,
-  ButtonNext,
-} from "pure-react-carousel";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import Image from "next/image"; // Assuming you are using Next.js Image component
+
+import Image from "next/image";
 
 const HeroSection = () => {
-  const [visibleSlides, setVisibleSlides] = useState(1);
-
-  useEffect(() => {
-    const updateSlides = () => {
-      if (window.innerWidth >= 1024) {
-        setVisibleSlides(1);
-      } else if (window.innerWidth >= 768) {
-        setVisibleSlides(1);
-      } else if (window.innerWidth >= 640) {
-        setVisibleSlides(1);
-      } else {
-        setVisibleSlides(1);
-      }
-    };
-
-    updateSlides();
-    window.addEventListener("resize", updateSlides);
-    return () => window.removeEventListener("resize", updateSlides);
-  }, []);
-
-  const products = bannerData.slice(0, 5);  
-
   return (
-    <div className="flex flex-wrap lg:flex-nowrap relative">
-      <div className="w-full lg:w-1/4 lg:pt-3 lg:pr-3 lg:pl-3 pt-2 px-1 relative">
-        <CarouselProvider
-          naturalSlideWidth={100}
-          naturalSlideHeight={98}
-          totalSlides={products.length}
-          visibleSlides={visibleSlides}
-          isPlaying={true}
-          interval={5000}
-          infinite={true}
-        >
-          <Slider>
-            {products.map((product, index) => (
-              <Slide index={index} key={product.id}>
-                <div className="flex flex-col items-center bg-white rounded-lg">
-                  <Image 
-                    src={product.src}
-                    alt={product.title}
-                    width={400}  
-                    height={300}  
-                    className="object-cover w-full rounded-lg"
+    <>
+      <div className="flex gap-2 my-2 mx-2">
+        <div className="w-1/4">
+          <Carousel
+            autoplay={true}
+            transition={{ duration: 1 }}
+            loop={true}
+            navigation={({ setActiveIndex, activeIndex, length }) => (
+              <div className="absolute bottom-4 left-2/4 z-40 flex -translate-x-2/4 gap-2">
+                {new Array(length).fill("").map((_, i) => (
+                  <span
+                    key={i}
+                    className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                      activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                    }`}
+                    onClick={() => setActiveIndex(i)}
                   />
-                </div>
-              </Slide>
-            ))}
-          </Slider>
-          <ButtonBack className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#f3f4f66e] text-gray-800 font-bold p-2 rounded-full">
-            <FaAngleLeft />
-          </ButtonBack>
-          <ButtonNext className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#f3f4f66e] text-gray-800 font-bold p-2 rounded-full">
-            <FaAngleRight />
-          </ButtonNext>
-        </CarouselProvider>
+                ))}
+              </div>
+            )}
+            className="rounded-xl max-w-lg h-80"
+          >
+            <Image
+              width={390}
+              height={320}
+              src="/category/download1.jpg"
+              alt="image 1"
+              className="h-full w-full object-cover"
+            />
+
+            <Image
+              width={390}
+              height={320}
+              src="/category/download2.jpg"
+              alt="image 2"
+              className="h-full w-full object-cover"
+            />
+
+            <Image
+              width={390}
+              height={320}
+              src="/category/download3.png"
+              alt="image 3"
+              className="h-full w-full object-cover"
+            />
+
+            <Image
+              width={390}
+              height={320}
+              src="/category/download4.png"
+              alt="image 4"
+              className="h-full w-full object-cover"
+            />
+          </Carousel>
+        </div>
+
+        <div className="w-3/4 h-80 overflow-hidden relative rounded-xl">
+          <Image
+            src="/hero-banner.jpg"
+            alt="hero banner"
+            objectFit="cover"
+            fill={true}
+          />
+        </div>
       </div>
-      <div className="hidden lg:block lg:w-3/4 p-3">
-        <Image 
-          src={bannerData[5].src}  
-          alt={bannerData[5].alt}
-          width={1200}  
-          height={600}  
-          className="rounded-lg "
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

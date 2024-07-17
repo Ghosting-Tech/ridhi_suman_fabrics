@@ -1,6 +1,6 @@
 "use client";
 import DashboardCard from "@/components/layout/admin/DashboardCard";
-import Nav from "@/components/layout/home/header/Nav";
+import Nav from "@/components/layout/home/NavHeader/Nav";
 import HorizontalBarChart from "@/components/utils/chartjs/HorizontalBarChart";
 import PieChart from "@/components/utils/chartjs/PieChart";
 import { useEffect, useState } from "react";
@@ -8,7 +8,6 @@ import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 
 const DashboardPage = () => {
-  
   const [loading, setLoading] = useState(true);
 
   const [data, setData] = useState({

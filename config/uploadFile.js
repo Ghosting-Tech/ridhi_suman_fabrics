@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 import { v4 } from "uuid";
 import pathModule, { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
@@ -8,6 +10,7 @@ const uploadFile = async (file, pathLocation) => {
   const buffer = Buffer.from(await file.arrayBuffer());
 
   const uploadDir = join(process.cwd(), "public", path);
+  console.log("uploadDir", uploadDir);
 
   try {
     await stat(uploadDir);
@@ -28,14 +31,14 @@ const uploadFile = async (file, pathLocation) => {
   }
 
   try {
-    const uniqueFileName = `${v4()}${pathModule.extname(
-      file.name
-    )}`;
+    const uniqueFileName = `${v4()}${pathModule.extname(file.name)}`;
 
     await writeFile(
       pathModule.join(process.cwd(), `public/${path}` + uniqueFileName),
       buffer
     );
+
+    console.log(path + uniqueFileName);
 
     return `${path}${uniqueFileName}`;
   } catch (error) {

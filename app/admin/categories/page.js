@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { FaTshirt } from "react-icons/fa";
 import { RiApps2AddFill } from "react-icons/ri";
-import Nav from "@/components/layout/home/header/Nav";
+import Nav from "@/components/layout/home/NavHeader/Nav";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import Heading from "@/components/ui/heading/Heading";
 
