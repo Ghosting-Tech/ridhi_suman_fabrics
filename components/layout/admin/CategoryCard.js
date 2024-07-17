@@ -9,6 +9,7 @@ const CategoryCard = ({
   setOpenEditDialog,
   setDeleteCategory
 }) => {
+  
   return (
     <div className="w-full h-full flex flex-col lg:flex-row overflow-hidden border bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
       <Image

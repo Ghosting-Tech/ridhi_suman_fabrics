@@ -2,15 +2,13 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaTshirt } from "react-icons/fa";
-import { MdDelete, MdDeleteOutline } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { toast } from "sonner";
-import productColors from "@/libs/productColors";
 import Heading from "@/components/ui/heading/Heading";
 import {
-  ArrowPathIcon,
-  PlusIcon,
   FolderMinusIcon,
   ArrowUpCircleIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/solid";
 import {
   Button,
@@ -20,8 +18,7 @@ import {
   Switch,
   Textarea,
 } from "@material-tailwind/react";
-import { FiEdit } from "react-icons/fi";
-import { RxCross1 } from "react-icons/rx";
+import CreateProductSize from "@/components/layout/admin/products/CreateProductSize";
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -29,85 +26,29 @@ const Page = () => {
     price: "",
     discount: "",
     visible: true,
-    category: [],
-    subCategory: [],
+    category: "",
+    subCategory: "",
     description: "",
+    fabric: "",
+    brand: "",
     images: [],
     sizes: [],
   });
-
-  const [size, setSize] = useState({
-    size: "",
-    colors: [],
-  });
-
-  const [colorQuantity, setColorQuantity] = useState({
-    color: {
-      name: "Black",
-      hex: "#000000",
-    },
-    quantity: "",
-  });
-
-  const handleAddColorAndQuantity = () => {
-    setSize((prev) => {
-      const colorExist = prev.colors.find(
-        (c) => c.color.name === colorQuantity.color.name
-      );
-      if (colorExist) {
-        toast.warning("Color " + colorQuantity.color.name + " already exists");
-        return prev;
-      }
-      return { ...prev, colors: [...prev.colors, colorQuantity] };
-    });
-    setColorQuantity({
-      color: {
-        name: "Black",
-        hex: "#000000",
-      },
-      quantity: "",
-    });
-  };
-
-  const handleAddSize = () => {
-    setFormData((prev) => {
-      const sizeExist = prev.sizes.includes(size.size);
-      if (sizeExist) {
-        toast.warning("Size " + size.size + " already exists");
-        return prev;
-      }
-      return { ...prev, sizes: [...prev.sizes, size] };
-    });
-    setSize({
-      size: "",
-      colors: [],
-    });
-    setColorQuantity({
-      color: {
-        name: "Black",
-        hex: "#000000",
-      },
-      quantity: "",
-    });
-  };
-
-  const handleResetFields = () => {
-    setSize({
-      size: "",
-      colors: [],
-    });
-    setColorQuantity({
-      color: {
-        name: "Black",
-        hex: "#000000",
-      },
-      quantity: "",
-    });
+  const [categories, setCategories] = useState([]);
+  const [selectedSubcategories, setSelectedSubcategories] = useState([]);
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("/api/category");
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    console.log({ size, colorQuantity });
-  }, [size, colorQuantity]);
+    fetchCategories();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -120,6 +61,7 @@ const Page = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files); // Convert FileList to an array
+    console.log(files);
     if (formData.images.length + files.length > 10) {
       toast.error("You can only upload up to 10 images.");
       return;
@@ -133,6 +75,74 @@ const Page = () => {
       images: formData.images.filter((_, i) => i !== index),
     });
   };
+
+  const submitForm = async (e) => {
+    e.preventDefault();
+    if (
+      !formData.name ||
+      !formData.price ||
+      !formData.discount ||
+      !formData.description ||
+      !formData.category ||
+      !formData.subCategory
+    ) {
+      toast.error("All fields are required.");
+      return;
+    }
+    if (formData.sizes.length < 1) {
+      toast.error("Add a minimum of 1 size!");
+      return;
+    }
+    console.log(formData.images)
+    if (formData.images.length <= 3) {
+      toast.error("Add a minimum of 4 images!");
+      return;
+    }
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("price", formData.price);
+      formDataToSend.append("discount", formData.discount);
+      formDataToSend.append("visible", formData.visible);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("subCategory", formData.subCategory);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("fabric", formData.fabric);
+      formDataToSend.append("brand", formData.brand);
+      for (let image of formData.images) {
+        formDataToSend.append("images", image);
+      }
+      for (let size of formData.sizes) {
+        formDataToSend.append("sizes", JSON.stringify(size));
+      }
+      const response = await fetch("/api/admin/product", {
+        method: "POST",
+        body: formDataToSend,
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        toast.success("Product created successfully!");
+        setFormData({
+          name: "",
+          price: "",
+          discount: "",
+          visible: true,
+          category: "",
+          subCategory: "",
+          description: "",
+          fabric: "",
+          brand: "",
+          images: [],
+          sizes: [],
+        });
+      }
+    } catch (e) {
+      toast.error("Failed to create product. Please try again later.");
+    }
+  };
+
   return (
     <div className="p-6 flex flex-col gap-6">
       <Heading
@@ -143,7 +153,10 @@ const Page = () => {
         }
         title={"Create Product"}
       />
-      <div className="px-4 flex flex-col gap-4 items-center justify-center">
+      <form
+        onSubmit={submitForm}
+        className="px-4 flex flex-col gap-4 items-center justify-center"
+      >
         <div className="w-full flex items-center gap-4 h-full">
           <Input
             label="Name"
@@ -169,16 +182,32 @@ const Page = () => {
             label="Discount"
             name="discount"
             value={formData.discount}
-            onChange={handleInputChange}
+            onChange={(e) => {
+              if (e.target.value > 100) {
+                toast.error("Discount should not be more than 100%.");
+                return;
+              }
+              setFormData({ ...formData, discount: e.target.value });
+            }}
           />
         </div>
         <div className="w-full flex items-center gap-4 h-full">
           <Select
             label="Select Category"
             name="category"
-            onChange={(value) => setFormData({ ...formData, category: value })}
+            onChange={(value) => {
+              setFormData({ ...formData, category: value });
+              const subCategories = categories.filter((c) => {
+                return c.name === value;
+              });
+              setSelectedSubcategories(subCategories[0].subCategories);
+            }}
           >
-            <Option>Material Tailwind HTML</Option>
+            {categories.map((category) => (
+              <Option key={category._id} value={category.name}>
+                {category.name}
+              </Option>
+            ))}
           </Select>
           <Select
             label="Select Sub Category"
@@ -187,7 +216,11 @@ const Page = () => {
               setFormData({ ...formData, subCategory: value })
             }
           >
-            <Option>Material Tailwind HTML</Option>
+            {selectedSubcategories.map((subcategory) => (
+              <Option key={subcategory._id} value={subcategory.name}>
+                {subcategory.name}
+              </Option>
+            ))}
           </Select>
         </div>
         <div className="w-full flex items-center gap-4 h-full">
@@ -212,202 +245,7 @@ const Page = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="grid grid-cols-3 gap-4 w-full">
-          <div className="p-4 rounded-lg flex flex-col gap-4 bg-gray-100">
-            <Input
-              label="Size"
-              className="bg-white"
-              value={size.size}
-              onChange={(e) => setSize({ ...size, size: e.target.value })}
-            />
-            <div className="flex items-center gap-2 [&>div]:min-w-0">
-              <Select
-                label="Colour"
-                className="bg-white min-w-0"
-                color="blue"
-                value={`${colorQuantity.color.name}-${colorQuantity.color.hex}`}
-                onChange={(e) => {
-                  setColorQuantity((prev) => {
-                    function extractColorInfo(str) {
-                      const [colorName, colorCode] = str.split("-");
-                      return {
-                        name: colorName,
-                        hex: colorCode.startsWith("#")
-                          ? colorCode
-                          : `#${colorCode}`,
-                      };
-                    }
-                    const { name, hex } = extractColorInfo(e);
-                    return {
-                      ...prev,
-                      color: {
-                        name,
-                        hex,
-                      },
-                    };
-                  });
-                }}
-              >
-                {productColors.map((color, index) => (
-                  <Option key={index} value={`${color.name}-${color.hex}`}>
-                    <div className="flex items-center gap-1">
-                      <div
-                        className="w-4 h-4 rounded-full"
-                        style={{
-                          background: color.hex,
-                          border: "1px solid lightgray",
-                        }}
-                      ></div>
-                      {color.name}
-                    </div>
-                  </Option>
-                ))}
-              </Select>
-              <Input
-                label="Quantity"
-                type="number"
-                className="bg-white"
-                value={colorQuantity.quantity}
-                onChange={(e) => {
-                  setColorQuantity((prev) => {
-                    return {
-                      ...prev,
-                      quantity: e.target.value,
-                    };
-                  });
-                }}
-              />
-              <Button
-                color="blue"
-                variant="gradient"
-                type="button"
-                onClick={handleAddColorAndQuantity}
-              >
-                Add
-              </Button>
-            </div>
-
-            <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
-              {size.colors.map((color) => {
-                return (
-                  <li
-                    key={color.color.name}
-                    style={{
-                      border: `1px solid black`,
-                    }}
-                    className="bg-white px-3 py-2 h-fit text-xs font-semibold rounded-md leading-none mb-0 flex gap-1 items-center"
-                  >
-                    <div
-                      className="w-4 h-4 rounded-full border"
-                      style={{ background: color.color.hex }}
-                    ></div>
-                    {color.color.name} - {color.quantity}
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="flex items-center gap-4 w-full">
-              <Button
-                variant="outlined"
-                color="pink"
-                size="sm"
-                className="rounded flex gap-1 items-center w-full justify-center bg-white"
-                type="button"
-                onClick={handleResetFields}
-              >
-                Reset Fields
-                <ArrowPathIcon className="h-5 w-5" />
-              </Button>
-              <Button
-                variant="gradient"
-                color="pink"
-                size="sm"
-                className="rounded flex gap-1 items-center w-full justify-center"
-                type="button"
-                onClick={handleAddSize}
-              >
-                Create
-                <PlusIcon className="h-6 w-6" />
-              </Button>
-            </div>
-          </div>
-          {formData.sizes.length > 0 &&
-            formData.sizes.map((size, index) => {
-              return (
-                <div key={index} className="p-4 rounded-lg flex flex-col gap-4 bg-gray-100">
-                  <div className="flex justify-between items-center">
-                    <div>Size: {size.size}</div>
-                    <div className="flex space-x-2">
-                      <button
-                        className="text-gray-500 hover:text-gray-800"
-                        title="Edit category"
-                        onClick={() => {
-                          return;
-                        }}
-                      >
-                        <FiEdit size={20} />
-                      </button>
-                      <button
-                        className="text-red-300 hover:text-red-500"
-                        title="Delete category"
-                        onClick={() => {
-                          return;
-                        }}
-                      >
-                        <MdDeleteOutline size={25} />
-                      </button>
-                    </div>
-                  </div>
-                  <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
-                    {size.colors.map((color) => {
-                      return (
-                        <li
-                          key={color.color.name}
-                          style={{
-                            border: `1px solid black`,
-                          }}
-                          className="bg-white px-3 py-2 h-fit text-xs font-semibold rounded-md leading-none mb-0 flex gap-1 items-center"
-                        >
-                          <div
-                            className="w-4 h-4 rounded-full border"
-                            style={{ background: color.color.hex }}
-                          ></div>
-                          {color.color.name} - {color.quantity}
-                          <div className="cursor-pointer"><RxCross1 /></div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              );
-            })}
-        </div>
-        <div className="flex items-center gap-4 w-full">
-          <input
-            type="file"
-            multiple
-            className="hidden"
-            id="images"
-            onChange={handleFileChange}
-          />
-          <Button
-            variant="outlined"
-            color="red"
-            className="rounded w-full flex items-center gap-1 justify-center"
-            type="button"
-            onClick={() => setFormData({ ...formData, images: [] })}
-          >
-            <FolderMinusIcon className="w-6 h-6" /> Remove All Images
-          </Button>
-          <label
-            htmlFor="images"
-            className="w-full bg-blue-500 text-white h-full flex justify-center items-center gap-1 py-3 rounded cursor-pointer uppercase text-sm hover:bg-light-blue-500 transition-all"
-          >
-            <ArrowUpCircleIcon className="w-6 h-6" />
-            Upload Images{" "}
-            <div className="font-semibold">{formData.images.length} / 10</div>
-          </label>
-        </div>
+        <CreateProductSize formData={formData} setFormData={setFormData} />
         <div className="flex gap-4 w-full h-full">
           {formData.images?.map((image, index) => (
             <div
@@ -430,7 +268,41 @@ const Page = () => {
             </div>
           ))}
         </div>
-      </div>
+        <div className="flex items-center gap-4 w-full">
+          <Button
+            variant="outlined"
+            color="red"
+            className="rounded w-full flex items-center gap-1 justify-center"
+            type="button"
+            onClick={() => setFormData({ ...formData, images: [] })}
+          >
+            <FolderMinusIcon className="w-6 h-6" /> Remove All Images
+          </Button>
+          <input
+            type="file"
+            multiple
+            className="hidden"
+            id="images"
+            onChange={handleFileChange}
+          />
+          <label
+            htmlFor="images"
+            className="w-full bg-blue-500 text-white h-full flex justify-center items-center gap-1 py-3 rounded cursor-pointer uppercase text-sm hover:bg-light-blue-500 transition-all"
+          >
+            <ArrowUpCircleIcon className="w-6 h-6" />
+            Upload Images{" "}
+            <div className="font-semibold">{formData.images.length} / 10</div>
+          </label>
+          <Button
+            variant="gradient"
+            color="teal"
+            className="rounded w-full flex items-center gap-1 justify-center"
+            type="submit"
+          >
+            <PlusCircleIcon className="w-6 h-6" /> Create Product
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
