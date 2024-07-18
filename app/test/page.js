@@ -38,13 +38,7 @@ function ImageUpload() {
       <input type="file" accept="image/*" onChange={handleImageChange} />
       <button type="submit">Upload</button>
       {imageUrl && (
-        <Image
-          width={200}
-          height={200}
-          unoptimized={true}
-          src={imageUrl}
-          alt="Uploaded Image"
-        />
+        <Image width={200} height={200} src={imageUrl} alt="Uploaded Image" />
       )}
     </form>
   );
