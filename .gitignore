@@ -38,3 +38,6 @@ next-env.d.ts
 
 #package-lock
 package-lock.json
+
+#server
+/server/node_modules

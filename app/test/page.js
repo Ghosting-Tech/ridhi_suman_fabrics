@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -12,11 +13,12 @@ function ImageUpload() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const formData = new FormData();
     formData.append("image", image);
 
     try {
-      const response = await fetch("/api/upload", {
+      const response = await fetch("http://localhost:5000/upload", {
         method: "POST",
         body: formData,
       });
@@ -26,19 +28,25 @@ function ImageUpload() {
       }
 
       const data = await response.json();
-      setImageUrl(`/uploads/${data.filename}`);
+      console.log(data);
+      setImageUrl(`/${data.filename}`);
       console.log("Image uploaded successfully:", data);
     } catch (error) {
-      console.error(error);
+      console.error("Error uploading image:", error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+      <input type="file" onChange={handleImageChange} />
       <button type="submit">Upload</button>
       {imageUrl && (
-        <Image width={200} height={200} src={imageUrl} alt="Uploaded Image" />
+        <Image
+          width="100"
+          height="100"
+          src={`http://localhost:5000/images${imageUrl}`}
+          alt="Uploaded Image"
+        />
       )}
     </form>
   );
