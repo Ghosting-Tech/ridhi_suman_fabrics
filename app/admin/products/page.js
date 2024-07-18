@@ -32,13 +32,8 @@ const Page = () => {
           }
           title={"Manage Categories"}
           buttons={[
-            <Link href={"/admin/products/create-product"}>
-              <Button
-                className="rounded"
-                variant="gradient"
-                color="pink"
-                key={"btn-1"}
-              >
+            <Link key={1} href={"/admin/products/create-product"}>
+              <Button className="rounded" variant="gradient" color="pink">
                 Create Product
               </Button>
               ,

@@ -7,11 +7,10 @@ import Nav from "@/components/layout/home/NavHeader/Nav";
 import Footer from "@/components/layout/home/Footer";
 
 const page = () => {
-  
   return (
     <>
       <Nav />
-      <Image />
+      {/* <Image /> */}
       <div className="flex flex-col min-h-screen">
         <div className="flex-grow mx-4 my-5 flex flex-col gap-5">
           <CardTitle data={cardTitle.profile} />

@@ -7,9 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
-import NavProfile from "./NavProfile";
-
 import NavList from "./NavList";
+import NavProfile from "./NavProfile";
 
 const NavHeader = () => {
   const [openNav, setOpenNav] = useState(false);
