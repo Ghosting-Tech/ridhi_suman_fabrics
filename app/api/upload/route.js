@@ -11,15 +11,15 @@ export const POST = async (req) => {
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
-  //   const filename = Date.now() + "-" + file.name;
-  const filePath = path.join(process.cwd(), "public", "uploads", file.name);
+  const filename = Date.now() + "-" + file.name;
+  const filePath = path.join(process.cwd(), "public", "uploads", filename);
 
   try {
     await fs.writeFile(filePath, buffer);
     return NextResponse.json(
       {
         message: "Image uploaded successfully",
-        fileName: file.name,
+        filename,
       },
       {
         headers: {
