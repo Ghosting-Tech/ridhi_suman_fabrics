@@ -18,10 +18,13 @@ function ImageUpload() {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:5000/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Image upload failed");
@@ -44,7 +47,7 @@ function ImageUpload() {
         <Image
           width="100"
           height="100"
-          src={`http://localhost:5000/images${imageUrl}`}
+          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/images${imageUrl}`}
           alt="Uploaded Image"
         />
       )}
