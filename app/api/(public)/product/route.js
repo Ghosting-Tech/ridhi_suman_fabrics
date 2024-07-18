@@ -27,7 +27,6 @@ export async function GET(request) {
     if (isAdmin) {
       products = await Product.find()
         .select("-sizes -description -visibility -orders -updatedAt -createdAt")
-        .populate("category")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize));
 
@@ -35,7 +34,6 @@ export async function GET(request) {
     } else {
       products = await Product.find({ visibility: true })
         .select("-sizes -description -visibility -orders -updatedAt -createdAt")
-        .populate("category")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize));
 
