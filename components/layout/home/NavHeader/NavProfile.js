@@ -124,7 +124,7 @@ const NavProfile = () => {
           {session.user.role === "admin"
             ? adminMenuItems.map((item, index) => (
                 <ProfileMenuItem
-                  key={index}
+                  key={item.label}
                   label={item.label}
                   closeMenu={closeMenu}
                   click={item.click}
@@ -134,7 +134,7 @@ const NavProfile = () => {
               ))
             : profileMenuItems.map((item, index) => (
                 <ProfileMenuItem
-                  key={index}
+                  key={item.label}
                   label={item.label}
                   closeMenu={closeMenu}
                   click={item.click}
@@ -142,6 +142,7 @@ const NavProfile = () => {
                   icon={item.icon}
                 />
               ))}
+          ``
         </MenuList>
       </Menu>
     );

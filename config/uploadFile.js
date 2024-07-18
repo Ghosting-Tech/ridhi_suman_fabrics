@@ -44,7 +44,7 @@ const uploadFile = async (file, pathLocation) => {
   } catch (error) {
     console.log("Error occurred ", error);
 
-    return NextResponse.json({ Message: "Failed", status: 500 });
+    return NextResponse.json("Failed", { status: 500 });
   }
 };
 
