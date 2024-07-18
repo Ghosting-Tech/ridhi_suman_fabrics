@@ -16,10 +16,17 @@ export const POST = async (req) => {
 
   try {
     await fs.writeFile(filePath, buffer);
-    return NextResponse.json({
-      message: "Image uploaded successfully",
-      filename,
-    });
+    return NextResponse.json(
+      {
+        message: "Image uploaded successfully",
+        filename,
+      },
+      {
+        headers: {
+          "Content-Type": "image/*", // Set generic image content type
+        },
+      }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
