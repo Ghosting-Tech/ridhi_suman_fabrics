@@ -36,7 +36,6 @@ const Page = () => {
               <Button className="rounded" variant="gradient" color="pink">
                 Create Product
               </Button>
-              ,
             </Link>,
           ]}
         />

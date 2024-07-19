@@ -16,7 +16,29 @@ const ProductSchema = new Schema(
       lowercase: true,
     },
 
-    images: [String],
+    images: {
+      type: [
+        {
+          url: {
+            type: String,
+            required: true,
+          },
+          ref: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      required: true,
+      default: [],
+      validate: {
+        validator: function (v) {
+          return v.length >= 4;
+        },
+        message: (props) =>
+          `At least 4 images are required, but only ${props.value.length} provided.`,
+      },
+    },
 
     discount: {
       type: Number,

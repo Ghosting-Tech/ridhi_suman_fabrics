@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/config/db";
 
 import Category from "@/model/category";
-import uploadFile from "@/config/uploadFile";
-
 import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function POST(request) {
@@ -17,30 +15,23 @@ export async function POST(request) {
 
     await dbConnect();
 
-    const data = await request.formData();
+    const data = await request.json();
 
-    const name = data.get("name");
-    const file = data.get("image");
-
-    const subCategories = JSON.parse(data.get("subCategories"));
-
-    if (!name) {
+    if (!data.name) {
       return NextResponse.json("Invalid data.", { status: 400 });
     }
 
-    if (!file) {
+    if (!data.image.url) {
       return NextResponse.json("Invalid image.", { status: 400 });
     }
 
-    const categoryExists = await Category.findOne({ name });
+    const categoryExists = await Category.findOne({ name: data.name });
 
     if (categoryExists) {
       return NextResponse.json("Category already exists.", { status: 400 });
     }
 
-    const image = await uploadFile(file, "category");
-
-    const category = await Category.create({ name, image, subCategories });
+    const category = await Category.create(data);
 
     return NextResponse.json(category, { status: 201 });
   } catch (err) {

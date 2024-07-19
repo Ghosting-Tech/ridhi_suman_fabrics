@@ -155,7 +155,7 @@ const Page = () => {
       />
       <form
         onSubmit={submitForm}
-        className="px-4 flex flex-col gap-4 items-center justify-center"
+        className="px-0 sm:px-4 flex flex-col gap-4 items-center justify-center"
       >
         <div className="w-full flex items-center gap-4 h-full">
           <Input
@@ -171,7 +171,7 @@ const Page = () => {
             onChange={handleSwitchChange}
           />
         </div>
-        <div className="w-full flex items-center gap-4 h-full">
+        <div className="w-full flex flex-col sm:flex-row items-center gap-4 h-full">
           <Input
             label="Price"
             name="price"
@@ -191,7 +191,7 @@ const Page = () => {
             }}
           />
         </div>
-        <div className="w-full flex items-center gap-4 h-full">
+        <div className="w-full flex flex-col sm:flex-row items-center gap-4 h-full">
           <Select
             label="Select Category"
             name="category"
@@ -223,7 +223,7 @@ const Page = () => {
             ))}
           </Select>
         </div>
-        <div className="w-full flex items-center gap-4 h-full">
+        <div className="w-full flex flex-col sm:flex-row items-center gap-4 h-full">
           <Input
             label="Fabric"
             name="fabric"
@@ -246,7 +246,7 @@ const Page = () => {
           />
         </div>
         <CreateProductSize formData={formData} setFormData={setFormData} />
-        <div className="flex gap-4 w-full h-full">
+        <div className="flex gap-4 flex-wrap w-full h-full">
           {formData.images?.map((image, index) => (
             <div
               key={index}
@@ -268,7 +268,7 @@ const Page = () => {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-4 w-full">
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
           <Button
             variant="outlined"
             color="red"

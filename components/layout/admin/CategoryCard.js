@@ -13,7 +13,7 @@ const CategoryCard = ({
   return (
     <div className="w-full h-full flex flex-col lg:flex-row overflow-hidden border bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out">
       <Image
-        src={category.image}
+        src={category.image?.url}
         alt="Woman wearing a colorful saree"
         width={150}
         height={150}

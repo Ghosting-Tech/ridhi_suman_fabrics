@@ -16,6 +16,13 @@ import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 import colours from "@/libs/colours";
 import { toast } from "sonner";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { storage } from "@/firebase";
 
 const EditCategory = ({ open, setOpen, category, setCategories }) => {
   const handleOpen = () => setOpen(!open);
@@ -25,6 +32,7 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
     image: null,
     subCategories: [],
   });
+  const [newImage, setNewImage] = useState(null);
   const [subCategory, setSubCategory] = useState({
     name: "",
     colour: "",
@@ -42,21 +50,12 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
 
   const [pending, setPending] = useState(false);
 
-  const handleImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setFormData({
-        ...formData,
-        image: event.target.files[0],
-      });
-    }
-  };
-
   const handleUpdateCategory = async (e) => {
     try {
       e.preventDefault();
-      console.log("Clicked updated category");
-  
-      if (!formData.image) {
+      console.log("update category");
+
+      if (!newImage) {
         toast.warning("Category Image is required");
         return;
       }
@@ -64,55 +63,67 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
         toast.warning("Category name is required");
         return;
       }
-  
-      // Check if the image is an instance of File
-      if (formData.image instanceof File) {
-        const removeImageRes = await fetch(
-          `/api/admin/removeFile?image=${category.image}`,
-          {
-            method: "DELETE",
-          }
-        );
-        console.log(await removeImageRes.json());
-      }
-  
       setPending(true);
-      const data = new FormData();
-      data.append("name", formData.name);
-      
-      if (formData.image instanceof File) {
-        data.append("image", formData.image);
+
+      let imageObject = formData.image;
+
+      if (newImage) {
+        if (formData.image?.ref) {
+          try {
+            await deleteObject(ref(storage, formData.image.ref));
+          } catch (error) {
+            console.warn("Failed to delete image:", error);
+          }
+        }
+
+        // Upload the new image
+        const imageRef = ref(
+          storage,
+          `categories/${newImage.size + newImage.name}`
+        );
+        await uploadBytes(imageRef, newImage);
+        const imageUrl = await getDownloadURL(imageRef); // Get the image URL directly
+        imageObject = { url: imageUrl, ref: imageRef._location.path_ };
       }
-      data.append("subCategories", JSON.stringify(formData.subCategories));
-  
+
+      const postData = {
+        ...formData,
+        image: imageObject,
+      };
+
       const res = await fetch(`/api/admin/category/${category._id}`, {
         method: "PUT",
-        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
       });
-  
+
       const responseData = await res.json(); // Assuming the response is JSON
-  
+
       if (res.ok) {
+        toast.success(`Updated ${formData.name} category`);
         handleOpen();
         setFormData({
           name: "",
           image: null,
           subCategories: [],
         });
-        // Assuming setCategories is a function passed as a prop
         setCategories((prev) => {
-          return prev.map((cat) => (cat._id === category._id ? responseData : cat));
+          return prev.map((cat) =>
+            cat._id === category._id ? responseData : cat
+          );
         });
       } else {
-        // handle error
+        toast.error(`Error updating category: ${responseData.message}`);
       }
     } catch (err) {
       console.error(err);
+      toast.error(err.message || "An unexpected error occurred");
     } finally {
       setPending(false);
     }
   };
-  
 
   return (
     <>
@@ -147,11 +158,11 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
               htmlFor="image"
               className="cursor-pointer flex items-center space-x-4 border rounded-md p-4 w-full"
             >
-              {formData.image ? (
+              {formData.image?.url ? (
                 <div className="relative w-12 h-12">
-                  {formData.image instanceof File ? (
+                  {newImage ? (
                     <Image
-                      src={URL.createObjectURL(formData.image)}
+                      src={URL.createObjectURL(newImage)}
                       alt="avatar"
                       layout="fill"
                       objectFit="cover"
@@ -159,7 +170,7 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
                     />
                   ) : (
                     <Image
-                      src={formData.image}
+                      src={formData.image?.url}
                       alt="avatar"
                       layout="fill"
                       objectFit="cover"
@@ -191,7 +202,9 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
               id="image"
               className="hidden"
               accept="image/*"
-              onChange={handleImageChange}
+              onChange={(e) => {
+                setNewImage(e.target.files[0]);
+              }}
             />
           </div>
           <Input
