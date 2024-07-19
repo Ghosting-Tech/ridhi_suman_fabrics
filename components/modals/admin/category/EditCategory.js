@@ -71,10 +71,17 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
         if (formData.image?.ref) {
           try {
             await deleteObject(ref(storage, formData.image.ref));
-          } catch (error) {
-            console.warn("Failed to delete image:", error);
+          } catch (err) {
+            toast.error("Failed to delete image");
           }
         }
+        // if (formData.image?.ref) {
+        //   try {
+        //     await deleteObject(ref(storage, formData.image.ref));
+        //   } catch (error) {
+        //     console.warn("Failed to delete image:", error);
+        //   }
+        // }
 
         // Upload the new image
         const imageRef = ref(
