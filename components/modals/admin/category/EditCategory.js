@@ -53,7 +53,6 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
   const handleUpdateCategory = async (e) => {
     try {
       e.preventDefault();
-      console.log("update category");
 
       if (!newImage) {
         toast.warning("Category Image is required");
@@ -75,15 +74,6 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
             toast.error("Failed to delete image");
           }
         }
-        // if (formData.image?.ref) {
-        //   try {
-        //     await deleteObject(ref(storage, formData.image.ref));
-        //   } catch (error) {
-        //     console.warn("Failed to delete image:", error);
-        //   }
-        // }
-
-        // Upload the new image
         const imageRef = ref(
           storage,
           `categories/${newImage.size + newImage.name}`
