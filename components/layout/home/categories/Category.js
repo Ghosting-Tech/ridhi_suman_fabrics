@@ -15,9 +15,9 @@ function Category() {
           <Link
             key={index}
             href={category.href}
-            className="flex flex-col items-center p-4 hover:bg-white rounded-xl transition-colors hover:shadow-inner hover:border-gray-100"
+            className="group flex flex-col items-center p-4 hover:bg-white rounded-xl transition-colors hover:shadow-inner hover:border-gray-100"
           >
-            <div className="relative w-full aspect-square rounded-full overflow-hidden border border-gray-500">
+            <div className="relative w-full aspect-square rounded-full overflow-hidden border border-gray-500 transition-transform duration-300 group-hover:scale-105">
               <Image
                 src={category.src}
                 alt={category.alt}
