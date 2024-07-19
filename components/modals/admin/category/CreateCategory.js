@@ -16,6 +16,8 @@ import Heading from "@/components/ui/heading/Heading";
 import { FaTshirt } from "react-icons/fa";
 import colours from "@/libs/colours";
 import { toast } from "sonner";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "@/firebase";
 
 const CreateCategory = ({ open, setOpen, setCategories }) => {
   const handleOpen = () => setOpen(!open);
@@ -52,16 +54,22 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
         return;
       }
       setPending(true);
-      const data = new FormData();
-      data.append("name", formData.name);
-      if (formData.image) {
-        data.append("image", formData.image);
-      }
-      data.append("subCategories", JSON.stringify(formData.subCategories));
+      const imageRef = ref(
+        storage,
+        `categories/${formData.image.size + formData.image.name}`
+      );
+      await uploadBytes(imageRef, formData.image);
+      const imageUrl = await getDownloadURL(imageRef); // Get the image URL directly
+      const imageObject = { url: imageUrl, name: imageRef._location.path_ };
+
+      const postData = { ...formData, image: imageObject };
 
       const res = await fetch("/api/admin/category", {
         method: "POST",
-        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
       });
 
       if (res.ok) {
@@ -77,10 +85,11 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
           return [...prev, responseData];
         });
       } else {
-        toast.error(`Error creating category ${formData.name}`);
+        const errorData = await res.json();
+        toast.error(`Error creating category: ${errorData.message}`);
       }
     } catch (err) {
-      toast.error(err);
+      toast.error(err.message || "An unexpected error occurred");
     } finally {
       setPending(false);
     }

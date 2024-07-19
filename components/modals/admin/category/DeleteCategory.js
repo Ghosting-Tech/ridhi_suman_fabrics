@@ -1,17 +1,26 @@
 "use client";
 import Heading from "@/components/ui/heading/Heading";
+import { storage } from "@/firebase";
 import { Dialog, Button, IconButton } from "@material-tailwind/react";
+import { deleteObject, ref } from "firebase/storage";
 import Image from "next/image";
 import { FaTshirt } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { toast } from "sonner";
 
-const EditCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
+const DeleteCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
   const handleOpen = () => setOpen(!open);
 
   const handleDeleteCategory = async () => {
     try {
+      if (deleteCategory.image?.ref) {
+        try {
+          await deleteObject(ref(storage, deleteCategory.image.ref));
+        } catch (error) {
+          console.warn("Failed to delete image:", error);
+        }
+      }
       const res = await fetch(`/api/admin/category/${deleteCategory._id}`, {
         method: "DELETE",
       });
@@ -21,11 +30,16 @@ const EditCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
           prev.filter((c) => c._id !== deleteCategory._id)
         );
         handleOpen();
+      } else {
+        const errorData = await res.json();
+        toast.error(`Failed to delete category: ${errorData.message}`);
       }
     } catch (error) {
       console.error(error);
+      toast.error(error.message || "An unexpected error occurred");
     }
   };
+
   return (
     <>
       <Dialog
@@ -52,7 +66,7 @@ const EditCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
         />
         <div className="w-full h-full flex border p-4  bg-white rounded-xl">
           <Image
-            src={deleteCategory.image}
+            src={deleteCategory.image?.url}
             alt="Image"
             width={150}
             height={150}
@@ -108,4 +122,4 @@ const EditCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
   );
 };
 
-export default EditCategory;
+export default DeleteCategory;

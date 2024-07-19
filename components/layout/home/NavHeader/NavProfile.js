@@ -73,7 +73,7 @@ const NavProfile = () => {
           as="div"
           variant="circular"
           size="md"
-          alt="tania andrew"
+          alt="Profile"
           color="blue-gray"
           className=" p-0.5 cursor-progress"
           src={"/profile.svg"}
@@ -112,7 +112,7 @@ const NavProfile = () => {
             <Avatar
               variant="circular"
               size="md"
-              alt="tania andrew"
+              alt="profile"
               color="blue-gray"
               className=" p-0.5"
               src={session.user.image || "/profile.svg"}

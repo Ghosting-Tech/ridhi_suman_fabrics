@@ -43,7 +43,6 @@ const NavHeader = () => {
 
           <div className="flex items-center gap-4">
             <NavProfile />
-
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 flex text-inherit text-black hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"

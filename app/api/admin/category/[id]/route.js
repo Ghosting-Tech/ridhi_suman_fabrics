@@ -26,45 +26,18 @@ export async function PUT(request, { params }) {
       );
     }
 
-    const data = await request.formData();
+    const data = await request.json();
 
-    const name = data.get("name");
-    const file = data.get("image");
-
-    const subCategories = JSON.parse(data.get("subCategories"));
-
-    if (!name) {
+    if (!data.name) {
       return NextResponse.json({ error: "Invalid data." }, { status: 400 });
     }
 
     await dbConnect();
 
-    if (!(file instanceof File)) {
-      const category = await Category.findById(id);
-
-      if (!category) {
-        return NextResponse.json(
-          { error: "Category not found" },
-          { status: 404 }
-        );
-      }
-
-      const updatedCategory = await Category.findByIdAndUpdate(
-        id,
-        { name, image: category.image, subCategories },
-        { new: true, runValidators: true }
-      );
-
-      return NextResponse.json(updatedCategory, { status: 200 });
-    }
-
-    const image = await uploadFile(file, "category");
-
-    const category = await Category.findByIdAndUpdate(
-      id,
-      { name, image, subCategories },
-      { new: true, runValidators: true }
-    );
+    const category = await Category.findByIdAndUpdate(id, data, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!category) {
       return NextResponse.json(
@@ -99,7 +72,7 @@ export async function DELETE(request, { params }) {
 
     await dbConnect();
 
-    const category = await Category.findById(id);
+    const category = await Category.findByIdAndDelete(id);
 
     if (!category) {
       return NextResponse.json(
@@ -107,10 +80,6 @@ export async function DELETE(request, { params }) {
         { status: 404 }
       );
     }
-
-    removeFile(category.image.substr(1, category.image.length));
-
-    await Category.findByIdAndDelete(id);
 
     return NextResponse.json("Category deleted successfully", { status: 200 });
   } catch (err) {

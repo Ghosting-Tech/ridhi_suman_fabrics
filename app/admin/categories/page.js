@@ -85,7 +85,6 @@ const Page = () => {
           setOpen={setOpenCreateDialog}
           setCategories={setCategories}
         />
-
         {/* Edit category dialog */}
         <EditCategory
           setCategories={setCategories}

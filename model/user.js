@@ -12,7 +12,11 @@ const userSchema = new Schema(
     },
 
     image: {
-      type: String,
+      type: Object,
+      default: {
+        url: "",
+        ref: "",
+      },
       required: true,
     },
 
