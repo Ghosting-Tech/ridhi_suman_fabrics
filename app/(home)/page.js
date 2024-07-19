@@ -3,23 +3,26 @@
 import OffBanner from "@/components/OffBanner";
 import Testimonial from "@/components/layout/home/Testimonial";
 import Category from "@/components/layout/home/categories/Category";
-import ProductCarousel from "@/components/carousel/ProductCarousel";
+// import ProductCarousel from "@/components/carousel/ProductCarousel";
 import ProductList from "@/components/productBundle/ProductList";
 import Image from "next/image";
 import bannerDataFooter from "@/utils/bannerDataFooter";
 
 import HeroSection from "@/components/layout/home/HeroSection";
+import ProductItem from "@/components/layout/products/ProductItem";
+import ProductCarousel from "@/components/layout/products/ProductCarousel";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
       <Category />
+      <ProductCarousel />
       <ProductList />
       <OffBanner />
+      {/* <ProductCarousel />
       <ProductCarousel />
-      <ProductCarousel />
-      <ProductCarousel />
+      <ProductCarousel /> */}
       <div className="flex w-full">
         {bannerDataFooter.slice(0, 3).map((banner, index) => (
           <div key={index} className="relative w-1/3">

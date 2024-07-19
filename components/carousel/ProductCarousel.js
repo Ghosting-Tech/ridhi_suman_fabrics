@@ -6,6 +6,7 @@ import Link from "next/link";
 import { products } from "@/utils/productData";
 import ProductDetails from "../ProductDetails";
 import Image from "next/image";
+import ProductItem from "../layout/products/ProductItem";
 
 function ProductCarousel() {
   const [visibleSlides, setVisibleSlides] = useState(1);
@@ -55,18 +56,7 @@ function ProductCarousel() {
           {products.map((product, index) => (
             <Slide index={index} key={product.id}>
               <Link key={product.id} href={`/product`} passHref>
-                <div className="flex flex-col items-center m-2 bg-white rounded-lg shadow-md">
-                  <div className="relative w-full h-[32rem]">
-                    <Image
-                      src={product.image}
-                      alt={product.title}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-t-lg"
-                    />
-                  </div>
-                  <ProductDetails product={product} />
-                </div>
+                <ProductItem product={product} />
               </Link>
             </Slide>
           ))}

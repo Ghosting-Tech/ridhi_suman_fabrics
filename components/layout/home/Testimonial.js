@@ -1,4 +1,3 @@
-import React from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import Image from "next/image";
 import {
@@ -18,6 +17,7 @@ function Testimonial() {
         <div className="w-1/3 bg-white h-full" />
         <div className="w-4/6 ml-16 bg-gray-100 h-[80%]" />
       </div>
+
       <div className="xl:px-20 px-8 py-20 2xl:mx-auto 2xl:container relative z-40">
         <CarouselProvider
           naturalSlideWidth={100}
@@ -25,18 +25,19 @@ function Testimonial() {
           isPlaying={true}
           totalSlides={testimonials.length}
         >
-          <h1 className="text-4xl font-bold xl:block hidden leading-tight text-gray-800">
+          <h2 className="text-4xl font-bold xl:block hidden leading-tight text-gray-800">
             <span className="text-white bg-blue-500 mr-2 rounded-full p-1">
               👍
             </span>
             Testimonial
-          </h1>
-          <h1 className="text-3xl font-bold xl:hidden block leading-tight lg:leading-10 text-gray-800">
+          </h2>
+
+          <h2 className="text-3xl font-bold xl:hidden block leading-tight lg:leading-10 text-gray-800">
             <span className="text-white bg-blue-500 mr-2 rounded-full p-1">
               👍
             </span>
             Testimonial
-          </h1>
+          </h2>
           <Slider>
             {testimonials.map((testimonial, index) => (
               <Slide key={index} index={index} tabIndex="null">
@@ -53,15 +54,17 @@ function Testimonial() {
                         <Image fill src="/testimonial-svg1.svg" alt="commas" />
                       </div>
                     </div>
+
                     <div className="md:w-1/3 lg:w-1/3 xl:ml-32 md:ml-20 md:mt-0 mt-4 flex flex-col justify-between">
                       <div>
-                        <h1 className="text-2xl font-semibold xl:leading-loose text-gray-800">
+                        <h2 className="text-2xl font-semibold xl:leading-loose text-gray-800">
                           {testimonial.title}
-                        </h1>
+                        </h2>
                         <p className="text-base font-medium leading-6 mt-4 text-gray-600">
                           {testimonial.description}
                         </p>
                       </div>
+
                       <div className="md:mt-0 mt-8">
                         <p className="text-base font-medium leading-4 text-gray-800">
                           {testimonial.name}
@@ -76,6 +79,7 @@ function Testimonial() {
               </Slide>
             ))}
           </Slider>
+
           <div className="flex items-center mt-8">
             <ButtonBack
               className="cursor-pointer"
