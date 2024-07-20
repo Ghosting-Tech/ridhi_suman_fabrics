@@ -19,12 +19,7 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import CreateProductSize from "@/components/layout/admin/products/CreateProductSize";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/firebase";
 
 const Page = () => {
@@ -34,7 +29,10 @@ const Page = () => {
     discount: "",
     visibility: true,
     category: "",
-    subCategory: "",
+    subCategory: {
+      name: "",
+      colour: "",
+    },
     description: "",
     fabric: "",
     brand: "",
@@ -60,31 +58,31 @@ const Page = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSwitchChange = (e) => {
-    setFormData({ ...formData, visibility: e.target.checked });
+    setFormData((prevState) => ({ ...prevState, visibility: e.target.checked }));
   };
 
   const handleFileChange = (e) => {
-    const files = Array.from(e.target.files); // Convert FileList to an array
+    const files = Array.from(e.target.files);
     if (formData.images.length + files.length > 10) {
       toast.error("You can only upload up to 10 images.");
       return;
     }
-    setFormData({ ...formData, images: [...formData.images, ...files] }); // Spread the files into the images array
+    setFormData((prevState) => ({ ...prevState, images: [...prevState.images, ...files] }));
   };
 
   const removeImage = (index) => {
-    setFormData({
-      ...formData,
-      images: formData.images.filter((_, i) => i !== index),
-    });
+    setFormData((prevState) => ({
+      ...prevState,
+      images: prevState.images.filter((_, i) => i !== index),
+    }));
   };
 
   const handleCategoryChange = (value) => {
-    setFormData({ ...formData, category: value });
+    setFormData((prevState) => ({ ...prevState, category: value }));
     const selectedCategory = categories.find((c) => c.name === value);
     if (selectedCategory) {
       setSelectedSubcategories(selectedCategory.subCategories);
@@ -94,7 +92,11 @@ const Page = () => {
   };
 
   const handleSubCategoryChange = (value) => {
-    setFormData({ ...formData, subCategory: value });
+    const [name, colour] = value.split("-");
+    setFormData((prevState) => ({
+      ...prevState,
+      subCategory: { name, colour: colour.startsWith("#") ? colour : `#${colour}` },
+    }));
   };
 
   const submitForm = async (e) => {
@@ -106,7 +108,7 @@ const Page = () => {
       !formData.discount ||
       !formData.description ||
       !formData.category ||
-      !formData.subCategory
+      !formData.subCategory.name
     ) {
       toast.error("All fields are required.");
       return;
@@ -121,18 +123,16 @@ const Page = () => {
     }
 
     const formDataToSend = new FormData();
-    formDataToSend.append("title", formData.title);
-    formDataToSend.append("price", formData.price);
-    formDataToSend.append("discount", formData.discount);
-    formDataToSend.append("visibility", formData.visibility);
-    formDataToSend.append("category", formData.category);
-    formDataToSend.append("subCategory", formData.subCategory);
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("fabric", formData.fabric);
-    formDataToSend.append("brand", formData.brand);
-    formDataToSend.append("sizes", JSON.stringify(formData.sizes));
-    formData.images.forEach((image) => {
-      formDataToSend.append("images", image);
+    Object.keys(formData).forEach((key) => {
+      if (key === "images") {
+        formData.images.forEach((image) => formDataToSend.append("images", image));
+      } else if (key === "sizes") {
+        formDataToSend.append(key, JSON.stringify(formData[key]));
+      } else if (key === "subCategory") {
+        formDataToSend.append(key, JSON.stringify(formData.subCategory));
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
     });
 
     try {
@@ -150,7 +150,10 @@ const Page = () => {
           discount: "",
           visibility: true,
           category: "",
-          subCategory: "",
+          subCategory: {
+            name: "",
+            colour: "",
+          },
           description: "",
           fabric: "",
           brand: "",
@@ -189,7 +192,7 @@ const Page = () => {
             onChange={handleInputChange}
           />
           <Switch
-            defaultChecked={formData.visibility}
+            checked={formData.visibility}
             label={`${formData.visibility ? "Visible" : "Invisible"}`}
             color="teal"
             onChange={handleSwitchChange}
@@ -211,7 +214,7 @@ const Page = () => {
                 toast.error("Discount should not be more than 100%.");
                 return;
               }
-              setFormData({ ...formData, discount: e.target.value });
+              handleInputChange(e);
             }}
           />
         </div>
@@ -231,11 +234,11 @@ const Page = () => {
           <Select
             label="Select Sub Category"
             name="subCategory"
-            value={formData.subCategory}
+            value={`${formData.subCategory.name}-${formData.subCategory.colour}`}
             onChange={handleSubCategoryChange}
           >
             {selectedSubcategories.map((subcategory) => (
-              <Option key={subcategory._id} value={subcategory.name}>
+              <Option key={subcategory._id} value={`${subcategory.name}-${subcategory.colour}`}>
                 {subcategory.name}
               </Option>
             ))}
@@ -292,7 +295,7 @@ const Page = () => {
             color="red"
             className="rounded w-full flex items-center gap-1 justify-center"
             type="button"
-            onClick={() => setFormData({ ...formData, images: [] })}
+            onClick={() => setFormData((prevState) => ({ ...prevState, images: [] }))}
           >
             <FolderMinusIcon className="w-6 h-6" /> Remove All Images
           </Button>
@@ -308,8 +311,7 @@ const Page = () => {
             className="w-full bg-blue-500 text-white h-full flex justify-center items-center gap-1 py-3 rounded cursor-pointer uppercase text-sm hover:bg-light-blue-500 transition-all"
           >
             <ArrowUpCircleIcon className="w-6 h-6" />
-            Upload Images{" "}
-            <div className="font-semibold">{formData.images.length} / 10</div>
+            Upload Images <div className="font-semibold">{formData.images.length} / 10</div>
           </label>
           <Button
             variant="gradient"
@@ -324,4 +326,5 @@ const Page = () => {
     </div>
   );
 };
+
 export default Page;

@@ -1,4 +1,5 @@
 "use client";
+import { ProductCard } from "@/components/layout/admin/products/ProductCard";
 import Heading from "@/components/ui/heading/Heading";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
@@ -39,7 +40,12 @@ const Page = () => {
             </Link>,
           ]}
         />
-        <div>
+        <div className="grid grid-cols-4 mt-4 gap-4">
+          {products?.map((product) => {
+            return <ProductCard product={product} />;
+          })}
+        </div>
+        {/* <div>
           {products?.map((product) => {
             return (
               <div key={product.id} className="mb-4">
@@ -56,7 +62,7 @@ const Page = () => {
               </div>
             );
           })}
-        </div>
+        </div> */}
       </div>
     </>
   );
