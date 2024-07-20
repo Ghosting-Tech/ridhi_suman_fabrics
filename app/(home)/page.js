@@ -6,15 +6,10 @@ import Category from "@/components/layout/home/categories/Category";
 import ProductList from "@/components/productBundle/ProductList";
 import Image from "next/image";
 import bannerDataFooter from "@/utils/bannerDataFooter";
-
 import HeroSection from "@/components/layout/home/HeroSection";
-import ProductItem from "@/components/layout/products/ProductItem";
-import ProductCarousel from "@/components/layout/products/ProductCarousel";
-import ProductSetCarousel from "@/components/layout/products/ProductSetCarousel";
-
 export default function Home() {
   return (
-    <>
+    <main>
       <HeroSection />
       <Category />
       <ProductCarousel />
@@ -38,6 +33,6 @@ export default function Home() {
         ))}
       </div>
       <Testimonial />
-    </>
+    </main>
   );
 }

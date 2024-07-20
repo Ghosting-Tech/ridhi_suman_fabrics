@@ -13,7 +13,9 @@ const Heading = ({ icon, title, buttons }) => {
             buttons.map((button, index) => <div key={index}>{button}</div>)}
         </div>
       </div>
-      <div className="h-1 rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400"></div>
+      <div
+        className={`rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400 ${title == "WISHLIST ITEMS" ? "h-[2px]" : "h-1"}`}
+      ></div>
     </div>
   );
 };

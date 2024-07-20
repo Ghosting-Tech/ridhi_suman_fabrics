@@ -1,6 +1,6 @@
 /* styles/globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Aclonica&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -21,7 +21,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 @layer utilities {
@@ -44,41 +44,46 @@ body {
   width: 100px;
   gap: 6px;
   height: 100px;
- }
- 
- .loader span {
+}
+
+.loader span {
   width: 4px;
   height: 50px;
   background: var(--first-color);
   animation: scale var(--speed-of-animation) ease-in-out infinite;
- }
- 
- .loader span:nth-child(2) {
+}
+
+.loader span:nth-child(2) {
   background: var(--second-color);
   animation-delay: -0.8s;
- }
- 
- .loader span:nth-child(3) {
+}
+
+.loader span:nth-child(3) {
   background: var(--third-color);
   animation-delay: -0.7s;
- }
- 
- .loader span:nth-child(4) {
+}
+
+.loader span:nth-child(4) {
   background: var(--fourth-color);
   animation-delay: -0.6s;
- }
- 
- .loader span:nth-child(5) {
+}
+
+.loader span:nth-child(5) {
   background: var(--fifth-color);
   animation-delay: -0.5s;
- }
- 
- @keyframes scale {
-  0%, 40%, 100% {
-   transform: scaleY(0.05);
+}
+
+@keyframes scale {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.05);
   }
- 
+
   20% {
-   transform: scaleY(1);
+    transform: scaleY(1);
   }
- }
+}
+.size {
+  width: calc(50% - 10px);
+}
