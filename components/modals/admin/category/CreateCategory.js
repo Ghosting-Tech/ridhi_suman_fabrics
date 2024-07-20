@@ -150,7 +150,7 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
                 </div>
               )}
               <div className="flex-grow pl-2">
-                <p className="text-gray-500">Add Profile Image</p>
+                <p className="text-gray-500">Category Image</p>
                 <p className="text-sm text-gray-400">PNG or JPG</p>
               </div>
               <div className="ml-auto">

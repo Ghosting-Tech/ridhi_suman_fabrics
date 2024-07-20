@@ -5,9 +5,8 @@ const ProductSchema = new Schema(
     category: { type: String, required: true },
 
     subCategory: {
-      type: String,
+      type: Object,
       required: true,
-      lowercase: true,
     },
 
     title: {

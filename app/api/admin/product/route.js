@@ -25,7 +25,7 @@ export async function POST(request) {
     const visibility = formData.get("visibility");
     const description = formData.get("description");
     const category = formData.get("category");
-    const subCategory = formData.get("subCategory");
+    const subCategory = JSON.parse(formData.get("subCategory"));
     const fabric = formData.get("fabric");
     const brand = formData.get("brand");
     const sizes = JSON.parse(formData.get("sizes"));
