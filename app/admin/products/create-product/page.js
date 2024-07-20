@@ -99,6 +99,7 @@ const Page = () => {
 
   const submitForm = async (e) => {
     e.preventDefault();
+
     if (
       !formData.title ||
       !formData.price ||
@@ -119,28 +120,25 @@ const Page = () => {
       return;
     }
 
-    // let arrayOfImageObject = [];
-    try {
-      //   arrayOfImageObject = await Promise.all(
-      //     formData.images.map(async (img) => {
-      //       const imageRef = ref(
-      //         storage,
-      //         `products/${formData.title}/${img.size + img.name}`
-      //       );
-      //       await uploadBytes(imageRef, img);
-      //       const imageUrl = await getDownloadURL(imageRef); // Get the image URL directly
-      //       const imageObject = { url: imageUrl, ref: imageRef._location.path_ };
-      //       return imageObject;
-      //     })
-      //   );
+    const formDataToSend = new FormData();
+    formDataToSend.append("title", formData.title);
+    formDataToSend.append("price", formData.price);
+    formDataToSend.append("discount", formData.discount);
+    formDataToSend.append("visibility", formData.visibility);
+    formDataToSend.append("category", formData.category);
+    formDataToSend.append("subCategory", formData.subCategory);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("fabric", formData.fabric);
+    formDataToSend.append("brand", formData.brand);
+    formDataToSend.append("sizes", JSON.stringify(formData.sizes));
+    formData.images.forEach((image) => {
+      formDataToSend.append("images", image);
+    });
 
-      //   const postData = { ...formData, images: arrayOfImageObject };
+    try {
       const response = await fetch("/api/admin/product", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: formDataToSend,
       });
 
       const data = await response.json();
@@ -161,24 +159,11 @@ const Page = () => {
         });
         fetchCategories();
       } else {
-        console.log(data);
         toast.error(`${data.error}`);
-
-        // await Promise.all(
-        //   arrayOfImageObject.map(async (img) => {
-        //     await deleteObject(ref(storage, img.ref));
-        //   })
-        // );
       }
     } catch (e) {
       toast.error("Failed to create product. Please try again later.");
       console.error(e);
-      
-      // await Promise.all(
-      //   arrayOfImageObject.map(async (img) => {
-      //     await deleteObject(ref(storage, img.ref));
-      //   })
-      // );
     }
   };
 
