@@ -1,5 +1,4 @@
 import { Carousel } from "@material-tailwind/react";
-import React from "react";
 
 import Image from "next/image";
 
@@ -7,7 +6,7 @@ const HeroSection = () => {
   return (
     <>
       <div className="flex gap-2 my-2 mx-2">
-        <div className="w-1/4">
+        <div className="md:hidden lg:block lg:w-1/4 w-full block">
           <Carousel
             autoplay={true}
             transition={{ duration: 1 }}
@@ -25,14 +24,14 @@ const HeroSection = () => {
                 ))}
               </div>
             )}
-            className="rounded-xl max-w-lg h-80"
+            className="rounded-xl md:max-w-lg h-80"
           >
             <Image
               width={390}
               height={320}
               src="/category/download1.jpg"
               alt="image 1"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top md:object-center"
             />
 
             <Image
@@ -40,7 +39,7 @@ const HeroSection = () => {
               height={320}
               src="/category/download2.jpg"
               alt="image 2"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top md:object-center"
             />
 
             <Image
@@ -48,7 +47,7 @@ const HeroSection = () => {
               height={320}
               src="/category/download3.png"
               alt="image 3"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top md:object-center"
             />
 
             <Image
@@ -56,12 +55,12 @@ const HeroSection = () => {
               height={320}
               src="/category/download4.png"
               alt="image 4"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top md:object-center"
             />
           </Carousel>
         </div>
 
-        <div className="w-3/4 h-80 overflow-hidden relative rounded-xl">
+        <div className="w-full lg:w-3/4 md:block hidden h-80 overflow-hidden relative rounded-xl bg-black">
           <Image
             src="/hero-banner.jpg"
             alt="hero banner"
