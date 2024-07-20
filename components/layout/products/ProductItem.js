@@ -11,27 +11,38 @@ import ProductHeader from "./product/ProductHeader";
 import ProductCategory from "./product/ProductCategory";
 import ProductExtraDetails from "./product/ProductExtraDetails";
 
-const ProductItem = () => {
+const ProductItem = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
   return (
-    <Link href={`/`}>
+    <Link href={`/${product.title}`}>
       <Card
         className="w-full max-w-sm mx-auto shadow-lg"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <ProductHeader isHovered={isHovered} />
+        <ProductHeader
+          title={product.title}
+          srcs={product.images[0]}
+          isHovered={isHovered}
+        />
 
         <CardBody className="p-0 pb-6 mx-4 relative">
-          <ProductCategory />
+          <ProductCategory
+            category={product.category}
+            discount={product.discount}
+          />
 
-          <ProductTitle />
+          <ProductTitle
+            title={product.title}
+            price={product.price}
+            discount={product.discount}
+          />
 
-          <ProductExtraDetails isHovered={isHovered} />
+          <ProductExtraDetails sizes={product.sizes} isHovered={isHovered} />
         </CardBody>
 
         <ProductFooter />

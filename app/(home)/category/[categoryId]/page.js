@@ -1,40 +1,31 @@
-import CategoriesList from "@/components/layout/categories/CategoriesList";
-import { CategorySkeleton } from "@/components/ui/SkeletonComponent";
-import { Suspense } from "react";
+"use client";
+import categoryData from "@/utils/categoryData";
 
-async function getCategoryProduct() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category`
-  );
+import CategoryPageHeader from "@/components/layout/home/categories/CategoryPageHeader";
+import SetProductBundle from "@/components/layout/home/categories/SetProductBundle";
+import SingleProductBundle from "@/components/layout/home/categories/SingleProductBundle";
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
+// async function getCategoryProduct() {
+//   const res = await fetch(
+//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category`
+//   );
 
-  return res.json();
-}
+//   if (!res.ok) {
+//     throw new Error("Failed to fetch data");
+//   }
 
-const CategoryPage = async () => {
-  const data = await getCategoryProduct();
+//   return res.json();
+// }
+
+const CategoryPage = () => {
+  // const data = await getCategoryProduct();
 
   return (
-    <Suspense
-      fallback={
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 justify-center">
-          {[...Array(4)].map((_, index) => (
-            <CategorySkeleton key={index} />
-          ))}
-        </div>
-      }
-    >
-      <div className="relative p-4 sm:p-8 bg-gray-50">
-        <h2 className="text-2xl lg:text-4xl font-bold text-center text-[#0052D4] font-aclonica leading-tight mb-4 sm:mb-8">
-          All Products Categories
-        </h2>
-
-        <CategoriesList categoryData={data} />
-      </div>
-    </Suspense>
+    <>
+      <CategoryPageHeader data={categoryData} />
+      <SetProductBundle />
+      <SingleProductBundle />
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import { CardHeader, IconButton } from "@material-tailwind/react";
 
 import Image from "next/image";
 
-const ProductHeader = ({ isHovered, isSet = false, srcs }) => {
+const ProductHeader = ({ isHovered, isSet = false, srcs, title }) => {
   return (
     <CardHeader floated={true} className={isSet ? "h-[500px]" : "h-[420px]"}>
       {isSet ? (
@@ -40,8 +40,8 @@ const ProductHeader = ({ isHovered, isSet = false, srcs }) => {
         <Image
           fill={true}
           objectFit="cover"
-          src="/image/image.png"
-          alt="ui/ux review check"
+          src={srcs.url}
+          alt={title}
           style={{
             filter: isHovered ? "brightness(1)" : "brightness(0.9)",
             transform: isHovered ? "scale(1.05)" : "scale(1)",

@@ -26,14 +26,14 @@ export async function GET(request) {
 
     if (isAdmin) {
       products = await Product.find()
-        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+        .select("-description -orders")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize));
 
       totalProducts = await Product.countDocuments();
     } else {
       products = await Product.find({ visibility: true })
-        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+        .select("-description -visibility -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize));
 

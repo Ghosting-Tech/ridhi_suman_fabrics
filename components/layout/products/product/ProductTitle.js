@@ -1,19 +1,17 @@
 import React from "react";
 
-const ProductTitle = () => {
+const ProductTitle = ({ title, price, discount }) => {
   return (
     <div className="space-y-3 z-30 bg-white px-4 relative">
-      <h2 className="text-lg font-bold">
-        Cotton Grey Party Wear Digital Printed Kaftan
-      </h2>
+      <h2 className="text-lg font-bold capitalize">{title}</h2>
 
       <div className="flex items-end gap-1.5 pb-6">
         <p className="leading-none font-medium text-black">
-          Rs. <span>1999</span>
+          ₹ <span>{(price - (discount / 100) * price).toFixed(2)}</span>
         </p>
 
         <p className="line-through text-xs leading-none">
-          Rs. <span>3000</span>
+          ₹ <span>{price}</span>
         </p>
       </div>
     </div>

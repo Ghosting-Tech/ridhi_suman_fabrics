@@ -24,9 +24,8 @@ const useWindowSize = () => {
   return size;
 };
 
-const ProductCarousel = () => {
-  const [width] = useWindowSize();
-  const items = [
+const ProductCarousel = ({
+  items = [
     <ProductItem key={1} />,
     <ProductItem key={2} />,
     <ProductItem key={3} />,
@@ -37,7 +36,10 @@ const ProductCarousel = () => {
     <ProductItem key={8} />,
     <ProductItem key={9} />,
     <ProductItem key={10} />,
-  ];
+  ],
+}) => {
+  console.log(items);
+  const [width] = useWindowSize();
 
   const divideItems = () => {
     let perSlide;
@@ -60,7 +62,9 @@ const ProductCarousel = () => {
     const slides = divideItems();
 
     return slides.map((slideItems, index) => (
-      <ProductList key={index}>{slideItems}</ProductList>
+      <ProductList key={index} items={items}>
+        {slideItems}
+      </ProductList>
     ));
   };
 
