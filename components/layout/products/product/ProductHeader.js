@@ -2,9 +2,9 @@ import { CardHeader, IconButton } from "@material-tailwind/react";
 
 import Image from "next/image";
 
-const ProductItemHeader = () => {
+const ProductHeader = ({ isHovered, isSet = false }) => {
   return (
-    <CardHeader floated={true} className="h-96">
+    <CardHeader floated={true} className={isSet ? "h-[600px]" : "h-[420px]"}>
       <Image
         fill={true}
         objectFit="cover"
@@ -38,4 +38,4 @@ const ProductItemHeader = () => {
   );
 };
 
-export default ProductItemHeader;
+export default ProductHeader;

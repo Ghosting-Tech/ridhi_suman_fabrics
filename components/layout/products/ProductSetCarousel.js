@@ -1,12 +1,13 @@
 "use client";
 
 import { Carousel, IconButton } from "@material-tailwind/react";
+
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 import React, { useState, useEffect } from "react";
 
-import ProductItem from "./ProductItem";
-import ProductList from "./ProductList";
+import ProductSetItem from "./productsSet/ProductSetItem";
+import ProductSetList from "./productsSet/ProductsSetList";
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -24,27 +25,26 @@ const useWindowSize = () => {
   return size;
 };
 
-const ProductCarousel = () => {
+const ProductSetCarousel = () => {
   const [width] = useWindowSize();
   const items = [
-    <ProductItem key={1} />,
-    <ProductItem key={2} />,
-    <ProductItem key={3} />,
-    <ProductItem key={4} />,
-    <ProductItem key={5} />,
-    <ProductItem key={6} />,
-    <ProductItem key={7} />,
-    <ProductItem key={8} />,
-    <ProductItem key={9} />,
-    <ProductItem key={10} />,
+    <ProductSetItem key={1} />,
+    <ProductSetItem key={2} />,
+    <ProductSetItem key={3} />,
+    <ProductSetItem key={4} />,
+    <ProductSetItem key={5} />,
+    <ProductSetItem key={6} />,
+    <ProductSetItem key={7} />,
+    <ProductSetItem key={8} />,
+    <ProductSetItem key={9} />,
+    <ProductSetItem key={10} />,
   ];
 
   const divideItems = () => {
     let perSlide;
 
-    if (width > 1360) perSlide = 4;
-    else if (width > 960) perSlide = 3;
-    else if (width > 720) perSlide = 2;
+    if (width > 1360) perSlide = 3;
+    else if (width > 960) perSlide = 2;
     else perSlide = 1;
 
     const slides = [];
@@ -60,7 +60,7 @@ const ProductCarousel = () => {
     const slides = divideItems();
 
     return slides.map((slideItems, index) => (
-      <ProductList key={index}>{slideItems}</ProductList>
+      <ProductSetList key={index}>{slideItems}</ProductSetList>
     ));
   };
 
@@ -94,4 +94,4 @@ const ProductCarousel = () => {
   );
 };
 
-export default ProductCarousel;
+export default ProductSetCarousel;
