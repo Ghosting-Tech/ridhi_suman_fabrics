@@ -46,7 +46,7 @@ const Page = () => {
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
                 {product.images.map((image, index) => {
-                  return <img key={index} src={image} className="w-16 object-cover"/>;
+                  return <img key={index} src={image.url} className="w-16 object-cover"/>;
                 })}
                 <Link href={`/product-detail-page/${product.id}`}>
                   <Button className="rounded" variant="gradient" color="teal">

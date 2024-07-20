@@ -19,13 +19,20 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import CreateProductSize from "@/components/layout/admin/products/CreateProductSize";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import { storage } from "@/firebase";
 
 const Page = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    title: "",
     price: "",
     discount: "",
-    visible: true,
+    visibility: true,
     category: "",
     subCategory: "",
     description: "",
@@ -36,6 +43,7 @@ const Page = () => {
   });
   const [categories, setCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
+
   const fetchCategories = async () => {
     try {
       const response = await fetch("/api/category");
@@ -56,12 +64,11 @@ const Page = () => {
   };
 
   const handleSwitchChange = (e) => {
-    setFormData({ ...formData, visible: e.target.checked });
+    setFormData({ ...formData, visibility: e.target.checked });
   };
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files); // Convert FileList to an array
-    console.log(files);
     if (formData.images.length + files.length > 10) {
       toast.error("You can only upload up to 10 images.");
       return;
@@ -76,10 +83,24 @@ const Page = () => {
     });
   };
 
+  const handleCategoryChange = (value) => {
+    setFormData({ ...formData, category: value });
+    const selectedCategory = categories.find((c) => c.name === value);
+    if (selectedCategory) {
+      setSelectedSubcategories(selectedCategory.subCategories);
+    } else {
+      setSelectedSubcategories([]);
+    }
+  };
+
+  const handleSubCategoryChange = (value) => {
+    setFormData({ ...formData, subCategory: value });
+  };
+
   const submitForm = async (e) => {
     e.preventDefault();
     if (
-      !formData.name ||
+      !formData.title ||
       !formData.price ||
       !formData.discount ||
       !formData.description ||
@@ -93,42 +114,43 @@ const Page = () => {
       toast.error("Add a minimum of 1 size!");
       return;
     }
-    console.log(formData.images)
-    if (formData.images.length <= 3) {
+    if (formData.images.length < 4) {
       toast.error("Add a minimum of 4 images!");
       return;
     }
 
+    // let arrayOfImageObject = [];
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("price", formData.price);
-      formDataToSend.append("discount", formData.discount);
-      formDataToSend.append("visible", formData.visible);
-      formDataToSend.append("category", formData.category);
-      formDataToSend.append("subCategory", formData.subCategory);
-      formDataToSend.append("description", formData.description);
-      formDataToSend.append("fabric", formData.fabric);
-      formDataToSend.append("brand", formData.brand);
-      for (let image of formData.images) {
-        formDataToSend.append("images", image);
-      }
-      for (let size of formData.sizes) {
-        formDataToSend.append("sizes", JSON.stringify(size));
-      }
+      //   arrayOfImageObject = await Promise.all(
+      //     formData.images.map(async (img) => {
+      //       const imageRef = ref(
+      //         storage,
+      //         `products/${formData.title}/${img.size + img.name}`
+      //       );
+      //       await uploadBytes(imageRef, img);
+      //       const imageUrl = await getDownloadURL(imageRef); // Get the image URL directly
+      //       const imageObject = { url: imageUrl, ref: imageRef._location.path_ };
+      //       return imageObject;
+      //     })
+      //   );
+
+      //   const postData = { ...formData, images: arrayOfImageObject };
       const response = await fetch("/api/admin/product", {
         method: "POST",
-        body: formDataToSend,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         toast.success("Product created successfully!");
         setFormData({
-          name: "",
+          title: "",
           price: "",
           discount: "",
-          visible: true,
+          visibility: true,
           category: "",
           subCategory: "",
           description: "",
@@ -137,9 +159,26 @@ const Page = () => {
           images: [],
           sizes: [],
         });
+        fetchCategories();
+      } else {
+        console.log(data);
+        toast.error(`${data.error}`);
+
+        // await Promise.all(
+        //   arrayOfImageObject.map(async (img) => {
+        //     await deleteObject(ref(storage, img.ref));
+        //   })
+        // );
       }
     } catch (e) {
       toast.error("Failed to create product. Please try again later.");
+      console.error(e);
+      
+      // await Promise.all(
+      //   arrayOfImageObject.map(async (img) => {
+      //     await deleteObject(ref(storage, img.ref));
+      //   })
+      // );
     }
   };
 
@@ -159,14 +198,14 @@ const Page = () => {
       >
         <div className="w-full flex items-center gap-4 h-full">
           <Input
-            label="Name"
-            name="name"
-            value={formData.name}
+            label="Title"
+            name="title"
+            value={formData.title}
             onChange={handleInputChange}
           />
           <Switch
-            defaultChecked={formData.visible}
-            label={`${formData.visible ? "Visible" : "Invisible"}`}
+            defaultChecked={formData.visibility}
+            label={`${formData.visibility ? "Visible" : "Invisible"}`}
             color="teal"
             onChange={handleSwitchChange}
           />
@@ -195,13 +234,8 @@ const Page = () => {
           <Select
             label="Select Category"
             name="category"
-            onChange={(value) => {
-              setFormData({ ...formData, category: value });
-              const subCategories = categories.filter((c) => {
-                return c.name === value;
-              });
-              setSelectedSubcategories(subCategories[0].subCategories);
-            }}
+            value={formData.category}
+            onChange={handleCategoryChange}
           >
             {categories.map((category) => (
               <Option key={category._id} value={category.name}>
@@ -212,9 +246,8 @@ const Page = () => {
           <Select
             label="Select Sub Category"
             name="subCategory"
-            onChange={(value) =>
-              setFormData({ ...formData, subCategory: value })
-            }
+            value={formData.subCategory}
+            onChange={handleSubCategoryChange}
           >
             {selectedSubcategories.map((subcategory) => (
               <Option key={subcategory._id} value={subcategory.name}>
