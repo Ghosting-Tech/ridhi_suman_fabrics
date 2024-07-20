@@ -1,38 +1,21 @@
-"use client";
-
-import OffBanner from "@/components/OffBanner";
-import Testimonial from "@/components/layout/home/Testimonial";
-import Category from "@/components/layout/home/categories/Category";
-import ProductList from "@/components/productBundle/ProductList";
-import Image from "next/image";
-import bannerDataFooter from "@/utils/bannerDataFooter";
+import WeOffer from "@/components/layout/home/WeOffer";
+import HomeBanner from "@/components/layout/home/HomeBanner";
 import HeroSection from "@/components/layout/home/HeroSection";
+import Testimonial from "@/components/layout/home/Testimonial";
+import ProductCarousel from "@/components/layout/products/ProductCarousel";
+import ProductSetCarousel from "@/components/layout/products/ProductSetCarousel";
+import CategoriesYouMayLike from "@/components/layout/home/CategoriesYouMayLike";
+
 export default function Home() {
   return (
-    <main>
+    <>
       <HeroSection />
-      <Category />
+      <CategoriesYouMayLike />
       <ProductCarousel />
       <ProductSetCarousel />
-      <ProductList />
-      <OffBanner />
-
-      <div className="flex w-full">
-        {bannerDataFooter.slice(0, 3).map((banner, index) => (
-          <div key={index} className="relative w-1/3">
-            <div className="relative w-full h-[20rem]">
-              <Image
-                src={banner.src}
-                alt={banner.alt}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+      <WeOffer />
+      <HomeBanner />
       <Testimonial />
-    </main>
+    </>
   );
 }

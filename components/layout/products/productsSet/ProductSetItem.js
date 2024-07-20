@@ -20,11 +20,15 @@ const ProductSetItem = () => {
   return (
     <Link href={`/`}>
       <Card
-        className="w-full mx-auto shadow-lg"
+        className="w-full mx-auto shadow-lg max-w-lg"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <ProductHeader isHovered={isHovered} isSet={true} />
+        <ProductHeader
+          isHovered={isHovered}
+          isSet={true}
+          srcs={["", "", "", ""]}
+        />
 
         <CardBody className="p-0 mx-4 relative">
           <ProductCategory />
