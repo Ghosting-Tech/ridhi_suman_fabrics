@@ -24,10 +24,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 function NavList() {
-  const router = useRouter();
   return (
     <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-4">
       <div className="w-full xl:w-80">
@@ -123,7 +121,9 @@ export default function AdminNavbar() {
   return (
     <div className="w-full shadow-sm px-4 py-2">
       <div className="flex items-center justify-between text-blue-gray-900">
-        <Image src="/ridhi-logo.png" alt="brand" width={150} height={150} />
+        <Link href={"/admin/dashboard"}>
+          <Image src="/ridhi-logo.png" alt="brand" width={150} height={150} />
+        </Link>
         <div className="hidden xl:block w-full">
           <NavList />
         </div>

@@ -115,7 +115,7 @@ const NavProfile = () => {
               alt="profile"
               color="blue-gray"
               className=" p-0.5"
-              src={session.user.image || "/profile.svg"}
+              src={session.user.image.url || "/profile.svg"}
             />
           </Button>
         </MenuHandler>

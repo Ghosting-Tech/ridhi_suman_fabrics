@@ -53,11 +53,6 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
   const handleUpdateCategory = async (e) => {
     try {
       e.preventDefault();
-
-      if (!newImage) {
-        toast.warning("Category Image is required");
-        return;
-      }
       if (!formData.name) {
         toast.warning("Category name is required");
         return;
