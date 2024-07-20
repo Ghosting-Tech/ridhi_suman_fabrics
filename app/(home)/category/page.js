@@ -1,19 +1,31 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import "pure-react-carousel/dist/react-carousel.es.css";
-import CategoryPageHeader from "@/components/layout/home/categories/CategoryPageHeader";
-import SetProductBundle from "@/components/layout/home/categories/SetProductBundle";
-import SingleProductBundle from "@/components/layout/home/categories/SingleProductBundle";
-import categoryData from "@/utils/categoryData";
+import CategoriesList from "@/components/layout/categories/CategoriesList";
+import { CategorySkeleton } from "@/components/ui/SkeletonComponent";
+import { Suspense } from "react";
 
-const page = () => {
+async function getCategories() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category`
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+const CategoryPage = async () => {
+  const data = await getCategories();
+
   return (
     <>
+      <Nav />
       <CategoryPageHeader data={categoryData} />
       <SetProductBundle />
       <SingleProductBundle />
+      <Footer />
     </>
   );
 };
 
-export default page;
+export default CategoryPage;
