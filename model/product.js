@@ -22,18 +22,23 @@ const ProductSchema = new Schema(
             type: String,
             required: true,
           },
+
           ref: {
             type: String,
             required: true,
           },
         },
       ],
+
       required: true,
+
       default: [],
+
       validate: {
         validator: function (v) {
           return v.length >= 4;
         },
+
         message: (props) =>
           `At least 4 images are required, but only ${props.value.length} provided.`,
       },

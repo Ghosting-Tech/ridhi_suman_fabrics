@@ -3,10 +3,11 @@
 import { Carousel, IconButton } from "@material-tailwind/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 
-import ProductItem from "./ProductItem";
 import ProductList from "./ProductList";
+import SectionHeading from "@/components/ui/SectionHeading";
+import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -21,27 +22,14 @@ const useWindowSize = () => {
 
     return () => window.removeEventListener("resize", updateSize);
   }, []);
+
   return size;
 };
 
-const ProductCarousel = ({
-  items = [
-    <ProductItem key={1} />,
-    <ProductItem key={2} />,
-    <ProductItem key={3} />,
-    <ProductItem key={4} />,
-    <ProductItem key={5} />,
-    <ProductItem key={6} />,
-    <ProductItem key={7} />,
-    <ProductItem key={8} />,
-    <ProductItem key={9} />,
-    <ProductItem key={10} />,
-  ],
-}) => {
-  console.log(items);
+const ProductCarousel = ({ products }) => {
   const [width] = useWindowSize();
 
-  const divideItems = () => {
+  const slides = useMemo(() => {
     let perSlide;
 
     if (width > 1360) perSlide = 4;
@@ -51,50 +39,52 @@ const ProductCarousel = ({
 
     const slides = [];
 
-    for (let i = 0; i < items.length; i += perSlide) {
-      slides.push(items.slice(i, i + perSlide));
+    for (let i = 0; i < products.length; i += perSlide) {
+      slides.push(products.slice(i, i + perSlide));
     }
 
     return slides;
-  };
+  }, [products, width]);
 
   const renderSlides = () => {
-    const slides = divideItems();
-
     return slides.map((slideItems, index) => (
-      <ProductList key={index} items={items}>
-        {slideItems}
-      </ProductList>
+      <ProductList key={index} products={slideItems} />
     ));
   };
 
   return (
-    <Carousel
-      prevArrow={({ handlePrev }) => (
-        <IconButton
-          variant="text"
-          color="white"
-          size="lg"
-          onClick={handlePrev}
-          className="!absolute top-2/4 left-4 -translate-y-2/4 bg-white/50 shadow rounded-full hover:bg-white/70 hover:scale-105 active:scale-100 transition-all duration-100 z-30"
+    <section className="my-10">
+      <SectionHeading label="Most Booked Products" className="text-pink-400" />
+
+      <Suspense fallback={<ProductListSkeleton />}>
+        <Carousel
+          prevArrow={({ handlePrev }) => (
+            <IconButton
+              variant="text"
+              color="white"
+              size="lg"
+              onClick={handlePrev}
+              className="!absolute top-2/4 left-4 -translate-y-2/4 bg-white/50 shadow rounded-full hover:bg-white/70 hover:scale-105 active:scale-100 transition-all duration-100 z-30"
+            >
+              <ChevronLeftIcon className="h-6 w-6 text-black" />
+            </IconButton>
+          )}
+          nextArrow={({ handleNext }) => (
+            <IconButton
+              variant="text"
+              color="white"
+              size="lg"
+              onClick={handleNext}
+              className="!absolute top-2/4 !right-4 -translate-y-2/4 bg-white/50 shadow rounded-full hover:bg-white/70 hover:scale-105 active:scale-100 transition-all duration-100 z-30"
+            >
+              <ChevronRightIcon className="h-6 w-6 text-black" />
+            </IconButton>
+          )}
         >
-          <ChevronLeftIcon className="h-6 w-6 text-black" />
-        </IconButton>
-      )}
-      nextArrow={({ handleNext }) => (
-        <IconButton
-          variant="text"
-          color="white"
-          size="lg"
-          onClick={handleNext}
-          className="!absolute top-2/4 !right-4 -translate-y-2/4 bg-white/50 shadow rounded-full hover:bg-white/70 hover:scale-105 active:scale-100 transition-all duration-100 z-30"
-        >
-          <ChevronRightIcon className="h-6 w-6 text-black" />
-        </IconButton>
-      )}
-    >
-      {renderSlides()}
-    </Carousel>
+          {renderSlides()}
+        </Carousel>
+      </Suspense>
+    </section>
   );
 };
 

@@ -53,7 +53,7 @@ const ProductHeader = React.memo(
           />
         )}
 
-        <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-black" />
+        <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-white/80" />
 
         <IconButton
           size="sm"

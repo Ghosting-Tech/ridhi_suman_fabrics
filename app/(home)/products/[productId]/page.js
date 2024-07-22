@@ -1,7 +1,5 @@
 "use client";
 import Image from "next/image";
-import Nav from "@/components/layout/home/NavHeader/Nav";
-import Footer from "@/components/layout/home/Footer";
 import ProductCarousel from "@/components/carousel/ProductCarousel";
 import React, { useState } from "react";
 import {
@@ -92,7 +90,6 @@ const ProductPage = () => {
 
   return (
     <>
-      <Nav />
       <div className="flex flex-col md:flex-row my-5">
         {/* Start Pic Part */}
         <div className="flex w-full lg:w-[45%] flex-col px-2 lg:px-10">
@@ -211,37 +208,9 @@ const ProductPage = () => {
             </div>
           </div>
           {/* End product Feature Icon */}
-
-          {/* Start Social Media Icon */}
-          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-8">
-            <div className="flex items-center gap-2">
-              <span className="font-400 text-md leading-5">Share</span>
-              <div className="bg-[#1877F2] rounded-full w-[25px] h-[25px] flex items-center justify-center hover:cursor-pointer">
-                <Image src="/icon/Facebook.svg" width={17} height={17} />
-              </div>
-              <div className="bg-[#1D9BF0] rounded-full w-[25px] h-[25px] flex items-center justify-center hover:cursor-pointer">
-                <Image src="/icon/Twiter.svg" width={17} height={17} />
-              </div>
-              <div className="bg-[#5BD366] rounded-full w-[25px] h-[25px] flex items-center justify-center hover:cursor-pointer">
-                <Image src="/icon/WhatsApp.svg" width={17} height={17} />
-              </div>
-              <div className="bg-[#E34574] rounded-full w-[25px] h-[25px] flex items-center justify-center hover:cursor-pointer">
-                <Image src="/icon/Instagram.svg" width={17} height={17} />
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span>Add to Favorite</span>
-              <div className="rounded-full w-[25px] h-[25px] flex items-center justify-center hover:cursor-pointer">
-                <Image src="/icon/Favorite.svg" width={17} height={17} />
-              </div>
-            </div>
-          </div>
-          {/* End Social Media Icon */}
         </div>
       </div>
       <ProductCarousel />
-
-      <Footer />
     </>
   );
 };
