@@ -48,7 +48,7 @@ const ProfileSection = () => {
   };
 
   return (
-    <div className="mx-auto sm:px-6 px-1 py-10 rounded-lg shadow-md max-w-2xl w-full">
+    <div className="mx-auto sm:px-6 px-1 py-10 rounded-lg shadow-lg max-w-2xl w-full border">
       <div className="flex flex-col items-center">
         <div
           className="relative sm:w-48 sm:h-48 w-28 h-28 group bg-gray-400 rounded-full flex justify-center items-center cursor-pointer hover:opacity-65 transition-opacity duration-300"
