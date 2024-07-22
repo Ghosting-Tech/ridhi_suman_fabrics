@@ -1,7 +1,9 @@
 import React from "react";
 
-const ProductExtraDetails = ({ isHovered, isSet = false }) => {
+const ProductExtraDetails = ({ isHovered, isSet = false, sizes }) => {
   if (isSet) return null;
+
+  console.log(sizes);
 
   return (
     <div

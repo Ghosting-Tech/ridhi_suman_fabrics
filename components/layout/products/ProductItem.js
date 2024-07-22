@@ -18,9 +18,9 @@ const ProductItem = ({ product }) => {
   const handleMouseLeave = () => setIsHovered(false);
 
   return (
-    <Link href={`/${product.title}`}>
+    <Link href={`/${product?.title || "/"}`}>
       <Card
-        className="w-full max-w-sm mx-auto shadow-lg"
+        className="w-full max-w-sm mx-auto shadow-md hover:shadow-lg"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -30,7 +30,7 @@ const ProductItem = ({ product }) => {
           isHovered={isHovered}
         />
 
-        <CardBody className="p-0 pb-6 mx-4 relative">
+        <CardBody className="p-0 mx-4 relative">
           <ProductCategory
             category={product.category}
             discount={product.discount}

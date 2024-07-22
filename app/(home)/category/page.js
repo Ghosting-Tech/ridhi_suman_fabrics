@@ -3,9 +3,7 @@ import { CategorySkeleton } from "@/components/ui/SkeletonComponent";
 import { Suspense } from "react";
 
 async function getCategories() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category`
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
