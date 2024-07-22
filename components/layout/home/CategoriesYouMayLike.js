@@ -1,9 +1,7 @@
 import CategoriesList from "../categories/CategoriesList";
 
 async function getCategories() {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category`
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");

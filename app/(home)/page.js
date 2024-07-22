@@ -11,8 +11,8 @@ export default function Home() {
     <>
       <HeroSection />
       <CategoriesYouMayLike />
-      <ProductCarousel />
-      <ProductSetCarousel />
+      {/* <ProductCarousel /> */}
+      {/* <ProductSetCarousel /> */}
       <WeOffer />
       <HomeBanner />
       <Testimonial />
