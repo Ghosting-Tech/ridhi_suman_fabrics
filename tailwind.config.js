@@ -17,8 +17,7 @@ module.exports = withMT({
       },
 
       fontFamily: {
-        inter: ["Inter", "sans-serif"],
-        aclonica: ["Aclonica", "sans-serif"],
+        aclonica: ["var(--font-aclonica)", "cursive"],
       },
 
       animation: {

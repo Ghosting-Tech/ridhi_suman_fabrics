@@ -3,8 +3,6 @@ import React from "react";
 const ProductExtraDetails = ({ isHovered, isSet = false, sizes }) => {
   if (isSet) return null;
 
-  console.log(sizes);
-
   return (
     <div
       className="space-y-3 absolute top-0 bg-gradient-to-b from-transparent to-black w-full py-4 px-2 left-0 z-10"
@@ -18,12 +16,12 @@ const ProductExtraDetails = ({ isHovered, isSet = false, sizes }) => {
         <h3 className="font-medium text-white text-sm">Sizes: </h3>
 
         <div className="flex gap-2">
-          {["S", "M", "L", "XL"].map((size) => (
+          {sizes.slice(0, 6).map((size) => (
             <span
-              key={size}
+              key={size.size}
               className="px-2 py-1 border rounded-md text-xs text-white"
             >
-              {size}
+              {size.size}
             </span>
           ))}
         </div>
@@ -33,15 +31,27 @@ const ProductExtraDetails = ({ isHovered, isSet = false, sizes }) => {
         <h3 className="font-medium text-white text-sm">Colors:</h3>
 
         <div className="flex gap-2 items-center">
-          {["Red", "Blue", "Green", "Black"].map((color) => (
-            <span
-              key={color}
-              className="w-4 h-4 border-2 rounded-full text-xs text-white"
-              style={{
-                backgroundColor: color.toLowerCase(),
-              }}
-            ></span>
-          ))}
+          <div className="flex gap-1.5">
+            <h3 className="font-medium text-white text-sm">Colors:</h3>
+
+            <div className="flex gap-2 items-center">
+              {Array.from(
+                new Set(
+                  sizes.flatMap((size) =>
+                    size.colours.map((color) => color.colour.hex)
+                  )
+                )
+              )
+                .slice(0, 8)
+                .map((hex, index) => (
+                  <span
+                    key={hex}
+                    className="w-4 h-4 border-2 rounded-full text-xs text-white"
+                    style={{ backgroundColor: hex }}
+                  ></span>
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
