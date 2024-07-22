@@ -75,7 +75,7 @@ const ProductSchema = new Schema(
                 required: true,
               },
 
-              hexCode: {
+              hex: {
                 type: String,
                 required: true,
               },

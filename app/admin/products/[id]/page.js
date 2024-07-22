@@ -19,8 +19,10 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import CreateProductSize from "@/components/layout/admin/products/CreateProductSize";
+import { useParams } from "next/navigation";
 
 const Page = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -37,6 +39,20 @@ const Page = () => {
     images: [],
     sizes: [],
   });
+  const fetchingProductData = async () => {
+    try {
+      const response = await fetch(`/api/product/${id}`);
+      const data = await response.json();
+      console.log(data);
+      setFormData(data);
+    } catch (err) {
+      toast.error("Error fetching product details");
+    }
+  };
+  useEffect(() => {
+    fetchingProductData();
+  }, []);
+
   const [categories, setCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
 
@@ -53,16 +69,6 @@ const Page = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
-  useEffect(() => {
-    if (categories.length > 0) {
-      setFormData({
-        ...formData,
-        category: categories[0].name,
-        subCategory: categories[0].subCategories[0],
-      });
-    }
-  }, [categories]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -92,27 +98,6 @@ const Page = () => {
     setFormData((prevState) => ({
       ...prevState,
       images: prevState.images.filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleCategoryChange = (value) => {
-    setFormData((prevState) => ({ ...prevState, category: value }));
-    const selectedCategory = categories.find((c) => c.name === value);
-    if (selectedCategory) {
-      setSelectedSubcategories(selectedCategory.subCategories);
-    } else {
-      setSelectedSubcategories([]);
-    }
-  };
-
-  const handleSubCategoryChange = (value) => {
-    const [name, colour] = value.split("-");
-    setFormData((prevState) => ({
-      ...prevState,
-      subCategory: {
-        name,
-        colour: colour.startsWith("#") ? colour : `#${colour}`,
-      },
     }));
   };
 
@@ -151,40 +136,30 @@ const Page = () => {
     formDataToSend.append("brand", formData.brand);
     formDataToSend.append("sizes", JSON.stringify(formData.sizes));
     formData.images.forEach((image) => {
-      formDataToSend.append("images", image);
+      if (image instanceof File) {
+        formDataToSend.append("images", image);
+      } else {
+        formDataToSend.append("images", JSON.stringify(image));
+      }
     });
 
+    console.log(formDataToSend);
+
     try {
-      const response = await fetch("/api/admin/product", {
-        method: "POST",
+      const response = await fetch(`/api/admin/product/${formData._id}`, {
+        method: "PUT",
         body: formDataToSend,
       });
 
       const data = await response.json();
       if (response.ok) {
-        toast.success("Product created successfully!");
-        setFormData({
-          title: "",
-          price: "",
-          discount: "",
-          visibility: true,
-          category: "",
-          subCategory: {
-            name: "",
-            colour: "",
-          },
-          description: "",
-          fabric: "",
-          brand: "",
-          images: [],
-          sizes: [],
-        });
+        toast.success("Product updated successfully!");
       } else {
-        toast.error(`${data.error}`);
+        toast.error(data.error);
       }
     } catch (e) {
-      toast.error("Failed to create product. Please try again later.");
-      console.error(e);
+      toast.error("Failed to update product. Please try again later.");
+      console.log(e);
     }
   };
 
@@ -237,11 +212,62 @@ const Page = () => {
           />
         </div>
         <div className="w-full flex flex-col sm:flex-row items-center gap-4 h-full">
+          {/* <select
+            value={formData.category}
+            onChange={(e) => {
+              setFormData({ ...formData, category: e.target.value });
+              categories.map((category) => {
+                console.log(category.name, e.target.value);
+                if (category.name === e.target.value) {
+                  setSelectedSubcategories(category.subCategories);
+                }
+              });
+            }}
+          >
+            {categories.map((category) => (
+              <option key={category._id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <select
+            value={`${formData.subCategory.name}-${formData.subCategory.colour}`}
+            onChange={(e) => {
+              const [name, colour] = e.target.value.split("-");
+              setFormData((prevState) => ({
+                ...prevState,
+                subCategory: {
+                  name,
+                  colour: colour.startsWith("#") ? colour : `#${colour}`,
+                },
+              }));
+            }}
+          >
+            {selectedSubcategories.map((subcategory) => (
+              <option
+                key={subcategory._id}
+                value={`${subcategory.name}-${subcategory.colour}`}
+              >
+                {subcategory.name}
+              </option>
+            ))}
+          </select> */}
+
           <Select
             label="Select Category"
             name="category"
             value={formData.category}
-            onChange={handleCategoryChange}
+            onChange={(value) => {
+              setFormData({ ...formData, category: value });
+              const selectedCategory = categories.find(
+                (category) => category.name === value
+              );
+              if (selectedCategory) {
+                setSelectedSubcategories(selectedCategory.subCategories);
+              } else {
+                setSelectedSubcategories([]);
+              }
+            }}
           >
             {categories.map((category) => (
               <Option key={category._id} value={category.name}>
@@ -249,11 +275,21 @@ const Page = () => {
               </Option>
             ))}
           </Select>
+
           <Select
             label="Select Sub Category"
             name="subCategory"
             value={`${formData.subCategory.name}-${formData.subCategory.colour}`}
-            onChange={handleSubCategoryChange}
+            onChange={(value) => {
+              const [name, colour] = value.split("-");
+              setFormData((prevState) => ({
+                ...prevState,
+                subCategory: {
+                  name,
+                  colour: colour.startsWith("#") ? colour : `#${colour}`,
+                },
+              }));
+            }}
           >
             {selectedSubcategories.map((subcategory) => (
               <Option
@@ -300,16 +336,27 @@ const Page = () => {
               >
                 <MdDelete className="text-white text-2xl cursor-pointer hover:scale-125 transition-transform" />
               </div>
-              <Image
-                src={URL.createObjectURL(image)}
-                alt={`product image ${index}`}
-                width={64}
-                height={64}
-                className="object-cover"
-              />
+              {image instanceof File ? (
+                <Image
+                  src={URL.createObjectURL(image)}
+                  alt={`product image ${index}`}
+                  width={64}
+                  height={64}
+                  className="object-cover"
+                />
+              ) : (
+                <Image
+                  src={image.url}
+                  alt={`product image ${index}`}
+                  width={64}
+                  height={64}
+                  className="object-cover"
+                />
+              )}
             </div>
           ))}
         </div>
+
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
           <Button
             variant="outlined"
