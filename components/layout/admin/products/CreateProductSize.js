@@ -18,11 +18,11 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 const CreateProductSize = ({ formData, setFormData }) => {
   const [size, setSize] = useState({
     size: "",
-    colors: [],
+    colours: [],
   });
 
   const [colorQuantity, setColorQuantity] = useState({
-    color: {
+    colour: {
       name: "Black",
       hex: "#000000",
     },
@@ -31,7 +31,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
 
   const [selectedSizeToEdit, setSelectedSizeToEdit] = useState(null);
   const [newColorForEditSection, setNewColorForEditSection] = useState({
-    color: {
+    colour: {
       name: "Black",
       hex: "#000000",
     },
@@ -48,8 +48,8 @@ const CreateProductSize = ({ formData, setFormData }) => {
   const handleAddNewColorInEditSize = (index) => {
     const updatedSizes = formData.sizes.map((size, i) => {
       if (i === index) {
-        const isColorExists = size.colors.some(
-          (c) => c.color.hex === newColorForEditSection.color.hex
+        const isColorExists = size.colours.some(
+          (c) => c.colour.hex === newColorForEditSection.colour.hex
         );
         if (isColorExists) {
           toast.error("Colour already exists!");
@@ -57,7 +57,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
         }
         return {
           ...size,
-          colors: [...size.colors, newColorForEditSection],
+          colours: [...size.colours, newColorForEditSection],
         };
       }
       return size;
@@ -77,10 +77,10 @@ const CreateProductSize = ({ formData, setFormData }) => {
     }
     const updatedSizes = formData.sizes.map((size, i) => {
       if (i === sizeIndex) {
-        const updatedColors = size.colors.filter((color, j) => {
+        const updatedColors = size.colours.filter((colour, j) => {
           return j !== colorIndex;
         });
-        return { ...size, colors: updatedColors };
+        return { ...size, colours: updatedColors };
       }
       return size;
     });
@@ -92,15 +92,15 @@ const CreateProductSize = ({ formData, setFormData }) => {
       return;
     }
     setSize((prev) => {
-      const updatedColors = prev.colors.filter((color, j) => {
+      const updatedColors = prev.colours.filter((colour, j) => {
         return j !== colorIndex;
       });
-      return { ...prev, colors: updatedColors };
+      return { ...prev, colours: updatedColors };
     });
   };
 
   const handleAddColorAndQuantity = () => {
-    if (!colorQuantity.color.name || !colorQuantity.quantity) {
+    if (!colorQuantity.colour.name || !colorQuantity.quantity) {
       toast.error("Color and quantity are required!");
       return;
     }
@@ -112,21 +112,21 @@ const CreateProductSize = ({ formData, setFormData }) => {
     let colorExist = false;
 
     setSize((prev) => {
-      colorExist = prev.colors.some(
-        (c) => c.color.name === colorQuantity.color.name
+      colorExist = prev.colours.some(
+        (c) => c.colour.name === colorQuantity.colour.name
       );
 
       if (colorExist) {
-        toast.warning("Color " + colorQuantity.color.name + " already exists");
+        toast.warning("Color " + colorQuantity.colour.name + " already exists");
         return prev;
       }
 
-      return { ...prev, colors: [...prev.colors, colorQuantity] };
+      return { ...prev, colours: [...prev.colours, colorQuantity] };
     });
 
     if (!colorExist) {
       setColorQuantity({
-        color: {
+        colour: {
           name: "Black",
           hex: "#000000",
         },
@@ -140,8 +140,8 @@ const CreateProductSize = ({ formData, setFormData }) => {
       toast.error("Size is required!");
       return;
     }
-    if (size.colors.length === 0) {
-      toast.error("Please add at least a color and quantity for the size!");
+    if (size.colours.length === 0) {
+      toast.error("Please add at least a colour and quantity for the size!");
       return;
     }
     const isSizeExist = formData.sizes.some((s) => {
@@ -161,10 +161,10 @@ const CreateProductSize = ({ formData, setFormData }) => {
     });
     setSize({
       size: "",
-      colors: [],
+      colours: [],
     });
     setColorQuantity({
-      color: {
+      colour: {
         name: "Black",
         hex: "#000000",
       },
@@ -175,10 +175,10 @@ const CreateProductSize = ({ formData, setFormData }) => {
   const handleResetFields = () => {
     setSize({
       size: "",
-      colors: [],
+      colours: [],
     });
     setColorQuantity({
-      color: {
+      colour: {
         name: "Black",
         hex: "#000000",
       },
@@ -199,8 +199,8 @@ const CreateProductSize = ({ formData, setFormData }) => {
           <Select
             label="Colour"
             className="bg-white min-w-0"
-            color="blue"
-            value={`${colorQuantity.color.name}-${colorQuantity.color.hex}`}
+            colour="blue"
+            value={`${colorQuantity.colour.name}-${colorQuantity.colour.hex}`}
             onChange={(e) => {
               setColorQuantity((prev) => {
                 function extractColorInfo(str) {
@@ -215,7 +215,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                 const { name, hex } = extractColorInfo(e);
                 return {
                   ...prev,
-                  color: {
+                  colour: {
                     name,
                     hex,
                   },
@@ -223,17 +223,17 @@ const CreateProductSize = ({ formData, setFormData }) => {
               });
             }}
           >
-            {productColors.map((color, index) => (
-              <Option key={index} value={`${color.name}-${color.hex}`}>
+            {productColors.map((colour, index) => (
+              <Option key={index} value={`${colour.name}-${colour.hex}`}>
                 <div className="flex items-center gap-1">
                   <div
                     className="w-4 h-4 rounded-full"
                     style={{
-                      background: color.hex,
+                      background: colour.hex,
                       border: "1px solid lightgray",
                     }}
                   ></div>
-                  {color.name}
+                  {colour.name}
                 </div>
               </Option>
             ))}
@@ -262,10 +262,10 @@ const CreateProductSize = ({ formData, setFormData }) => {
         </div>
 
         <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
-          {size.colors.map((color, colorIndex) => {
+          {size.colours.map((colour, colorIndex) => {
             return (
               <li
-                key={color.color.name}
+                key={colour.colour.name}
                 style={{
                   border: `1px solid black`,
                 }}
@@ -273,13 +273,13 @@ const CreateProductSize = ({ formData, setFormData }) => {
               >
                 <div
                   className="w-4 h-4 rounded-full border"
-                  style={{ background: color.color.hex }}
+                  style={{ background: colour.colour.hex }}
                 ></div>
-                {color.color.name} - {color.quantity}
+                {colour.colour.name} - {colour.quantity}
                 <div
                   className="cursor-pointer hover:scale-125 transition-all"
                   onClick={() => {
-                    const colorsLength = size.colors.length;
+                    const colorsLength = size.colours.length;
                     handleDeleteCreatedColor(colorIndex, colorsLength);
                   }}
                 >
@@ -292,7 +292,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
         <div className="flex items-center gap-4 w-full">
           <Button
             variant="outlined"
-            color="pink"
+            colour="pink"
             size="sm"
             className="rounded flex gap-1 items-center w-full justify-center bg-white"
             type="button"
@@ -303,7 +303,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
           </Button>
           <Button
             variant="gradient"
-            color="pink"
+            colour="pink"
             size="sm"
             className="rounded flex gap-1 items-center w-full justify-center"
             type="button"
@@ -376,10 +376,10 @@ const CreateProductSize = ({ formData, setFormData }) => {
                   </div>
                 </div>
                 <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
-                  {size.colors?.map((color, colorIndex) => {
+                  {size.colours?.map((colour, colorIndex) => {
                     return (
                       <li
-                        key={color.color.name}
+                        key={colour.colour.name}
                         style={{
                           border: `1px solid black`,
                         }}
@@ -387,13 +387,13 @@ const CreateProductSize = ({ formData, setFormData }) => {
                       >
                         <div
                           className="w-4 h-4 rounded-full border"
-                          style={{ background: color.color.hex }}
+                          style={{ background: colour.colour.hex }}
                         ></div>
-                        {color.color.name} - {color.quantity}
+                        {colour.colour.name} - {colour.quantity}
                         <div
                           className="cursor-pointer hover:scale-125 transition-all"
                           onClick={() => {
-                            const colorsLength = size.colors.length;
+                            const colorsLength = size.colours.length;
                             handleDeleteColor(index, colorIndex, colorsLength);
                           }}
                         >
@@ -408,8 +408,8 @@ const CreateProductSize = ({ formData, setFormData }) => {
                 <Select
                   label="Colour"
                   className="bg-white min-w-0"
-                  color="blue"
-                  value={`${newColorForEditSection.color.name}-${newColorForEditSection.color.hex}`}
+                  colour="blue"
+                  value={`${newColorForEditSection.colour.name}-${newColorForEditSection.colour.hex}`}
                   onChange={(e) => {
                     setNewColorForEditSection((prev) => {
                       function extractColorInfo(str) {
@@ -424,7 +424,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                       const { name, hex } = extractColorInfo(e);
                       return {
                         ...prev,
-                        color: {
+                        colour: {
                           name,
                           hex,
                         },
@@ -432,17 +432,17 @@ const CreateProductSize = ({ formData, setFormData }) => {
                     });
                   }}
                 >
-                  {productColors.map((color, index) => (
-                    <Option key={index} value={`${color.name}-${color.hex}`}>
+                  {productColors.map((colour, index) => (
+                    <Option key={index} value={`${colour.name}-${colour.hex}`}>
                       <div className="flex items-center gap-1">
                         <div
                           className="w-4 h-4 rounded-full"
                           style={{
-                            background: color.hex,
+                            background: colour.hex,
                             border: "1px solid lightgray",
                           }}
                         ></div>
-                        {color.name}
+                        {colour.name}
                       </div>
                     </Option>
                   ))}
@@ -505,10 +505,10 @@ const CreateProductSize = ({ formData, setFormData }) => {
                 </div>
               </div>
               <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
-                {size.colors.map((color) => {
+                {size.colours.map((colour) => {
                   return (
                     <li
-                      key={color.color.name}
+                      key={colour.colour.name}
                       style={{
                         border: `1px solid black`,
                       }}
@@ -516,9 +516,9 @@ const CreateProductSize = ({ formData, setFormData }) => {
                     >
                       <div
                         className="w-4 h-4 rounded-full border"
-                        style={{ background: color.color.hex }}
+                        style={{ background: colour.colour.hex }}
                       ></div>
-                      {color.color.name} - {color.quantity}
+                      {colour.colour.name} - {colour.quantity}
                     </li>
                   );
                 })}

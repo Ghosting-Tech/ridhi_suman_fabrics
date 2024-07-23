@@ -11,6 +11,7 @@ import { checkAuthorization } from "@/config/checkAuthorization";
 import { storage } from "@/firebase";
 
 export async function POST(request) {
+  let imageObjects;
   try {
     const isAdmin = await checkAuthorization(request);
 
@@ -70,8 +71,7 @@ export async function POST(request) {
       );
     }
 
-    // Upload images to Firebase Storage
-    const imageObjects = await Promise.all(
+    imageObjects = await Promise.all(
       files.map(async (file) => {
         const imageRef = ref(
           storage,
@@ -83,7 +83,6 @@ export async function POST(request) {
       })
     );
 
-    // Create product with image URLs
     const productData = {
       title,
       price,

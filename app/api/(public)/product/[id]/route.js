@@ -22,11 +22,9 @@ export async function GET(request, { params }) {
     let product;
 
     if (isAdmin) {
-      product = await Product.findById(id).populate("category");
+      product = await Product.findById(id);
     } else {
-      product = await Product.findOne({ _id: id, visibility: true }).populate(
-        "category"
-      );
+      product = await Product.findOne({ _id: id, visibility: true })
     }
 
     product.orderCount = product.orders.length;
