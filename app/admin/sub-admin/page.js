@@ -149,7 +149,7 @@ const Page = () => {
       </Dialog>
 
       <div className="flex justify-center items-start min-h-[89vh]">
-        <Card className="w-full md:w-3/4 p-0 md:p-4 mt-10 shadow-none md:shadow-lg">
+        <Card className="w-full md:w-3/4 p-0 md:p-4 mt-10 shadow-none">
           <div className="flex justify-between items-center px-4 mb-2">
             <Heading
               icon={
@@ -180,7 +180,7 @@ const Page = () => {
               >
                 <div className="flex items-center w-full">
                   <ListItemPrefix>
-                    <Avatar variant="circular" alt="admin" src={admin.image} />
+                    <Avatar variant="circular" alt="admin" src={admin.image.url} />
                   </ListItemPrefix>
                   <div className="flex flex-col max-w-24 lg:max-w-36 xl:max-w-full">
                     <div className="text-sm w-full truncate">{admin.name}</div>

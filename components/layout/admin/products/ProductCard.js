@@ -11,7 +11,7 @@ export function ProductCard({ product }) {
   return (
     <Card
       shadow={false}
-      className="group relative h-[30rem] w-full flex flex-col justify-between overflow-hidden"
+      className="group relative h-[32rem] flex flex-col justify-between overflow-hidden"
     >
       <Image
         fill
@@ -53,7 +53,7 @@ export function ProductCard({ product }) {
             style={{
               background: `${product.subCategory.colour}`,
             }}
-            className="w-fit font-medium text-black py-0.5 rounded-md px-2 text-sm"
+            className="w-fit font-medium text-black py-0.5 rounded-md px-2 text-sm truncate "
           >
             {product.category} / {product.subCategory.name}
           </div>

@@ -3,17 +3,24 @@ import { NextResponse } from "next/server";
 import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
+import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function GET(request, { params }) {
   try {
     const searchParams = request.nextUrl.searchParams;
+    let isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized") {
+      isAdmin = false;
+    }
 
     const page = searchParams.get("page") || 1;
     const pageSize = searchParams.get("size") || 10;
 
-    const { id } = params;
+    const { name } = params;
 
-    if (!id) return NextResponse.json("Category Id not found", { status: 404 });
+    if (!name)
+      return NextResponse.json("Category name not found", { status: 404 });
 
     const skip = (page - 1) * pageSize;
 
@@ -22,14 +29,14 @@ export async function GET(request, { params }) {
     let products = [];
 
     if (isAdmin) {
-      products = await Product.find({ category: id })
-        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+      products = await Product.find({ category: name })
+        .select("-sizes -description -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
     } else {
-      products = await Product.find({ category: id, visibility: true })
-        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+      products = await Product.find({ category: name, visibility: true })
+        .select("-description -visibility -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();

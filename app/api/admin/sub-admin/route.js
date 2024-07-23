@@ -2,7 +2,14 @@ import { checkAuthorization } from "@/config/checkAuthorization";
 import dbConnect from "@/config/db";
 import removeFile from "@/config/removeFile";
 import uploadFile from "@/config/uploadFile";
+import { storage } from "@/firebase";
 import User from "@/model/user";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -38,8 +45,6 @@ export async function POST(request) {
     const file = data.get("image");
     const password = data.get("password");
 
-    console.log(phoneNumber, password, name, file);
-
     if (!data) {
       return NextResponse.json("Invalid request!", { status: 400 });
     }
@@ -51,7 +56,18 @@ export async function POST(request) {
       return NextResponse.json({ error: "Invalid image!" }, { status: 400 });
     }
 
-    const image = await uploadFile(file, "admin");
+    const imageRef = ref(
+      storage,
+      `admins/${name.replace(/ /g, "-").toLowerCase()}.${phoneNumber}@admin.com`
+    );
+
+    // Convert the file to a buffer or blob before uploading
+    const buffer = await file.arrayBuffer();
+    const blob = new Blob([buffer], { type: file.type });
+
+    await uploadBytes(imageRef, blob);
+    const imageUrl = await getDownloadURL(imageRef);
+    const imageObject = { url: imageUrl, ref: imageRef._location.path_ };
     await dbConnect();
 
     const phoneNumberExists = await User.findOne({ phoneNumber: phoneNumber });
@@ -65,7 +81,7 @@ export async function POST(request) {
         .replace(/ /g, "-")
         .toLowerCase()}.${phoneNumber}@admin.com`,
       phoneNumber,
-      image,
+      image: imageObject,
       password,
       createdBy: "admin",
       isVerified: true,
@@ -89,8 +105,6 @@ export async function PUT(request) {
     }
     const data = await request.json();
 
-    console.log(data);
-
     if (!data) {
       return NextResponse.json("Invalid request!", { status: 400 });
     }
@@ -110,16 +124,24 @@ export async function DELETE(request) {
     const isAdmin = await checkAuthorization(request);
 
     if (isAdmin === "Unauthorized" || !isAdmin) {
-      return NextResponse.json({ message: "Unauthorized request" }, { status: 401 });
+      return NextResponse.json(
+        { message: "Unauthorized request" },
+        { status: 401 }
+      );
     }
 
     const data = await request.json();
 
     if (!data || !data._id || !data.image) {
-      return NextResponse.json({ message: "Invalid request!" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Invalid request!" },
+        { status: 400 }
+      );
     }
 
-    removeFile(data.image.substr(1, data.image.length));
+    if (data.image) {
+      await deleteObject(ref(storage, data.image.ref));
+    }
 
     await dbConnect();
     const user = await User.findByIdAndDelete(data._id);
