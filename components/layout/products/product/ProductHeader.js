@@ -24,6 +24,13 @@ const ProductHeader = React.memo(
       [isHovered]
     );
 
+    const handleWishlist = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      console.log("Wishlist");
+    };
+
     return (
       <CardHeader floated={true} className={isSet ? "h-[500px]" : "h-[420px]"}>
         {isSet ? (
@@ -60,6 +67,7 @@ const ProductHeader = React.memo(
           color="red"
           variant="text"
           className="!absolute top-4 right-4 rounded-full"
+          onClick={handleWishlist}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

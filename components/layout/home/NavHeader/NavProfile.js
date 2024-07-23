@@ -18,12 +18,16 @@ import { CiLogin } from "react-icons/ci";
 
 import Link from "next/link";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import ProfileMenuItem from "./ProfileMenuItem";
+import { setUser } from "@/redux/slice/userSlice";
 
 const NavProfile = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   const { data: session, status } = useSession();
 
   const profileMenuItems = [
@@ -81,6 +85,8 @@ const NavProfile = () => {
       </div>
     );
   } else if (status === "authenticated") {
+    dispatch(setUser(session.user));
+
     if (session.user.role === "admin") {
       const profileIndex = profileMenuItems.findIndex(
         (item) => item.label === "My Profile"

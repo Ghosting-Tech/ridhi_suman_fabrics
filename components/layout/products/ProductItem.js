@@ -47,7 +47,7 @@ const ProductItem = memo(
             )}
           </CardBody>
 
-          <ProductFooter />
+          <ProductFooter productId={_id} />
         </Card>
       </Link>
     );

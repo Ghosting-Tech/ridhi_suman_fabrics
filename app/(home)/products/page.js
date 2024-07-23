@@ -29,17 +29,14 @@ async function getProducts(page = 1, size = 12) {
 
 const page = async ({ searchParams: { page, size } }) => {
   const data = await getProducts(page, size);
+  console.log(data);
 
   return (
     <main className="my-10">
       <SectionHeading label="All Products" className="text-pink-400" />
 
       <Suspense fallback={<ProductListSkeleton />}>
-        <ProductList>
-          {data.data.map((product) => (
-            <ProductItem key={product._id} product={product} />
-          ))}
-        </ProductList>
+        <ProductList products={data.data} />
       </Suspense>
 
       <PaginationBtn totalPages={data.meta.totalPages} />

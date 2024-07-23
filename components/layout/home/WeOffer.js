@@ -4,7 +4,7 @@ import { weOfferData } from "@/utils/HomePageData";
 
 function WeOffer() {
   return (
-    <section className="mx-auto justify-evenly hidden lg:flex">
+    <section className="mx-auto justify-evenly hidden lg:flex mb-20">
       {weOfferData.map((data) => (
         <div className="uppercase font-medium" key={data.text}>
           <Image
