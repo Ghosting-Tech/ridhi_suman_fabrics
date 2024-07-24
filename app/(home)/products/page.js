@@ -4,7 +4,6 @@ import PaginationBtn from "@/components/ui/PaginationBtn";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 import ProductList from "@/components/layout/products/ProductList";
-import ProductItem from "@/components/layout/products/ProductItem";
 
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
@@ -35,11 +34,7 @@ const page = async ({ searchParams: { page, size } }) => {
       <SectionHeading label="All Products" className="text-pink-400" />
 
       <Suspense fallback={<ProductListSkeleton />}>
-        <ProductList>
-          {data.data.map((product) => (
-            <ProductItem key={product._id} product={product} />
-          ))}
-        </ProductList>
+        <ProductList products={data.data} />
       </Suspense>
 
       <PaginationBtn totalPages={data.meta.totalPages} />

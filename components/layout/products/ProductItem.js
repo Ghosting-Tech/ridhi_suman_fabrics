@@ -28,6 +28,7 @@ const ProductItem = memo(
           {images[0] && (
             <ProductHeader
               title={title}
+              id={_id}
               srcs={images[0]}
               isHovered={isHovered}
             />
@@ -47,7 +48,7 @@ const ProductItem = memo(
             )}
           </CardBody>
 
-          <ProductFooter />
+          <ProductFooter productId={_id} price={price} discount={discount} />
         </Card>
       </Link>
     );

@@ -24,6 +24,7 @@ import ProfileMenuItem from "./ProfileMenuItem";
 
 const NavProfile = () => {
   const router = useRouter();
+
   const { data: session, status } = useSession();
 
   const profileMenuItems = [

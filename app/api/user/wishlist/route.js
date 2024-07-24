@@ -1,0 +1,70 @@
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+
+import User from "@/model/user";
+import Product from "@/model/product";
+
+import dbConnect from "@/config/db";
+
+import mongoose from "mongoose";
+
+const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+
+export async function PUT(req) {
+  try {
+    const token = await getToken({ req, secret });
+
+    // if (!token) {
+    //   return NextResponse.json("Unauthorized Request", { status: 401 });
+    // }
+
+    const { productId, action } = await req.json();
+
+    if (!productId || !action) {
+      return NextResponse.json("Invalid request data", { status: 400 });
+    }
+
+    if (action !== "add" && action !== "remove") {
+      return NextResponse.json("Invalid action", { status: 400 });
+    }
+
+    // const objectId = new mongoose.Types.ObjectId("");
+
+    await dbConnect();
+
+    const productExists = await Product.findById(productId);
+
+    if (!productExists) {
+      return NextResponse.json("Product not found", { status: 404 });
+    }
+
+    const user = await User.findById("66a09897092d9bdeadb2f9ab");
+    console.log(user);
+
+    if (!user) {
+      return NextResponse.json("User not found", { status: 404 });
+    }
+
+    const productObjectId = new mongoose.Types.ObjectId(productId);
+
+    user.cart = user.cart.filter((item) =>
+      mongoose.Types.ObjectId.isValid(item.product)
+    );
+
+    if (action === "add") {
+      if (!user.wishlist.includes(productId)) {
+        user.wishlist.push(productObjectId);
+      }
+    } else if (action === "remove") {
+      user.wishlist = user.wishlist.filter((id) => id.toString() !== productId);
+    }
+
+    await user.save();
+
+    return NextResponse.json(user.wishlist, { status: 200 });
+  } catch (error) {
+    console.error("Error updating wishlist:", error);
+
+    return NextResponse.json("Internal Server Error", { status: 500 });
+  }
+}

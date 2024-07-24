@@ -22,21 +22,25 @@ export async function GET(request) {
 
     const searchQuery = url.searchParams.get("query") || "";
     const page = parseInt(url.searchParams.get("page"), 10) || 1;
-    const limit = parseInt(url.searchParams.get("limit"), 10) || 10;
+    const limit = parseInt(url.searchParams.get("size"), 10) || 12;
 
     const skip = (page - 1) * limit;
 
     const sanitizedQuery = searchQuery.replace(/[\W_]+/g, "");
 
-    let products;
+    let products, totalProducts;
 
     if (isAdmin) {
       products = await Product.find({
         $text: { $search: sanitizedQuery },
       })
-        .select("-orders -updatedAt -createdAt -sizes -visibility")
+        .select("-orders -updatedAt -createdAt -sizes")
         .skip(parseInt(skip))
         .limit(parseInt(limit));
+
+      totalProducts = await Product.countDocuments({
+        $text: { $search: sanitizedQuery },
+      });
     } else {
       products = await Product.find({
         $text: { $search: sanitizedQuery },
@@ -45,9 +49,20 @@ export async function GET(request) {
         .select("-orders -updatedAt -createdAt -sizes -visibility")
         .skip(parseInt(skip))
         .limit(parseInt(limit));
+      totalProducts = await Product.countDocuments({
+        $text: { $search: sanitizedQuery },
+        visibility: true,
+      });
     }
-
-    return NextResponse.json(products);
+    return NextResponse.json({
+      data: products,
+      meta: {
+        page: page,
+        pageSize: limit,
+        totalPages: Math.ceil(totalProducts / limit),
+        totalResults: totalProducts,
+      },
+    });
   } catch (error) {
     console.error("Search API error:", error);
     return NextResponse.json(

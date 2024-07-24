@@ -32,6 +32,7 @@ export async function PUT(request, { params }) {
     const brand = formData.get("brand");
     const sizes = JSON.parse(formData.get("sizes"));
     const files = formData.getAll("images");
+    const deletedImages = formData.getAll("deletedImages");
 
     if (
       !title ||
@@ -63,7 +64,13 @@ export async function PUT(request, { params }) {
     }
 
     await dbConnect();
-
+    //Deleting images from firebase storage
+    deletedImages.map(async (imageObjects) => {
+      const parsedImageObject = JSON.parse(imageObjects);
+      const imageRef = ref(storage, parsedImageObject.ref);
+      await deleteObject(imageRef);
+    });
+    // Upload new images to firebase storage
     for (const file of files) {
       if (file instanceof File) {
         const imageRef = ref(
@@ -95,7 +102,7 @@ export async function PUT(request, { params }) {
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       productData,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     return NextResponse.json(updatedProduct, { status: 201 });
@@ -133,10 +140,21 @@ export async function DELETE(request, { params }) {
 
     await dbConnect();
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-    if (!deletedProduct) {
+    console.log(productId);
+
+    const product = await Product.findById(productId);
+    if (!product) {
       return NextResponse.json("Product not found", { status: 404 });
     }
+
+    product.images.map(async (imageObject) => {
+      if (imageObject && imageObject.ref) {
+        const imageRef = ref(storage, imageObject.ref);
+        await deleteObject(imageRef);
+      }
+    });
+
+    await Product.findByIdAndDelete(productId);
 
     return NextResponse.json("Product deleted successfully", { status: 200 });
   } catch (error) {
