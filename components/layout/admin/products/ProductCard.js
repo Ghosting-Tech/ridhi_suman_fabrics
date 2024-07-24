@@ -7,7 +7,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { IoOpenOutline } from "react-icons/io5";
 import Link from "next/link";
 
-export function ProductCard({ product }) {
+export function ProductCard({ product, setOpenDeleteDialog, setSelectedProduct }) {
   return (
     <Card
       shadow={false}
@@ -35,7 +35,13 @@ export function ProductCard({ product }) {
             <FiEdit />
           </button>
         </Link>
-        <div className="flex gap-2 w-8 h-8 justify-center items-center rounded-md bg-white">
+        <div
+          onClick={() => {
+            setOpenDeleteDialog(true)
+            setSelectedProduct(product)
+          }}
+          className="flex gap-2 w-8 h-8 justify-center items-center rounded-md bg-white"
+        >
           <button
             className="text-red-500 hover:scale-110 transition-all"
             title="Delete"

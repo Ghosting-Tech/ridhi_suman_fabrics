@@ -1,8 +1,8 @@
 import React from "react";
 
-const Heading = ({ icon, title, size, buttons }) => {
+const Heading = ({ icon, title, buttons }) => {
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-1 w-full">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-1">
           {icon && icon}
@@ -14,7 +14,7 @@ const Heading = ({ icon, title, size, buttons }) => {
         </div>
       </div>
       <div
-        className={`rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400 ${size == "small" ? "h-[2px]" : "h-1"}`}
+        className={`rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400 h-1`}
       ></div>
     </div>
   );

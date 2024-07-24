@@ -140,10 +140,21 @@ export async function DELETE(request, { params }) {
 
     await dbConnect();
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-    if (!deletedProduct) {
+    console.log(productId);
+
+    const product = await Product.findById(productId);
+    if (!product) {
       return NextResponse.json("Product not found", { status: 404 });
     }
+
+    product.images.map(async (imageObject) => {
+      if (imageObject && imageObject.ref) {
+        const imageRef = ref(storage, imageObject.ref);
+        await deleteObject(imageRef);
+      }
+    });
+
+    await Product.findByIdAndDelete(productId);
 
     return NextResponse.json("Product deleted successfully", { status: 200 });
   } catch (error) {

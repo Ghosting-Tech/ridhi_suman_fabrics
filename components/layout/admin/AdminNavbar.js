@@ -24,9 +24,17 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function NavList() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      router.push(`/admin/search?query=${searchQuery}`)
+      setSearchQuery("");
+    }
+  };
   return (
     <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-4">
       <div className="relative flex w-full max-w-96">
@@ -36,6 +44,7 @@ function NavList() {
           onChange={(e) => {
             setSearchQuery(e.target.value);
           }}
+          onKeyDown={handleKeyDown}
           containerProps={{
             className: "min-w-0",
           }}
