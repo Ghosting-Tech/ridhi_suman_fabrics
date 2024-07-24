@@ -4,7 +4,7 @@ const cartSlice = createSlice({
   name: "cart",
 
   initialState: {
-    items: {},
+    items: [],
 
     totalQuantity: 0,
     totalPrice: 0,
@@ -12,45 +12,27 @@ const cartSlice = createSlice({
 
   reducers: {
     addItemToCart: (state, action) => {
-      const { id, image, title, price, quantity } = action.payload;
-
-      if (!state.items[id]) {
-        state.items[id] = { quantity: 0, price, image, title };
-      }
-
-      state.items[id].quantity += quantity;
-      state.totalQuantity += quantity;
-      state.totalPrice += price * quantity;
+      state.items = action.payload;
     },
 
-    updateItemQuantity: (state, action) => {
-      const { id, quantity } = action.payload;
+    updateCart: (state, action) => {
+      const { totalQuantity, totalPrice } = action.payload;
 
-      if (!state.items[id]) {
-        console.warn(`Item with id ${id} not found in cart.`);
-        return;
-      }
-
-      const quantityDifference = quantity - state.items[id].quantity;
-      state.items[id].quantity = quantity;
-
-      state.totalQuantity += quantityDifference;
-      state.totalPrice += quantityDifference * state.items[id].price;
+      state.totalQuantity = totalQuantity;
+      state.totalPrice = totalPrice;
     },
 
     removeItemFromCart: (state, action) => {
-      const { id } = action.payload;
+      const itemId = action.payload;
+      const itemIndex = state.items.findIndex((item) => item._id === itemId);
 
-      if (!state.items[id]) {
-        return;
+      if (itemIndex !== -1) {
+        const item = state.items[itemIndex];
+        state.totalQuantity -= item.quantity;
+        state.totalPrice -= item.price * item.quantity;
+
+        state.items.splice(itemIndex, 1);
       }
-
-      const itemTotalPrice = state.items[id].price * state.items[id].quantity;
-
-      state.totalQuantity -= state.items[id].quantity;
-      state.totalPrice -= itemTotalPrice;
-
-      delete state.items[id];
     },
 
     clearCart: (state) => {
@@ -61,11 +43,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const {
-  addItemToCart,
-  removeItemFromCart,
-  updateItemQuantity,
-  clearCart,
-} = cartSlice.actions;
+export const { addItemToCart, updateCart, removeItemFromCart, clearCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

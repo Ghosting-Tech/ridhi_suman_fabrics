@@ -47,9 +47,18 @@ const userSchema = new Schema(
 
     cart: [
       {
-        type: Schema.Types.ObjectId,
-        default: [],
-        ref: "Product",
+        product: {
+          type: Schema.Types.ObjectId,
+          default: [],
+          ref: "Product",
+        },
+
+        quantity: {
+          type: Number,
+          default: 0,
+        },
+
+        _id: false,
       },
     ],
 

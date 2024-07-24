@@ -28,7 +28,6 @@ async function getProducts(page = 1, size = 12) {
 
 const page = async ({ searchParams: { page, size } }) => {
   const data = await getProducts(page, size);
-  // console.log(data);
 
   return (
     <main className="my-10">
