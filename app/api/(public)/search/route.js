@@ -24,6 +24,8 @@ export async function GET(request) {
     const page = parseInt(url.searchParams.get("page"), 10) || 1;
     const limit = parseInt(url.searchParams.get("limit"), 10) || 10;
 
+    console.log({ searchQuery, page, limit });
+
     const skip = (page - 1) * limit;
 
     const sanitizedQuery = searchQuery.replace(/[\W_]+/g, "");
@@ -34,7 +36,7 @@ export async function GET(request) {
       products = await Product.find({
         $text: { $search: sanitizedQuery },
       })
-        .select("-orders -updatedAt -createdAt -sizes -visibility")
+        .select("-orders -updatedAt -createdAt -sizes")
         .skip(parseInt(skip))
         .limit(parseInt(limit));
     } else {

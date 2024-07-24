@@ -32,6 +32,7 @@ export async function PUT(request, { params }) {
     const brand = formData.get("brand");
     const sizes = JSON.parse(formData.get("sizes"));
     const files = formData.getAll("images");
+    const deletedImages = formData.getAll("deletedImages");
 
     if (
       !title ||
@@ -63,7 +64,13 @@ export async function PUT(request, { params }) {
     }
 
     await dbConnect();
-
+    //Deleting images from firebase storage
+    deletedImages.map(async (imageObjects) => {
+      const parsedImageObject = JSON.parse(imageObjects);
+      const imageRef = ref(storage, parsedImageObject.ref);
+      await deleteObject(imageRef);
+    });
+    // Upload new images to firebase storage
     for (const file of files) {
       if (file instanceof File) {
         const imageRef = ref(
@@ -95,7 +102,7 @@ export async function PUT(request, { params }) {
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
       productData,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     return NextResponse.json(updatedProduct, { status: 201 });

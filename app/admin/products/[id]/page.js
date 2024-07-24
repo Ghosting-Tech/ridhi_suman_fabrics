@@ -43,7 +43,6 @@ const Page = () => {
     try {
       const response = await fetch(`/api/product/${id}`);
       const data = await response.json();
-      console.log(data);
       setFormData(data);
     } catch (err) {
       toast.error("Error fetching product details");
@@ -94,10 +93,15 @@ const Page = () => {
     }));
   };
 
+  const [deletedImages, setDeletedImages] = useState([]);
+
   const removeImage = (index) => {
     setFormData((prevState) => ({
       ...prevState,
-      images: prevState.images.filter((_, i) => i !== index),
+      images: prevState.images.filter((e, i) => {
+        setDeletedImages([...deletedImages, e]);
+        return i !== index;
+      }),
     }));
   };
 
@@ -142,8 +146,9 @@ const Page = () => {
         formDataToSend.append("images", JSON.stringify(image));
       }
     });
-
-    console.log(formDataToSend);
+    deletedImages.forEach((image) => {
+      formDataToSend.append("deletedImages", JSON.stringify(image));
+    });
 
     try {
       const response = await fetch(`/api/admin/product/${formData._id}`, {
@@ -171,7 +176,7 @@ const Page = () => {
             <FaTshirt size={20} color="white" />
           </div>
         }
-        title={"Create Product"}
+        title={"Update Product"}
       />
       <form
         onSubmit={submitForm}
@@ -390,7 +395,7 @@ const Page = () => {
             className="rounded w-full flex items-center gap-1 justify-center"
             type="submit"
           >
-            <PlusCircleIcon className="w-6 h-6" /> Create Product
+            <PlusCircleIcon className="w-6 h-6" /> Update Product
           </Button>
         </div>
       </form>

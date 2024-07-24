@@ -26,13 +26,30 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 
 function NavList() {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-4">
-      <div className="w-full xl:w-80">
+      <div className="relative flex w-full max-w-96">
         <Input
-          icon={<MagnifyingGlassIcon className="h-5 w-5" />}
           label="Search Product..."
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+          }}
+          containerProps={{
+            className: "min-w-0",
+          }}
         />
+        <Link href={`/admin/search?query=${searchQuery}`}>
+          <IconButton
+            size="sm"
+            className="!absolute right-1 top-1 rounded"
+            variant="text"
+            onClick={() => setSearchQuery("")}
+          >
+            <MagnifyingGlassIcon className="h-5 w-5" />
+          </IconButton>
+        </Link>
       </div>
 
       <div className="lg:flex grid grid-cols-1 sm:grid-cols-3 gap-4 w-full xl:w-fit">
