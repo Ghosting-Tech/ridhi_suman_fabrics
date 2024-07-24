@@ -87,3 +87,18 @@ body {
 .size {
   width: calc(50% - 10px);
 }
+
+@keyframes scaleFadeIn {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.wishlist-animation-in {
+  animation: scaleFadeIn 0.3s ease-in-out;
+}

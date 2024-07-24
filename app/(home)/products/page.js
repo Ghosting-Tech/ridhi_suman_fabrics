@@ -4,7 +4,6 @@ import PaginationBtn from "@/components/ui/PaginationBtn";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 import ProductList from "@/components/layout/products/ProductList";
-import ProductItem from "@/components/layout/products/ProductItem";
 
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
@@ -29,7 +28,6 @@ async function getProducts(page = 1, size = 12) {
 
 const page = async ({ searchParams: { page, size } }) => {
   const data = await getProducts(page, size);
-  console.log(data);
 
   return (
     <main className="my-10">

@@ -18,33 +18,6 @@ export async function GET(req, { params }) {
 
     const objectId = new mongoose.Types.ObjectId(categoryId);
 
-    // const mostBookedByCategories = await Product.aggregate([
-    //   { $match: { visibility: true, category: objectId } },
-    //   {
-    //     $addFields: {
-    //       ordersCount: { $size: "$orders" },
-    //     },
-    //   },
-
-    //   { $sort: { ordersCount: -1 } },
-
-    //   {
-    //     $project: {
-    //       title: 1,
-    //       category: 1,
-    //       images: 1,
-    //       discount: 1,
-    //       price: 1,
-    //       fabric: 1,
-    //       brand: 1,
-    //       ordersCount: 1,
-    //       _id: 1,
-    //     },
-    //   },
-
-    //   { $limit: 10 },
-    // ]);
-
     const mostBookedByCategories = await Product.aggregate([
       {
         $match: {
@@ -52,38 +25,21 @@ export async function GET(req, { params }) {
           category: objectId,
         },
       },
+
       {
         $addFields: {
           ordersCount: { $size: "$orders" },
         },
       },
-      { $sort: { ordersCount: -1 } },
+
+      {
+        $sort: {
+          ordersCount: -1,
+        },
+      },
+
       { $limit: 10 },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "categoryDetails",
-        },
-      },
-      {
-        $unwind: "$categoryDetails",
-      },
-      {
-        $lookup: {
-          from: "brands",
-          localField: "brand",
-          foreignField: "_id",
-          as: "brandDetails",
-        },
-      },
-      {
-        $unwind: {
-          path: "$brandDetails",
-          preserveNullAndEmptyArrays: true, // Use this if some products may not have a brand
-        },
-      },
+
       {
         $project: {
           title: 1,

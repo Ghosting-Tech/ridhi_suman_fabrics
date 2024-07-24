@@ -1,68 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-  items: {},
-  totalQuantity: 0,
-};
-
-export const wishlistSlice = createSlice({
+const wishlistSlice = createSlice({
   name: "wishlist",
 
-  initialState,
+  initialState: {
+    items: [],
+  },
 
   reducers: {
-    addItemToWishlist: (state, action) => {
-      const { id, product } = action.payload;
+    updateWishlist: (state, action) => {
+      state.items = action.payload;
+    },
 
-      if (!state.items[id]) {
-        state.items[id] = {
-          ...product,
-          quantity: 1,
-        };
-
-        state.totalQuantity += 1;
-      } else {
-        return;
+    addToWishlist: (state, action) => {
+      if (!state.items.includes(action.payload)) {
+        state.items.push(action.payload);
       }
     },
 
-    updateItemInWishlist: (state, action) => {
-      const { id, quantity } = action.payload;
-
-      if (!state.items[id]) {
-        return;
-      }
-
-      if (quantity <= 0) {
-        return;
-      }
-
-      state.items[id].quantity = quantity;
-    },
-
-    removeItemFromWishlist: (state, action) => {
-      const id = action.payload;
-
-      if (state.items[id]) {
-        delete state.items[id];
-        state.totalQuantity -= 1;
-      } else {
-        return;
-      }
-    },
-
-    clearWishlist: (state) => {
-      state.items = {};
-      state.totalQuantity = 0;
+    removeFromWishlist: (state, action) => {
+      state.items = state.items.filter((id) => id !== action.payload);
     },
   },
 });
 
-export const {
-  addItemToWishlist,
-  removeItemFromWishlist,
-  updateItemInWishlist,
-  clearWishlist,
-} = wishlistSlice.actions;
+export const { updateWishlist, addToWishlist, removeFromWishlist } =
+  wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
