@@ -18,6 +18,7 @@ import {
   PowerIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
+  TicketIcon,
   UserCircleIcon,
   UsersIcon,
 } from "@heroicons/react/24/solid";
@@ -25,6 +26,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { RiCoupon4Line } from "react-icons/ri";
 
 function NavList() {
   const router = useRouter();
@@ -37,7 +39,7 @@ function NavList() {
   };
   return (
     <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-4">
-      <div className="relative flex w-full max-w-96">
+      <div className="relative flex w-full max-w-80">
         <Input
           label="Search Product..."
           value={searchQuery}
@@ -104,6 +106,17 @@ function NavList() {
           >
             <ShoppingCartIcon className="h-5 w-5" />
             Sets
+          </Button>
+        </Link>
+        <Link href={"/admin/coupon"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <TicketIcon className="h-5 w-5" />
+            Coupon
           </Button>
         </Link>
         <Link href={"/admin/sub-admin"}>

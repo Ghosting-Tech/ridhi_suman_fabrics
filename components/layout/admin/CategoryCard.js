@@ -17,7 +17,7 @@ const CategoryCard = ({
         alt="category image"
         width={150}
         height={150}
-        className="w-full lg:w-64 h-64 lg:h-44 object-cover"
+        className="w-full lg:max-w-44 h-64 lg:h-44 object-cover"
       />
       <div className="p-4 w-full flex flex-col">
         <div className="flex justify-between items-center w-full">

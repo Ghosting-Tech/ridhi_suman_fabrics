@@ -6,8 +6,6 @@ import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
 
-import mongoose from "mongoose";
-
 const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
 
 export async function PUT(req) {
@@ -24,8 +22,6 @@ export async function PUT(req) {
       return NextResponse.json("Invalid product data", { status: 400 });
     }
 
-    const objectId = new mongoose.Types.ObjectId(token._id);
-
     await dbConnect();
 
     const productExists = await Product.findById(productId);
@@ -34,15 +30,11 @@ export async function PUT(req) {
       return NextResponse.json("Product not found", { status: 404 });
     }
 
-    const user = await User.findByIdAndUpdate(objectId);
+    const user = await User.findById(token._id);
 
     if (!user) {
       return NextResponse.json("User not found", { status: 404 });
     }
-
-    user.cart = user.cart.filter((item) =>
-      mongoose.Types.ObjectId.isValid(item.product)
-    );
 
     const productIndex = user.cart.findIndex(
       (item) => item.product.toString() === productId
