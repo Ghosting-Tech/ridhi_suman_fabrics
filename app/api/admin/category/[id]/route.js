@@ -4,9 +4,6 @@ import dbConnect from "@/config/db";
 
 import Category from "@/model/category";
 
-import removeFile from "@/config/removeFile";
-import uploadFile from "@/config/uploadFile";
-
 import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function PUT(request, { params }) {
