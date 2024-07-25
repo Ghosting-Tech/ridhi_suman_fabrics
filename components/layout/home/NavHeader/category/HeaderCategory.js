@@ -22,10 +22,10 @@ const HeaderCategory = async () => {
   const categories = await fetchData();
 
   return (
-    <div className="flex flex-wrap lg:gap-6 md:gap-4 gap-3 text-gray-600 px-6 py-2 border-b">
+    <div className="lg:flex flex-wrap lg:gap-6 md:gap-4 gap-3 text-gray-600 px-6 py-2 hidden  ">
       <span className="text-black">Categories :</span>
 
-      {categories.map((category, index) => (
+      {categories.map((category) => (
         <CategoryItem key={category._id} category={category} />
       ))}
     </div>

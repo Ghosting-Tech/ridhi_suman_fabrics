@@ -6,7 +6,6 @@ import {
   MenuList,
 } from "@material-tailwind/react";
 
-
 const CategoryItem = ({ category }) => {
   return (
     <Menu allowHover>
@@ -15,7 +14,7 @@ const CategoryItem = ({ category }) => {
       </MenuHandler>
       <MenuList>
         {category?.subCategories?.map((sub) => {
-          return <MenuItem>{sub.name}</MenuItem>;
+          return <MenuItem key={sub.name}>{sub.name}</MenuItem>;
         })}
       </MenuList>
     </Menu>
