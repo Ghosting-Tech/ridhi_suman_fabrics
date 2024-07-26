@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { LuPlusCircle } from "react-icons/lu";
 import { RiCoupon4Line } from "react-icons/ri";
 
-const page = () => {
+const Page = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [couponCode, setCouponCode] = useState([]);
   const getCoupon = async () => {
@@ -52,13 +52,17 @@ const page = () => {
       />
       {/* Coupon Delete Model  */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 md:grid-cols-3 gap-5 place-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-5 place-items-center">
         {couponCode.map((coupon) => (
-          <CouponCard coupon={coupon} setCouponCode={setCouponCode} />
+          <CouponCard
+            key={coupon._id}
+            coupon={coupon}
+            setCouponCode={setCouponCode}
+          />
         ))}
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

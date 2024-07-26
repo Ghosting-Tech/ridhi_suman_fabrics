@@ -1,7 +1,6 @@
 import Heading from "@/components/ui/heading/Heading";
 import { Button, Dialog, IconButton, Input } from "@material-tailwind/react";
 import React from "react";
-import { FaTshirt } from "react-icons/fa";
 import { FaRegAddressCard } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 
