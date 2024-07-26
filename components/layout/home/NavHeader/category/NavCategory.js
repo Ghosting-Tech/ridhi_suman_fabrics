@@ -60,8 +60,8 @@ function NavCategory() {
               <MenuItem>{category.name}</MenuItem>
             </MenuHandler>
             <MenuList>
-              {category.subCategories.map((sub) => {
-                return <MenuItem key={sub.id}>{sub.name}</MenuItem>;
+              {category.subCategories.map((sub, index) => {
+                return <MenuItem key={index}>{sub.name}</MenuItem>;
               })}
             </MenuList>
           </Menu>

@@ -9,7 +9,7 @@ const CouponCard = ({ coupon, setCouponCode }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const copy = () => {
     navigator.clipboard.writeText(coupon.code).then(() => {
-      toast.success("Copied");
+      toast.success(`Copied to clipboard ${coupon.code}`);
     });
   };
   return (
