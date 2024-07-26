@@ -151,10 +151,10 @@ const NavProfile = () => {
     return (
       <Link
         href={"/login"}
-        className="mr-4 px-4 py-2 bg-red-500 text-white rounded flex"
+        className="px-4 py-2 text-sm flex items-center gap-1 bg-gradient-to-r from-deep-orange-500 via-red-500 to-pink-500 text-white rounded-3xl hover:scale-105 transition-all active:scale-95"
       >
         Login
-        <CiLogin className="w-6 h-6 ml-1" />
+        <CiLogin className="w-4 h-4" />
       </Link>
     );
   }

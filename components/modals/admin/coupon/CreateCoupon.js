@@ -7,6 +7,7 @@ import { RxCross1 } from "react-icons/rx";
 import { toast } from "sonner";
 
 const CreateCoupon = ({ open, setOpen, setCouponCode }) => {
+  const [pending, setPending] = useState(false);
   const [formData, setFormData] = useState({
     code: "",
     discount: "",
@@ -40,7 +41,7 @@ const CreateCoupon = ({ open, setOpen, setCouponCode }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setPending(true);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/coupon`,
@@ -62,6 +63,8 @@ const CreateCoupon = ({ open, setOpen, setCouponCode }) => {
       }
     } catch (error) {
       console.error("Error creating coupon:", error);
+    } finally {
+      setPending(false);
     }
   };
 
@@ -125,7 +128,12 @@ const CreateCoupon = ({ open, setOpen, setCouponCode }) => {
           <Button variant="outlined" color="blue" onClick={handleOpen}>
             Cancel
           </Button>
-          <Button variant="gradient" color="blue" type="submit">
+          <Button
+            variant="gradient"
+            color="blue"
+            type="submit"
+            loading={pending ? true : false}
+          >
             Create
           </Button>
         </div>

@@ -1,7 +1,5 @@
 import { checkAuthorization } from "@/config/checkAuthorization";
 import dbConnect from "@/config/db";
-import removeFile from "@/config/removeFile";
-import uploadFile from "@/config/uploadFile";
 import { storage } from "@/firebase";
 import User from "@/model/user";
 import {

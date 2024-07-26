@@ -5,34 +5,9 @@ import React, { useState } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
-import { toast } from "sonner";
 
-const DeleteCoupon = ({ open, setOpen, coupon, setCouponCode }) => {
-  const [pending, setPending] = useState(false);
-  //   console.log(coupon);
+const DeleteAddress = ({ open, setOpen }) => {
   const handleOpen = () => setOpen(!open);
-  const handleDelete = async () => {
-    // console.log({ Id: coupon._id });
-    setPending(true);
-    try {
-      const res = await fetch(`/api/admin/coupon/${coupon._id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        toast.success(`Coupon ${coupon.code} deleted successfully!`);
-        setCouponCode((prev) => prev.filter((c) => c._id !== coupon._id));
-        handleOpen();
-      } else {
-        const errorData = await res.json();
-        toast.error(`Failed to delete coupon: ${errorData.message}`);
-      }
-    } catch (error) {
-      //   console.error(error);
-      toast.error(error.message || "An unexpected error occurred");
-    } finally {
-      setPending(false);
-    }
-  };
 
   return (
     <Dialog
@@ -60,10 +35,7 @@ const DeleteCoupon = ({ open, setOpen, coupon, setCouponCode }) => {
       <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 my-4 rounded-md">
         <div className="flex gap-1">
           <MdOutlineError size={25} />
-          <span>
-            Are you sure you want to delete this Coupon{" "}
-            <span className="font-bold">{coupon.code}</span>?
-          </span>
+          <span>Are you sure you want to delete the address</span>
         </div>
       </div>
       <div className="flex justify-end items-center gap-4">
@@ -83,8 +55,6 @@ const DeleteCoupon = ({ open, setOpen, coupon, setCouponCode }) => {
           className="rounded"
           color="red"
           type="submit"
-          onClick={handleDelete}
-          loading={pending ? true : false}
         >
           Delete
         </Button>
@@ -93,4 +63,4 @@ const DeleteCoupon = ({ open, setOpen, coupon, setCouponCode }) => {
   );
 };
 
-export default DeleteCoupon;
+export default DeleteAddress;

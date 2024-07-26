@@ -60,9 +60,7 @@ const NavHeader = () => {
       </div>
 
       <Collapse open={openNav}>
-        <div className="bg-white w-full border-t border-gray-200 mt-2">
-          <NavList />
-        </div>
+        <NavList />
       </Collapse>
     </Navbar>
   );

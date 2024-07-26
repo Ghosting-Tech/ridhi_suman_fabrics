@@ -40,7 +40,6 @@ const userSchema = new Schema(
     wishlist: [
       {
         type: Schema.Types.ObjectId,
-        default: [],
         ref: "Product",
       },
     ],
@@ -49,7 +48,6 @@ const userSchema = new Schema(
       {
         product: {
           type: Schema.Types.ObjectId,
-          default: [],
           ref: "Product",
         },
 
