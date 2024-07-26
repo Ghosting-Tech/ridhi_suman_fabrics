@@ -12,7 +12,7 @@ import ProductCategory from "./product/ProductCategory";
 import ProductExtraDetails from "./product/ProductExtraDetails";
 
 const ProductItem = memo(
-  ({ product: { _id, title, images, category, discount, price, sizes } }) => {
+  ({ product: { _id, title, images, category, subCategory, discount, price, sizes } }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = useCallback(() => setIsHovered(true), []);
@@ -36,7 +36,7 @@ const ProductItem = memo(
 
           <CardBody className="p-0 mx-4 relative">
             {category && discount && (
-              <ProductCategory category={category} discount={discount} />
+              <ProductCategory category={category} subCategory={subCategory} discount={discount} />
             )}
 
             {title && price && discount && (

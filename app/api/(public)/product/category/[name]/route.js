@@ -31,7 +31,7 @@ export async function GET(request, { params }) {
 
     if (isAdmin) {
       products = await Product.find({ category: name })
-        .select("-sizes -description -orders -updatedAt -createdAt")
+        .select("-description -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
@@ -60,7 +60,7 @@ export async function GET(request, { params }) {
       {
         data: products,
         meta: {
-          page: page,
+          page: parseInt(page),
           pageSize,
           totalPages: Math.ceil(totalProducts / pageSize),
           totalResults: totalProducts,
