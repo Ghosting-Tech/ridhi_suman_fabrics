@@ -1,10 +1,23 @@
-import Link from "next/link";
+"use client";
+import {
+  Menu,
+  MenuHandler,
+  MenuItem,
+  MenuList,
+} from "@material-tailwind/react";
 
-const CategoryItem = ({ href, label }) => {
+const CategoryItem = ({ category }) => {
   return (
-    <Link href={href} className="hover:text-orange-500">
-      {label}
-    </Link>
+    <Menu allowHover>
+      <MenuHandler>
+        <div className="cursor-pointer">{category.name}</div>
+      </MenuHandler>
+      <MenuList>
+        {category?.subCategories?.map((sub) => {
+          return <MenuItem key={sub.name}>{sub.name}</MenuItem>;
+        })}
+      </MenuList>
+    </Menu>
   );
 };
 
