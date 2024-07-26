@@ -18,6 +18,8 @@ const ProductFooter = ({ productId, price, discount }) => {
     e.stopPropagation();
     e.preventDefault();
 
+    console.log("price: ", price);
+    console.log("discount: ", discount);
     const product = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/cart`,
       {

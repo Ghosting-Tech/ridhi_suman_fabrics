@@ -28,8 +28,11 @@ const cartSlice = createSlice({
 
       if (itemIndex !== -1) {
         const item = state.items[itemIndex];
+
         state.totalQuantity -= item.quantity;
-        state.totalPrice -= item.price * item.quantity;
+        state.totalPrice -=
+          Number((item.price - (item.discount / 100) * item.price).toFixed(2)) *
+          item.quantity;
 
         state.items.splice(itemIndex, 1);
       }
