@@ -30,6 +30,21 @@ body {
   }
 }
 
+.prevent-select {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .loader {
   --speed-of-animation: 0.9s;
   --gap: 6px;
@@ -84,6 +99,7 @@ body {
     transform: scaleY(1);
   }
 }
+
 .size {
   width: calc(50% - 10px);
 }

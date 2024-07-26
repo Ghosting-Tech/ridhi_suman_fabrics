@@ -30,7 +30,7 @@ export const POST = async (req) => {
 
       userId = decoded.userId;
     } catch (error) {
-      return NextResponse.json("HI", { status: 400 });
+      return NextResponse.json("Unauthorized Access", { status: 400 });
     }
 
     await dbConnect();

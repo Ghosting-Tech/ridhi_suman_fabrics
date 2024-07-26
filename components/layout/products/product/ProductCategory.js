@@ -10,7 +10,7 @@ const ProductCategory = ({ category, discount, subCategory }) => {
         {category} / {subCategory.name}
       </h3>
 
-      <div className="flex gap-1 items-center">
+      <div className="flex gap-1 items-center text-nowrap">
         <CiDiscount1 className="text-red-500 w-5 h-5" />
 
         <p className="text-red-500">

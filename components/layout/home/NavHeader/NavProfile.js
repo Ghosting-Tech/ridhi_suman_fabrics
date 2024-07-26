@@ -26,6 +26,7 @@ const NavProfile = () => {
   const router = useRouter();
 
   const { data: session, status } = useSession();
+  console.log(session);
 
   const profileMenuItems = [
     {
@@ -143,7 +144,6 @@ const NavProfile = () => {
                   icon={item.icon}
                 />
               ))}
-          ``
         </MenuList>
       </Menu>
     );

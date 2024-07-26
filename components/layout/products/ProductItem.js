@@ -12,7 +12,18 @@ import ProductCategory from "./product/ProductCategory";
 import ProductExtraDetails from "./product/ProductExtraDetails";
 
 const ProductItem = memo(
-  ({ product: { _id, title, images, category, subCategory, discount, price, sizes } }) => {
+  ({
+    product: {
+      _id,
+      title,
+      images,
+      category,
+      discount,
+      price,
+      sizes,
+      subCategory,
+    },
+  }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = useCallback(() => setIsHovered(true), []);
@@ -29,14 +40,18 @@ const ProductItem = memo(
             <ProductHeader
               title={title}
               id={_id}
-              srcs={images[0]}
+              src={images[0]}
               isHovered={isHovered}
             />
           )}
 
           <CardBody className="p-0 mx-4 relative">
             {category && discount && (
-              <ProductCategory category={category} subCategory={subCategory} discount={discount} />
+              <ProductCategory
+                subCategory={subCategory}
+                category={category}
+                discount={discount}
+              />
             )}
 
             {title && price && discount && (
