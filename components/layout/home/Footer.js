@@ -2,18 +2,41 @@ import Link from "next/link";
 import React from "react";
 
 import { categories, footerInfo } from "@/utils/footerData";
+import TooltipFooter from "@/components/ui/Tooltip";
 
-const Footer = () => {
+async function getCategories() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+const Footer = async () => {
+  const data = await getCategories();
+  console.log(data)
+
   return (
     <footer className="bg-white pt-10 container mx-auto border-t border-gray-300">
       <div className="flex flex-col items-center">
         <h2 className="text-3xl font-semibold mb-6">Categories</h2>
+        <div className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 px-6 gap-x-6 gap-y-8 text-gray-600 mb-10">
+          {data.slice(0, 7).map((category, index) => (
+            <div key={index} className="border p-3 rounded-md border-gray-200 w-full">
+              <span className="font-semibold text-lg capitalize border-b pb-2 border-grey-500 truncate block">{category.name}</span>
 
-        <div className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 px-6 gap-4 text-gray-600 mb-10">
-          {categories.map((item, index) => (
-            <span key={index} className="hover:text-orange-500 cursor-pointer">
-              {item}
-            </span>
+              <div className="flex flex-col mt-2 space-y-1">
+                {category.subCategories.slice(0, 6).map((subcategory, subIndex) => (
+                  <TooltipFooter label={subcategory.name}>
+                    <span key={subIndex} className="text-base capitalize text-gray-500 hover:text-orange-500 cursor-pointer truncate">
+                      {subcategory.name}
+                    </span>
+                  </TooltipFooter>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
 
