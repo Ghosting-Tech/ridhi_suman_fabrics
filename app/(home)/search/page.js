@@ -24,7 +24,7 @@ const page = async ({ params, searchParams }) => {
   return (
     <Suspense fallback={<CategoryListSkeleton />}>
       <main className="relative p-4 sm:p-8 bg-gray-50">
-        <h2 className="text-2xl lg:text-4xl font-bold text-center text-[#0052D4] font-aclonica leading-tight mb-4 sm:mb-8">
+        <h2 className="text-2xl lg:text-4xl font-bold text-center text-pink-500 font-aclonica leading-tight mb-4 sm:mb-8">
           Search Results for {searchParams.query}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-4 gap-4">

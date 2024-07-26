@@ -54,16 +54,10 @@ function NavCategory() {
         </Button>
       </MenuHandler>
       <MenuList>
-        {categories.map((category) => (
-          <Menu
-            placement="left-start"
-            allowHover
-            offset={15}
-          >
+        {categories.map((category, index) => (
+          <Menu placement="left-start" allowHover key={index} offset={15}>
             <MenuHandler className="flex items-center justify-between">
-              <MenuItem>
-                {category.name}
-              </MenuItem>
+              <MenuItem>{category.name}</MenuItem>
             </MenuHandler>
             <MenuList>
               {category.subCategories.map((sub) => {

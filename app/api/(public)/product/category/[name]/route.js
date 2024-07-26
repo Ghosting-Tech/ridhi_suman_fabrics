@@ -15,7 +15,7 @@ export async function GET(request, { params }) {
     }
 
     const page = searchParams.get("page") || 1;
-    const pageSize = searchParams.get("size") || 10;
+    const pageSize = searchParams.get("size") || 12;
 
     const { name } = params;
 
@@ -27,6 +27,7 @@ export async function GET(request, { params }) {
     await dbConnect();
 
     let products = [];
+    let totalProducts = 0;
 
     if (isAdmin) {
       products = await Product.find({ category: name })
@@ -34,12 +35,19 @@ export async function GET(request, { params }) {
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
+      totalProducts = await Product.countDocuments({
+        category: name,
+      });
     } else {
       products = await Product.find({ category: name, visibility: true })
         .select("-description -visibility -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
+      totalProducts = await Product.countDocuments({
+        category: name,
+        visibility: true,
+      });
     }
 
     if (!products || products.length === 0) {
@@ -48,7 +56,18 @@ export async function GET(request, { params }) {
       });
     }
 
-    return NextResponse.json(products, { status: 200 });
+    return NextResponse.json(
+      {
+        data: products,
+        meta: {
+          page: page,
+          pageSize,
+          totalPages: Math.ceil(totalProducts / pageSize),
+          totalResults: totalProducts,
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching products:", error);
 
