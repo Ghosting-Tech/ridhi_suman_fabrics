@@ -125,7 +125,7 @@ const CartDrawer = () => {
             ) : (
               <p>
                 {" ₹"}
-                {cart?.totalPrice}
+                {cart?.totalPrice.toFixed(2)}
               </p>
             )}
           </Typography>

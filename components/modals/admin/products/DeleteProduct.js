@@ -1,10 +1,13 @@
 "use client";
-import Heading from "@/components/ui/heading/Heading";
-import { Button, Dialog, IconButton } from "@material-tailwind/react";
-import Image from "next/image";
-import { MdDeleteSweep, MdOutlineError } from "react-icons/md";
+
 import { RxCross1 } from "react-icons/rx";
+import { MdDeleteSweep, MdOutlineError } from "react-icons/md";
+import { Button, Dialog, IconButton } from "@material-tailwind/react";
+
 import { toast } from "sonner";
+import Image from "next/image";
+
+import Heading from "@/components/ui/heading/Heading";
 
 const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
   const handleOpen = () => setOpen(!open);
@@ -14,19 +17,24 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
       const response = await fetch(`/api/admin/product/${product._id}`, {
         method: "DELETE",
       });
+
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data);
       }
+
       toast.success("Product deleted successfully");
+
       setProducts((prev) => {
         return prev.filter((prod) => prod._id !== product._id);
       });
+
       setOpen(false);
     } catch (err) {
       toast.error(`${err}`);
     }
   };
+
   return (
     <Dialog
       open={open}
@@ -63,6 +71,7 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
             className="w-40 aspect-square object-top rounded-full object-cover"
           />
         )}
+
         <div className="p-4 w-full flex flex-col gap-1">
           <div
             style={{
@@ -72,9 +81,11 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
           >
             {product.category} / {product.subCategory?.name}
           </div>
+
           <h2 className="text-x lg:text-3xl font-bold text-pink-500">
             {product.title}
           </h2>
+
           <div className="flex gap-1 items-center">
             <div className="text-pink-500 font-semibold">
               ₹
@@ -83,14 +94,17 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
                 (product.discount / 100) * product.price
               ).toFixed(2)}
             </div>
+
             <div className="text-xs line-through">₹{product.price}</div>
           </div>
         </div>
       </div>
+
       <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 rounded-md">
         <MdOutlineError />
         <div>Are you sure you want to delete this Product?</div>
       </div>
+
       <div className="flex justify-end items-center gap-4">
         <Button
           variant="outlined"
@@ -102,6 +116,7 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
         >
           Cancel
         </Button>
+
         <Button
           variant="gradient"
           size="sm"

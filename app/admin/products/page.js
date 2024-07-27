@@ -1,7 +1,6 @@
 "use client";
 import { ProductCard } from "@/components/layout/admin/products/ProductCard";
 import DeleteProduct from "@/components/modals/admin/products/DeleteProduct";
-import Heading from "@/components/ui/heading/Heading";
 import { Button, Option, Select } from "@material-tailwind/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -9,29 +8,36 @@ import { FaTshirt } from "react-icons/fa";
 import { toast } from "sonner";
 
 const Page = () => {
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState({});
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [selectedsub, setSelectedSub] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState({});
+
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
   const fetchProducts = async () => {
     try {
       const res = await fetch("/api/product");
       const data = await res.json();
+
       setProducts(data.data);
     } catch (err) {
       toast.error("Error fetching products!");
     }
   };
+
   const fetchCategories = async () => {
     try {
       const response = await fetch("/api/category");
       const data = await response.json();
+
       setCategories(data);
     } catch (error) {
       console.error(error);
     }
   };
+
   useEffect(() => {
     fetchProducts();
     fetchCategories();
@@ -40,9 +46,12 @@ const Page = () => {
   const handleFilterByCategory = async (val) => {
     try {
       const res = await fetch(`/api/product/category/${val}`);
+
       const data = await res.json();
+
       if (res.ok) {
         const sub = categories.filter((category) => category.name === val);
+
         setSelectedCategory(sub[0]);
         setProducts(data);
       } else {
@@ -52,19 +61,21 @@ const Page = () => {
       toast.error(`Error getting products by ${val}!`);
     }
   };
-  const [selectedsub, setSelectedSub] = useState("");
+
   const handleFilterBySubCategory = async (val) => {
     if (selectedCategory.subCategories?.some((sub) => sub.name === val)) {
       setSelectedSub(val);
     } else {
       setSelectedSub("");
     }
+
     try {
       if (selectedCategory.name) {
         const res = await fetch(
           `/api/product/category/${selectedCategory.name}/${val}`
         );
         const data = await res.json();
+
         if (res.ok) {
           setProducts(data);
         } else {

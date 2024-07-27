@@ -4,7 +4,7 @@ const modalSlice = createSlice({
   name: "modal",
 
   initialState: {
-    cartDrawer: true,
+    cartDrawer: false,
   },
 
   reducers: {

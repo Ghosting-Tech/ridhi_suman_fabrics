@@ -5,13 +5,39 @@ import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "sonner";
 import React, { useState, useEffect } from "react";
 
 import NavList from "./NavList";
 import NavProfile from "./NavProfile";
 
+import { useDispatch } from "react-redux";
+
+import { updateWishlist } from "@/redux/slice/wishlistSlice";
+
 const NavHeader = () => {
+  const dispatch = useDispatch();
+
   const [openNav, setOpenNav] = useState(false);
+
+  const fetchCartItems = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist`
+      );
+
+      const data = await res.json();
+
+      dispatch(updateWishlist(data));
+    } catch (error) {
+      console.error("Error fetching wishlists", error);
+      toast.error("Error fetching wishlists");
+    }
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {

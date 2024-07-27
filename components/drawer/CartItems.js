@@ -1,19 +1,18 @@
 "use client";
 
 import { Button } from "@material-tailwind/react";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 import Image from "next/image";
 import { toast } from "sonner";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import {
-  removeItemFromCart,
-  updateItemQuantity,
-} from "@/redux/slice/cartSlice";
+import CartQuantityButton from "./CartQuantityButton";
 
-const CartItems = ({ data, cart }) => {
+import { removeItemFromCart } from "@/redux/slice/cartSlice";
+import ImageContainer from "../ui/ImageContainer";
+
+const CartItems = ({ data }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -51,51 +50,14 @@ const CartItems = ({ data, cart }) => {
     }
   };
 
-  const handleItemQuantity = async (e, qty) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    const product = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/cart`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ productId: data._id, quantity: qty }),
-      }
-    );
-
-    // const data = await product.json();
-
-    if (product.ok) {
-      dispatch(
-        updateItemQuantity({
-          itemId: data._id,
-          quantity: data.quantity + qty,
-        })
-      );
-
-      toast.info("Product updated");
-    } else {
-      toast.error(data);
-    }
-  };
-
   return (
     <div className="border border-gray-300 rounded-xl p-2.5 flex gap-3 bg-white shadow-sm">
-      <div className="w-4/12">
-        <Image
-          src={data.images.url}
-          width={110}
-          height={110}
-          alt="cart"
-          className="rounded-lg"
-        />
+      <div className="w-4/12 min-h-28">
+        <ImageContainer width={120} height={120} image={data.images.url} />
       </div>
 
       <div className="flex flex-col justify-between py-1 w-full">
-        <p className="font-bold">{data.title}</p>
+        <p className="font-bold capitalize">{data.title}</p>
 
         <div>
           <div className="flex gap-1 items-center">
@@ -114,28 +76,7 @@ const CartItems = ({ data, cart }) => {
         </div>
 
         <div className="flex justify-between items-end mr-3 w-full">
-          <div className="flex gap-2 items-center">
-            <Button
-              color="gray"
-              size="sm"
-              className="p-1.5 text-sm rounded disabled:cursor-not-allowed"
-              onClick={(e) => handleItemQuantity(e, -1)}
-              disabled={data.quantity <= 1}
-            >
-              <MinusIcon className="w-3 h-3" />
-            </Button>
-
-            {data.quantity}
-
-            <Button
-              color="gray"
-              size="sm"
-              className="p-1.5 text-sm rounded"
-              onClick={(e) => handleItemQuantity(e, 1)}
-            >
-              <PlusIcon className="w-3 h-3" />
-            </Button>
-          </div>
+          <CartQuantityButton data={data} />
 
           <Button
             color="white"

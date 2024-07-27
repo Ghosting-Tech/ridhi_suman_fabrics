@@ -7,13 +7,14 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addItemToCart, updateCart } from "@/redux/slice/cartSlice";
+import CartQuantityButton from "@/components/drawer/CartQuantityButton";
 
 const ProductFooter = ({ productId, price, discount }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
 
-  const isInCart = cart.items?.some((item) => item._id === productId);
+  const isInCart = cart.items?.find((item) => item._id === productId);
 
   const handleAddToCart = async (e) => {
     e.stopPropagation();
@@ -52,8 +53,17 @@ const ProductFooter = ({ productId, price, discount }) => {
 
   return (
     // user && (
-    <CardFooter className="pt-0 mt-auto">
-      {!isInCart && (
+    <CardFooter className="pt-0 mt-auto min-h-16">
+      {isInCart ? (
+        <CartQuantityButton
+          data={{
+            _id: productId,
+            quantity: isInCart.quantity,
+          }}
+          width={20}
+          height={20}
+        />
+      ) : (
         <Button
           fullWidth={true}
           className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed z-10"
