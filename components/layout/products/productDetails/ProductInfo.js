@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { Button } from "@material-tailwind/react";
+import { BiDetail } from "react-icons/bi";
 
 function ProductInfo({ product }) {
   const [selectedColor, setSelectedColor] = useState(null);
@@ -65,10 +67,9 @@ function ProductInfo({ product }) {
       </div>
 
       {/* Start Choose color and size button box */}
-      <div>
-        {/* Choose Size */}
-        <div className="flex flex-col md:flex-row items-center justify-between h-auto md:h-[69px] py-5 border-y border-slate-300 ">
-          <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="text-gray-500 font-400 text-md leading-4 font-semibold">
             Choose Size
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-3 md:mt-0 ">
@@ -87,10 +88,9 @@ function ProductInfo({ product }) {
             ))}
           </div>
         </div>
-
-        {/* Colour */}
-        <div className="flex flex-col md:flex-row items-center justify-between h-auto md:h-[69px] py-5 border-b border-slate-300">
-          <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold">
+        <hr />
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="text-gray-500 font-400 text-md leading-4 font-semibold">
             Choose Colour
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-3 md:mt-0">
@@ -100,12 +100,12 @@ function ProductInfo({ product }) {
                   ?.colours.map((color, idx) => (
                     <div
                       className={`flex flex-row border border-black px-3 py-1 rounded-md justify-center items-center gap-2
-                                 ${
-                                   selectedColor === color.colour.name
-                                     ? "border-[#52057B] text-[#52057B] bg-[#F0E5FF]"
-                                     : "border-black text-black"
-                                 }${color.quantity === "0" ? "opacity-50 cursor-not-allowed" : ""}
-                            `}
+                                   ${
+                                     selectedColor === color.colour.name
+                                       ? "border-[#52057B] text-[#52057B] bg-[#F0E5FF]"
+                                       : "border-black text-black"
+                                   }${color.quantity === "0" ? "opacity-50 cursor-not-allowed" : ""}
+                              `}
                       onClick={() => handleSelectedColor(color.colour.name)}
                       key={idx}
                     >
@@ -146,52 +146,49 @@ function ProductInfo({ product }) {
                 )}
           </div>
         </div>
-
-        <div className=" h-auto py-3 border-b border-slate-300 ">
-          <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold mb-2">
-            Product Detail:
-          </div>
-          <div className="flex flex-col md:flex-row items-center gap-2 mb-2">
-            <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold">
-              Fabric:
-            </div>
-            <div className="flex flex-wrap items-center gap-2 mt-3 md:mt-0">
-              <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold ">
-                {product.fabric}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row items-center justify-between ">
-            <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold">
-              Brand:-
-            </div>
-            <div className="flex flex-wrap items-center gap-2 mt-3 md:mt-0">
-              <div className="text-[#828282] font-400 text-[14px] leading-4 font-semibold ">
-                {product.brand}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* End Choose color and size button box */}
 
       {/* Buy and Cart Button */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 h-auto md:h-[52px] py-5">
-        <Link href="/booking-detail-page">
-          <button className="bg-[#52057B] text-white border border-black px-28 py-2 rounded ">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+        <Button
+          className="flex gap-1 items-center justify-center rounded"
+          fullWidth
+          variant="outlined"
+          color="pink"
+          size="md"
+        >
+          <ShoppingCartIcon className="h-5 w-5" />
+          Add to Cart
+        </Button>
+        <Link href="/booking-detail-page" className="w-full h-full">
+          <Button
+            variant="gradient"
+            color="teal"
+            className="w-full h-full rounded"
+            size="md"
+          >
             Buy Now
-          </button>
+          </Button>
         </Link>
-        <div className="border border-pink-300 py-2 rounded hover:cursor-pointer px-20">
-          <div className="flex items-center">
-            <ShoppingCartIcon className="h-5 w-5 text-pink-400" />
-            <span className="ml-1 text-pink-400">Add to Cart</span>
-          </div>
-        </div>
       </div>
       {/* End Buy and Cart Button */}
 
+      <div className="flex flex-col gap-1 bg-gray-100 px-4 py-2 rounded-md">
+        <div className="text-md mb-1 font-semibold flex items-center gap-1 text-gray-700">
+          <BiDetail />
+          Product Detail
+        </div>
+        <div className="flex flex-col md:flex-row items-center gap-1">
+          <div className="text-gray-600 text-sm">Fabric : </div>
+          <div className="text-gray-600 text-sm ">{product.fabric}</div>
+        </div>
+        <div className="flex flex-col md:flex-row items-center gap-1">
+          <div className="text-gray-600 text-sm">Brand : </div>
+          <div className="text-gray-600 text-sm ">{product.brand}</div>
+        </div>
+      </div>
       {/* Start product Feature Icon */}
       <div className="grid grid-cols-2 gap-4 pb-5 border-b">
         <div className="flex items-center gap-3">

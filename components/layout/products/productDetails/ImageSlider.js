@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { Carousel } from "@material-tailwind/react";
-import Image from "next/image";
+import ImageContainer from "@/components/ui/ImageContainer";
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
 
@@ -59,20 +59,7 @@ const ImageSlider = ({ data = [] }) => {
 
   return (
     <div className="grid gap-4 w-full p-5 md:w-1/3">
-      <div className="relative w-full h-96 rounded-lg overflow-hidden">
-        <div
-          className="absolute inset-0 bg-center bg-cover filter blur-sm scale-125"
-          style={{ backgroundImage: `url(${active})` }}
-        />
-        <div className="absolute inset-0 bg-black opacity-30" />
-        <Image
-          className="relative mx-auto w-full object-contain rounded-lg md:h-full z-10"
-          width={384}
-          height={384}
-          src={active}
-          alt=""
-        />
-      </div>
+      <ImageContainer image={active} />
 
       <Carousel className="flex gap-4" loop autoplay interval={3000}>
         {renderSlides()}

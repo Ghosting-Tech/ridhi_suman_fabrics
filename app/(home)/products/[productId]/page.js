@@ -22,6 +22,8 @@ const fetchProductData = async (productId) => {
 export default async function ProductData({ params: { productId } }) {
   const productData = await fetchProductData(productId);
 
+  // console.log(productData)
+
   return (
     <div className="flex gap-6 flex-col md:flex-row justify-center">
       <ImageSlider data={productData?.images} />
