@@ -8,7 +8,6 @@ import WishlistBtn from "@/components/ui/buttons/WishlistBtn";
 
 const ProductHeader = React.memo(
   ({ isHovered, isSet = false, srcs, title, id }) => {
-    console.log("ProductHeader", srcs);
     const gridStyle = useMemo(
       () => ({
         display: "grid",
