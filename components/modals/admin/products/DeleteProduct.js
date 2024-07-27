@@ -20,7 +20,7 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
       }
       toast.success("Product deleted successfully");
       setProducts((prev) => {
-        return prev.filter((product) => product._id !== product._id);
+        return prev.filter((prod) => prod._id !== product._id);
       });
       setOpen(false);
     } catch (err) {
@@ -51,7 +51,7 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
         ]}
       />
       <div className="w-full h-full flex border p-4  bg-white rounded-xl">
-        {product.images?.url && (
+        {product.images && (
           <Image
             src={product.images[0].url}
             alt="Image"

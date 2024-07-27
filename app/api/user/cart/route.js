@@ -24,6 +24,19 @@ export async function GET(req) {
       return NextResponse.json("User not found", { status: 404 });
     }
 
+    // const productExists =
+    //   user.cart.length > 0 &&
+    //   user.cart.map((item) => {
+    //     promise.all(
+    //       item.product.map(async (product) => {
+    //         const productExists = await Product.findById(product._id);
+    //         if (!productExists) {
+    //           return NextResponse.json("Product not found", { status: 404 });
+    //         }
+    //       })
+    //     );
+    //   });
+
     let totalQuantity = 0;
     let totalAmount = 0;
 

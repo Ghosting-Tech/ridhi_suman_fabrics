@@ -40,7 +40,7 @@ const ProductItem = memo(
             <ProductHeader
               title={title}
               id={_id}
-              src={images[0]}
+              srcs={images[0]}
               isHovered={isHovered}
             />
           )}
