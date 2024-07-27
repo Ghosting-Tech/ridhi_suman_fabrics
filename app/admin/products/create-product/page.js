@@ -106,7 +106,8 @@ const Page = () => {
   };
 
   const handleSubCategoryChange = (value) => {
-    const [name, colour] = value.split("-");
+    const [name, colour] = value.split("~");
+    console.log(name, colour);
     setFormData((prevState) => ({
       ...prevState,
       subCategory: {
@@ -252,13 +253,13 @@ const Page = () => {
           <Select
             label="Select Sub Category"
             name="subCategory"
-            value={`${formData.subCategory.name}-${formData.subCategory.colour}`}
+            value={`${formData.subCategory.name}~${formData.subCategory.colour}`}
             onChange={handleSubCategoryChange}
           >
             {selectedSubcategories.map((subcategory) => (
               <Option
                 key={subcategory._id}
-                value={`${subcategory.name}-${subcategory.colour}`}
+                value={`${subcategory.name}~${subcategory.colour}`}
               >
                 {subcategory.name}
               </Option>

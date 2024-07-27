@@ -10,8 +10,6 @@ function ProductInfo({ product }) {
   const [selectedSize, setSelectedSize] = useState(null);
   const backgroundColor = product?.subCategory?.colour;
 
-  console.log(product);
-
   const handleSelectedSize = (size) => {
     setSelectedSize(size);
     setSelectedColor(null);
@@ -30,24 +28,24 @@ function ProductInfo({ product }) {
     if (product.sizes.length > 0) {
       setSelectedSize(product.sizes[0].size);
     }
-  }, [product.sizes]);
+  }, [product?.sizes]);
 
   return (
-    <div className=" w-full md:w-1/2 flex flex-col gap-6 p-5 md:px-0 mr-5">
+    <div className="w-full max-w-3xl md:w-2/3 flex flex-col gap-6 p-5 md:px-0 mr-5">
       <div className="flex flex-col gap-3">
         <div
           className="w-fit text-black inline text-[12px]  font-400 px-2 py-[6px] leading-3 rounded"
           style={{ background: `${backgroundColor}` }}
         >
-          {product.category}/{product.subCategory.name}
+          {product.category} / {product.subCategory.name}
         </div>
-        <div className="font-600 text-[20px] w-fit leading-8 md:leading-12 font-semibold">
+        <div className="font-600 text-4xl capitalize w-fit leading-8 md:leading-12 font-semibold text-pink-500">
           {product.title}
         </div>
 
-        <div className="flex items-end gap-2 pb-6">
-          <p className="leading-none font-600  text-2xl md:text-4xl text-[#11998E] font-semibold">
-            ₹{" "}
+        <div className="flex items-end gap-2">
+          <p className="leading-none font-600  text-lg md:text-2xl text-teal-500 font-semibold">
+            ₹
             <span>
               {(
                 product.price -
@@ -55,11 +53,11 @@ function ProductInfo({ product }) {
               ).toFixed(2)}
             </span>
           </p>
-          <p className="line-through leading-none text-2xl md:text-3xl text-black font-semibold">
+          <p className="line-through leading-none text-2xl md:text-lg text-gray-500 font-semibold">
             ₹ <span>{product.price}</span>
           </p>
         </div>
-        <div className="font-400 text-[14px] md:text-[16px] leading-5 md:leading-6 text-[#828282]">
+        <div className="font-400 text-[14px] md:text-md leading-5 md:leading-6 text-[#828282]">
           We provide a{" "}
           <span className="font-600 text-black">one-year warranty</span> in case
           there are any issues with our products.

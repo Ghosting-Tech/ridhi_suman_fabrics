@@ -1,81 +1,84 @@
-'use client'
+"use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { Carousel } from "@material-tailwind/react";
+import Image from "next/image";
 const useWindowSize = () => {
-    const [size, setSize] = useState([0, 0]);
+  const [size, setSize] = useState([0, 0]);
 
-    useEffect(() => {
-        const updateSize = () => {
-            setSize([window.innerWidth, window.innerHeight]);
-        };
-
-        window.addEventListener("resize", updateSize);
-        updateSize();
-
-        return () => window.removeEventListener("resize", updateSize);
-    }, []);
-
-    return size;
-}; 
-const ImageSlider = ({ data = [] }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [active, setActive] = useState(data[0]?.url || '');
-
-    const [width] = useWindowSize();
-
-    const slides = useMemo(() => {
-        let perSlide;
-
-        // if (width > 1360) perSlide = 3;
-        if (width > 960) perSlide = 3;
-        else if (width > 720) perSlide = 2;
-        else perSlide = 2;
-
-        const slides = [];
-
-        for (let i = 0; i < data.length; i += perSlide) {
-            slides.push(data.slice(i, i + perSlide));
-        }
-
-        return slides;
-    }, [data, width]);
-
-    const renderSlides = () => {
-        return slides.map((slideItems, slideIndex) => (
-            <div key={slideIndex} className="flex gap-2">
-                {slideItems.map((slide, index) => (
-                    <div key={index} className="h-40 w-auto">
-                        <img
-                            onClick={() => setActive(slide.url)}
-                            src={slide.url}
-                            className="h-full w-11/12  cursor-pointer rounded-lg object-cover object-center"
-                            alt="gallery-image"
-                        />
-                    </div>
-                ))}
-            </div>
-        ));
+  useEffect(() => {
+    const updateSize = () => {
+      setSize([window.innerWidth, window.innerHeight]);
     };
-    
 
-    return (
-        <div className="grid gap-4 w-full p-5 md:w-1/2">
-            <div>
-                <img
-                    className="w-12/12 rounded-lg object-cover object-top md:h-full"
-                    src={active}
-                    alt=""
-                />
-            </div>
-            <Carousel className="flex gap-4"
-                loop
-                autoplay
-                interval={3000}
-            >
-                {renderSlides()}
-            </Carousel >
-        </div>
-    );
+    window.addEventListener("resize", updateSize);
+    updateSize();
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return size;
+};
+const ImageSlider = ({ data = [] }) => {
+  const [active, setActive] = useState(data[0]?.url || "");
+
+  const [width] = useWindowSize();
+
+  const slides = useMemo(() => {
+    let perSlide;
+
+    // if (width > 1360) perSlide = 3;
+    if (width > 960) perSlide = 3;
+    else if (width > 720) perSlide = 2;
+    else perSlide = 2;
+
+    const slides = [];
+
+    for (let i = 0; i < data.length; i += perSlide) {
+      slides.push(data.slice(i, i + perSlide));
+    }
+
+    return slides;
+  }, [data, width]);
+
+  const renderSlides = () => {
+    return slides.map((slideItems, slideIndex) => (
+      <div key={slideIndex} className="flex gap-2">
+        {slideItems.map((slide, index) => (
+          <div key={index} className="h-40 w-auto">
+            <img
+              onClick={() => setActive(slide.url)}
+              src={slide.url}
+              className="h-full w-11/12  cursor-pointer rounded-lg object-cover object-center"
+              alt="gallery-image"
+            />
+          </div>
+        ))}
+      </div>
+    ));
+  };
+
+  return (
+    <div className="grid gap-4 w-full p-5 md:w-1/3">
+      <div className="relative w-full h-96 rounded-lg overflow-hidden">
+        <div
+          className="absolute inset-0 bg-center bg-cover filter blur-sm scale-125"
+          style={{ backgroundImage: `url(${active})` }}
+        />
+        <div className="absolute inset-0 bg-black opacity-30" />
+        <Image
+          className="relative mx-auto w-full object-contain rounded-lg md:h-full z-10"
+          width={384}
+          height={384}
+          src={active}
+          alt=""
+        />
+      </div>
+
+      <Carousel className="flex gap-4" loop autoplay interval={3000}>
+        {renderSlides()}
+      </Carousel>
+    </div>
+  );
 };
 
 export default ImageSlider;
