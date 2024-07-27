@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@material-tailwind/react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 
@@ -6,9 +8,12 @@ import { toast } from "sonner";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { removeItemFromCart } from "@/redux/slice/cartSlice";
+import {
+  removeItemFromCart,
+  updateItemQuantity,
+} from "@/redux/slice/cartSlice";
 
-const CartItems = ({ data }) => {
+const CartItems = ({ data, cart }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -46,6 +51,37 @@ const CartItems = ({ data }) => {
     }
   };
 
+  const handleItemQuantity = async (e, qty) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const product = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/cart`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId: data._id, quantity: qty }),
+      }
+    );
+
+    // const data = await product.json();
+
+    if (product.ok) {
+      dispatch(
+        updateItemQuantity({
+          itemId: data._id,
+          quantity: data.quantity + qty,
+        })
+      );
+
+      toast.info("Product updated");
+    } else {
+      toast.error(data);
+    }
+  };
+
   return (
     <div className="border border-gray-300 rounded-xl p-2.5 flex gap-3 bg-white shadow-sm">
       <div className="w-4/12">
@@ -71,6 +107,7 @@ const CartItems = ({ data }) => {
               ₹ <span>{data.price}</span>
             </p>
           </div>
+
           <p className="text-gray-700 text-sm">
             Quantity: <span>{data.quantity}</span>
           </p>
@@ -78,11 +115,24 @@ const CartItems = ({ data }) => {
 
         <div className="flex justify-between items-end mr-3 w-full">
           <div className="flex gap-2 items-center">
-            <Button color="gray" size="sm" className="p-1.5 text-sm rounded">
+            <Button
+              color="gray"
+              size="sm"
+              className="p-1.5 text-sm rounded disabled:cursor-not-allowed"
+              onClick={(e) => handleItemQuantity(e, -1)}
+              disabled={data.quantity <= 1}
+            >
               <MinusIcon className="w-3 h-3" />
             </Button>
+
             {data.quantity}
-            <Button color="gray" size="sm" className="p-1.5 text-sm rounded">
+
+            <Button
+              color="gray"
+              size="sm"
+              className="p-1.5 text-sm rounded"
+              onClick={(e) => handleItemQuantity(e, 1)}
+            >
               <PlusIcon className="w-3 h-3" />
             </Button>
           </div>

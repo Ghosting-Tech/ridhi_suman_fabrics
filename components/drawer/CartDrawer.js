@@ -31,7 +31,6 @@ const CartDrawer = () => {
       );
 
       const data = await res.json();
-      console.log(data);
 
       dispatch(addItemToCart(data.data));
       dispatch(
@@ -104,7 +103,7 @@ const CartDrawer = () => {
         <section className="flex-grow overflow-scroll space-y-3 hide-scroll">
           {cart?.items?.length !== 0 ? (
             cart?.items?.map((item, index) => (
-              <CartItems key={index} data={item} />
+              <CartItems key={index} data={item} cart={cart} />
             ))
           ) : (
             <div className="bg-gray-200 py-2 px-4 text-center rounded-md mt-4">

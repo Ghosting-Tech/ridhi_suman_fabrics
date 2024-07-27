@@ -125,7 +125,7 @@ export async function DELETE(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      // return NextResponse.json("Unauthorized Request", { status: 401 });
+      return NextResponse.json("Unauthorized Request", { status: 401 });
     }
 
     const { productId } = await req.json();
@@ -142,7 +142,7 @@ export async function DELETE(req) {
       return NextResponse.json("Product not found", { status: 404 });
     }
 
-    const user = await User.findById("66a35384dba26bc6cbe53ec1");
+    const user = await User.findById(token._id);
 
     if (!user) {
       return NextResponse.json("User not found", { status: 404 });

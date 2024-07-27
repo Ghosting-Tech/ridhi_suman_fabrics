@@ -5,10 +5,14 @@ import { Button, IconButton, Input } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { useDispatch } from "react-redux";
 import NavCategory from "./category/NavCategory";
+
+import { toggleCartDrawer } from "@/redux/slice/modalSlice";
 
 const NavList = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -27,6 +31,10 @@ const NavList = () => {
     router.push(`/search?query=${searchQuery}`);
 
     setSearchQuery("");
+  };
+
+  const toggleCart = () => {
+    dispatch(toggleCartDrawer());
   };
 
   return (
@@ -57,9 +65,11 @@ const NavList = () => {
         <div className="flex lg:hidden">
           <NavCategory />
         </div>
+
         <Button
           className="flex items-center gap-2 text-gray-800 px-4 w-full justify-center sm:min-w-fit"
           variant="text"
+          onClick={toggleCart}
         >
           <ShoppingCartIcon className="h-5 w-5" />
           Cart
