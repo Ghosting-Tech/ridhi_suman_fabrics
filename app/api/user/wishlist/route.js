@@ -10,6 +10,43 @@ import mongoose from "mongoose";
 
 const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
 
+export async function GET(req) {
+  try {
+    const token = await getToken({ req, secret });
+
+    if (!token) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
+
+    await dbConnect();
+
+    const user = await User.findById(token._id);
+
+    // const wishlist = user.wishlist.map((item) => {
+    //   return {
+    //     _id: item._id,
+    //     title: item.title,
+    //     images: item.images[0],
+    //     price: item.price,
+    //     discount: item.discount,
+    //     size: item.size,
+    //     category: item.category,
+    //     subCategory: item.subCategory,
+    //   };
+    // });
+
+    if (!user) {
+      return NextResponse.json("User not found", { status: 404 });
+    }
+
+    return NextResponse.json(user.wishlist, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+
+    return NextResponse.json("Internal Server Error", { status: 500 });
+  }
+}
+
 export async function PUT(req) {
   try {
     const token = await getToken({ req, secret });

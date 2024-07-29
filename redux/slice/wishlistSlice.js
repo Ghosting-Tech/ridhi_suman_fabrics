@@ -9,6 +9,7 @@ const wishlistSlice = createSlice({
 
   reducers: {
     updateWishlist: (state, action) => {
+      console.log("action.payload", action.payload);
       state.items = action.payload;
     },
 

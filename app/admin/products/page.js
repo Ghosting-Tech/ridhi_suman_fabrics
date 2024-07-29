@@ -27,16 +27,19 @@ const Page = () => {
         `/api/product?size=8&page=${page}&category=${category || "all"}&subCategory=${selectedSubCategory || "all"}`
       );
       const data = await res.json();
+
       setProducts(data.data);
       setMeta(data.meta);
     } catch (err) {
       toast.error("Error fetching products!");
     }
   };
+
   const fetchCategories = async () => {
     try {
       const response = await fetch("/api/category");
       const data = await response.json();
+
       setCategories(data);
     } catch (error) {
       console.error(error);
