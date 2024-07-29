@@ -15,25 +15,12 @@ export async function GET(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
+      return NextResponse.json("Unauthorized Access", { status: 200 });
     }
 
     await dbConnect();
 
     const user = await User.findById(token._id);
-
-    // const wishlist = user.wishlist.map((item) => {
-    //   return {
-    //     _id: item._id,
-    //     title: item.title,
-    //     images: item.images[0],
-    //     price: item.price,
-    //     discount: item.discount,
-    //     size: item.size,
-    //     category: item.category,
-    //     subCategory: item.subCategory,
-    //   };
-    // });
 
     if (!user) {
       return NextResponse.json("User not found", { status: 404 });

@@ -101,7 +101,7 @@ const CartDrawer = () => {
         <CartListSkeleton />
       ) : (
         <section className="flex-grow overflow-scroll space-y-3 hide-scroll">
-          {cart?.items?.length !== 0 ? (
+          {cart?.items?.length !== 0 && cart?.items ? (
             cart?.items?.map((item, index) => (
               <CartItems key={index} data={item} cart={cart} />
             ))
@@ -125,7 +125,7 @@ const CartDrawer = () => {
             ) : (
               <p>
                 {" ₹"}
-                {cart?.totalPrice.toFixed(2)}
+                {cart.totalPrice ? cart.totalPrice.toFixed(2) : "0"}
               </p>
             )}
           </Typography>

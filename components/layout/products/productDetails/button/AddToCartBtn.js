@@ -1,16 +1,13 @@
-"use client";
-
+import { Button } from "@material-tailwind/react";
 import { ShoppingCartIcon } from "@heroicons/react/24/solid";
-import { Button, CardFooter } from "@material-tailwind/react";
 
+import React from "react";
 import { toast } from "sonner";
+import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addItemToCart, updateCart } from "@/redux/slice/cartSlice";
-
-import CartQuantityButton from "@/components/drawer/CartQuantityButton";
-
-const ProductFooter = ({ productId, price, discount }) => {
+const AddToCartBtn = () => {
+  const { productId } = useParams();
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
@@ -52,29 +49,21 @@ const ProductFooter = ({ productId, price, discount }) => {
     }
   };
 
-  return (
-    <CardFooter className="pt-0 mt-auto min-h-16">
-      {isInCart ? (
-        <CartQuantityButton
-          data={{
-            _id: productId,
-            quantity: isInCart.quantity,
-          }}
-          width={20}
-          height={20}
-        />
-      ) : (
-        <Button
-          fullWidth={true}
-          className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed z-10"
-          onClick={handleAddToCart}
-        >
-          <ShoppingCartIcon className="w-4 h-4 mr-2" />
-          Add to Cart
-        </Button>
-      )}
-    </CardFooter>
+  return isInCart ? (
+    <div>Hi</div>
+  ) : (
+    <Button
+      className="flex gap-1 items-center justify-center rounded"
+      fullWidth
+      variant="outlined"
+      color="pink"
+      size="md"
+      onClick={handleAddToCart}
+    >
+      <ShoppingCartIcon className="h-5 w-5" />
+      Add to Cart
+    </Button>
   );
 };
 
-export default ProductFooter;
+export default AddToCartBtn;

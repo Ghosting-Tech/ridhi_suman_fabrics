@@ -13,7 +13,15 @@ export async function GET(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
+      return NextResponse.json(
+        {
+          data: [],
+
+          totalQuantity: 0,
+          totalAmount: 0,
+        },
+        { status: 200 }
+      );
     }
 
     await dbConnect();
@@ -62,7 +70,7 @@ export async function PUT(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
+      return NextResponse.json("Login to add items in cart.", { status: 401 });
     }
 
     const { productId, quantity = 1 } = await req.json();
