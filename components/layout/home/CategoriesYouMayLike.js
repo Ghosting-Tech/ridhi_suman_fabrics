@@ -4,7 +4,13 @@ import CategoryListSkeleton from "@/components/ui/skeletons/category/CategoryLis
 import SectionHeading from "@/components/ui/SectionHeading";
 
 async function getCategories() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");

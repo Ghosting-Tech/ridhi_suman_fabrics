@@ -17,6 +17,8 @@ export async function GET(request) {
 
     const page = searchParams.get("page") || 1;
     const pageSize = searchParams.get("size") || 10;
+    const category = searchParams.get("category") || "all";
+    const subCategory = searchParams.get("subCategory") || "all";
 
     const skip = (page - 1) * pageSize;
 
@@ -31,6 +33,17 @@ export async function GET(request) {
         .limit(parseInt(pageSize));
 
       totalProducts = await Product.countDocuments();
+
+      if (category !== "all") {
+        products = products.filter((product) => product.category === category);
+        totalProducts = products.length;
+        if (subCategory !== "all") {
+          products = products.filter(
+            (product) => product.subCategory.name === subCategory
+          );
+          totalProducts = products.length;
+        }
+      }
     } else {
       products = await Product.find({ visibility: true })
         .select("-description -visibility -orders -updatedAt -createdAt")
@@ -39,7 +52,6 @@ export async function GET(request) {
 
       totalProducts = await Product.countDocuments({ visibility: true });
     }
-
     return NextResponse.json(
       {
         data: products,
