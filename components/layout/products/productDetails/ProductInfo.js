@@ -36,6 +36,18 @@ function ProductInfo({ product }) {
     }
   }, [product?.sizes]);
 
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // const toggleExpanded = () => {
+  //   setIsExpanded(!isExpanded);
+  // };
+
+  // const wordCount = product?.description.split(" ").length;
+  // const shortDescription = product?.description
+  //   .split(" ")
+  //   .slice(0, 10)
+  //   .join(" ");
+
   return (
     <div className="w-full max-w-3xl md:w-2/3 flex flex-col gap-6 p-5 md:px-0 mr-5">
       <ProductHeading {...product} backgroundColor={backgroundColor} />
