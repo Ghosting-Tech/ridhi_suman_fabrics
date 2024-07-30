@@ -1,15 +1,14 @@
-"use client";
-
-import { useState } from "react";
-import { HeartIcon } from "@heroicons/react/24/solid";
-
-import { toast } from "sonner";
-import { useDispatch, useSelector } from "react-redux";
-
 import { addToWishlist, removeFromWishlist } from "@/redux/slice/wishlistSlice";
+import { HeartIcon } from "@heroicons/react/24/outline";
+import { Button } from "@material-tailwind/react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
-const WishlistBtn = ({ productId }) => {
+const AddToWishlist = () => {
   const dispatch = useDispatch();
+  const { productId } = useParams();
 
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -59,11 +58,10 @@ const WishlistBtn = ({ productId }) => {
           `Product ${action === "add" ? "added to" : "removed from"} wishlist.`
         );
       } else {
-        toast.error(data.message || "An error occurred");
+        toast.error(data || "An error occurred");
       }
     } catch (error) {
       console.error(error);
-
       toast.error(
         error.message || error.data || error || "Something went wrong"
       );
@@ -71,15 +69,17 @@ const WishlistBtn = ({ productId }) => {
   };
 
   return (
-    <button
-      className={`flex items-center justify-center mt-2 w-8 h-8 bg-transparent p-0 z-40 absolute right-5 ${isAnimating ? "wishlist-animation-in" : ""} ${isInWishlist ? "text-red-500" : "text-gray-500"}`}
+    <Button
+      color="white"
+      className={`flex items-center gap-1 cursor-pointer p-1 bg-transparent hover:shadow-none shadow-none w-fit group transition-all`}
       onClick={handleWishlistToggle}
     >
       <HeartIcon
-        className={`w-8 h-8 ${isInWishlist ? "fill-red-500" : "fill-gray-300"}`}
+        className={`w-5 h-5 text-pink-500 ${isAnimating ? "wishlist-animation-in" : ""} ${isInWishlist ? "fill-pink-500 group-hover:fill-transparent" : "group-hover:fill-pink-500"}`}
       />
-    </button>
+      {isInWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+    </Button>
   );
 };
 
-export default WishlistBtn;
+export default AddToWishlist;

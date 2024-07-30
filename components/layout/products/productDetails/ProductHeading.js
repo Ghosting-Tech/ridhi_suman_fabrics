@@ -1,5 +1,8 @@
-import React from "react";
+import { HeartIcon } from "@heroicons/react/24/outline";
 import { CiDiscount1 } from "react-icons/ci";
+
+import React, { useState } from "react";
+import AddToWishlist from "./button/AddToWishlist";
 
 const ProductHeading = ({
   category,
@@ -8,14 +11,29 @@ const ProductHeading = ({
   price,
   discount,
   backgroundColor,
+  description,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const wordCount = description.split(" ").length;
+
+  const shortDescription = description.split(" ").slice(0, 10).join(" ");
+
   return (
     <div className="flex flex-col gap-3">
-      <div
-        className="w-fit text-black inline text-xs font-400 px-2 py-[6px] leading-3 rounded capitalize"
-        style={{ background: `${backgroundColor}` }}
-      >
-        {category} / {subCategory.name}
+      <div className="flex justify-between">
+        <div
+          className="w-fit text-black inline text-xs font-400 px-2 py-[6px] leading-3 rounded capitalize"
+          style={{ background: `${backgroundColor}` }}
+        >
+          {category} / {subCategory.name}
+        </div>
+
+        <AddToWishlist />
       </div>
 
       <div className="font-600 text-4xl capitalize w-fit leading-8 md:leading-12 font-semibold text-pink-500">
@@ -43,10 +61,14 @@ const ProductHeading = ({
         </div>
       </div>
 
-      <div className="font-400 text-[14px] md:text-md leading-5 md:leading-6 text-[#828282]">
-        We provide a{" "}
-        <span className="font-600 text-black">one-year warranty</span> in case
-        there are any issues with our products.
+      <div className="font-400 text-sm md:text-md text-gray-500">
+        {isExpanded || wordCount <= 10 ? description : shortDescription}
+
+        {wordCount > 10 && (
+          <button onClick={toggleExpanded} className="ml-2 text-light-blue-500">
+            {isExpanded ? "Show less" : "...more"}
+          </button>
+        )}
       </div>
     </div>
   );

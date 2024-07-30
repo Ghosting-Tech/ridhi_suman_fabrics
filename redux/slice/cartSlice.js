@@ -16,7 +16,7 @@ const cartSlice = createSlice({
     },
 
     updateItemQuantity: (state, action) => {
-      const { itemId, quantity } = action.payload;
+      const { itemId, quantity, color, size } = action.payload;
 
       const itemIndex = state.items.findIndex((item) => item._id === itemId);
 
@@ -29,6 +29,8 @@ const cartSlice = createSlice({
           (quantity - item.quantity);
 
         state.items[itemIndex].quantity = quantity;
+        state.items[itemIndex].color = color;
+        state.items[itemIndex].size = size;
       }
     },
 

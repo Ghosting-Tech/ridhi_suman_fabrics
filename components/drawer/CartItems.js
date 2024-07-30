@@ -51,7 +51,17 @@ const CartItems = ({ data }) => {
   };
 
   return (
-    <div className="border border-gray-300 rounded-xl p-2.5 flex gap-3 bg-white shadow-sm">
+    <div className="border border-gray-300 rounded-xl p-2.5 flex gap-3 bg-white shadow-sm relative">
+      <div
+        style={{
+          borderColor: data.color.hex,
+        }}
+        className="absolute right-3 top-3 px-1.5 rounded flex items-center text-xs border-2"
+      >
+        <p className="text-black uppercase">{data.size}/</p>
+        <p className="text-black capitalize"> {data.color.name}</p>
+      </div>
+
       <div className="w-4/12 min-h-28">
         <ImageContainer width={120} height={120} image={data.images.url} />
       </div>

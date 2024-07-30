@@ -51,6 +51,8 @@ export async function GET(req) {
         price: item.product.price,
         discount: item.product.discount,
         quantity: item.quantity,
+        color: item.color,
+        size: item.size,
       };
     });
 
@@ -73,7 +75,13 @@ export async function PUT(req) {
       return NextResponse.json("Login to add items in cart.", { status: 401 });
     }
 
-    const { productId, quantity = 1 } = await req.json();
+    const {
+      productId,
+      quantity = 1,
+      color = null,
+      size = null,
+    } = await req.json();
+    console.log(productId, quantity, color, size);
 
     if (!productId || !quantity) {
       return NextResponse.json("Invalid product data", { status: 400 });
@@ -98,9 +106,30 @@ export async function PUT(req) {
     );
 
     if (productIndex > -1) {
-      user.cart[productIndex].quantity += quantity;
+      if (color && size) {
+        console.log("color and size", color, size);
+        if (!color.name || !color.hex || !size) {
+          return NextResponse.json("Color and size must be defined", {
+            status: 400,
+          });
+        }
+
+        user.cart[productIndex].quantity += quantity;
+        user.cart[productIndex].color = color;
+        user.cart[productIndex].size = size;
+      } else {
+        user.cart[productIndex].quantity += quantity;
+      }
     } else {
-      user.cart.push({ product: productId, quantity });
+      user.cart.push({
+        product: productId,
+        quantity,
+        color: {
+          name: color && color.name,
+          hex: color && color.hex,
+        },
+        size,
+      });
     }
 
     await user.save();
@@ -117,6 +146,8 @@ export async function PUT(req) {
         category: item.product.category,
         subCategory: item.product.subCategory,
         quantity: item.quantity,
+        color: item.color,
+        size: item.size,
       };
     });
 

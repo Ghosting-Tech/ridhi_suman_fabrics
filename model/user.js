@@ -29,6 +29,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       unique: true,
+      lowercase: true,
     },
 
     password: {
@@ -53,7 +54,24 @@ const userSchema = new Schema(
 
         quantity: {
           type: Number,
-          default: 0,
+          required: true,
+        },
+
+        color: {
+          name: {
+            type: String,
+            lowercase: true,
+          },
+
+          hex: {
+            type: String,
+            lowercase: true,
+          },
+        },
+
+        size: {
+          type: String,
+          lowercase: true,
         },
 
         _id: false,
@@ -71,25 +89,30 @@ const userSchema = new Schema(
           flat: {
             type: String,
             required: true,
+            lowercase: true,
           },
 
           street: {
             type: String,
             required: true,
+            lowercase: true,
           },
 
           landmark: {
             type: String,
+            lowercase: true,
           },
 
           city: {
             type: String,
             required: true,
+            lowercase: true,
           },
 
           state: {
             type: String,
             required: true,
+            lowercase: true,
           },
 
           pincode: {

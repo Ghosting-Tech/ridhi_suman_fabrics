@@ -42,10 +42,11 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
             password,
           });
 
+          console.log(response);
           if (response.ok) {
             resolve(response);
           } else {
-            reject("Invalid credentials");
+            reject(response);
           }
         } catch (error) {
           reject(error);
@@ -68,7 +69,7 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
       error: (error) => {
         setIsLoading(false);
 
-        return `${error.message || error || "Something went wrong"}`;
+        return `${error.error || error || "Something went wrong"}`;
       },
     });
   };
