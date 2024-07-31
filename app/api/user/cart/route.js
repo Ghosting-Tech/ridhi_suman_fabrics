@@ -51,7 +51,10 @@ export async function GET(req) {
         price: item.product.price,
         discount: item.product.discount,
         quantity: item.quantity,
-        color: item.color,
+        color: item.color || {
+          name: null,
+          hex: null,
+        },
         size: item.size,
       };
     });

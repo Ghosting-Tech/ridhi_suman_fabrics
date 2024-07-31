@@ -5,6 +5,8 @@ import Order from "@/model/order";
 import dbConnect from "@/config/db";
 import { checkAuthorization } from "@/config/checkAuthorization";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request) {
   try {
     const isAdmin = await checkAuthorization(request);
@@ -30,6 +32,7 @@ export async function GET(request) {
         "cartItems user totalAmount paymentMethod status isPaid createdAt"
       )
       .exec();
+
     const totalOrders = await Order.countDocuments();
     const totalPages = Math.ceil(totalOrders / limit);
 

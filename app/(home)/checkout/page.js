@@ -7,7 +7,6 @@ import Heading from "@/components/ui/heading/Heading";
 import { FaCheck } from "react-icons/fa6";
 
 const CheckoutPage = () => {
-
   return (
     <div className="p-4 flex flex-col gap-4">
       <Heading
@@ -20,7 +19,6 @@ const CheckoutPage = () => {
       />
 
       <div className="flex gap-4">
-        
         <div className="w-1/2 bg-gray-100 rounded-lg p-4">
           <Typography variant="h4" color="blue-gray">
             Current Order
@@ -145,7 +143,6 @@ const CheckoutPage = () => {
             </div>
           </div>
         </form>
-
       </div>
     </div>
   );

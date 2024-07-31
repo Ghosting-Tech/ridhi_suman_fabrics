@@ -28,7 +28,15 @@ const ProductFooter = ({ productId, price, discount }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ productId, quantity: 1 }),
+        body: JSON.stringify({
+          productId,
+          quantity: 1,
+          color: {
+            name: null,
+            hex: null,
+          },
+          size: null,
+        }),
       }
     );
 
