@@ -13,11 +13,11 @@ import { storage } from "@/firebase";
 export async function POST(request) {
   let imageObjects;
   try {
-    const isAdmin = await checkAuthorization(request);
+    // const isAdmin = await checkAuthorization(request);
 
-    if (isAdmin === "Unauthorized" || !isAdmin) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
-    }
+    // if (isAdmin === "Unauthorized" || !isAdmin) {
+    //   return NextResponse.json("Unauthorized Request", { status: 401 });
+    // }
 
     const formData = await request.formData();
     const title = formData.get("title");
