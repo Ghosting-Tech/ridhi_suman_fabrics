@@ -14,6 +14,7 @@ export async function GET(request, { params }) {
     }
 
     const { id } = params;
+    console.log({ ParamasId: params });
 
     if (!id) return NextResponse.json("Product Id not found", { status: 404 });
 
@@ -24,7 +25,7 @@ export async function GET(request, { params }) {
     if (isAdmin) {
       product = await Product.findById(id);
     } else {
-      product = await Product.findOne({ _id: id, visibility: true })
+      product = await Product.findOne({ _id: id, visibility: true });
     }
 
     product.orderCount = product.orders.length;

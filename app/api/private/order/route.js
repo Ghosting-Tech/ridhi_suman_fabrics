@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import Order from "@/model/order";
 import Product from "@/model/product";
+import User from "@/model/user";
 
 import dbConnect from "@/config/db";
 import { checkAuthorization } from "@/config/checkAuthorization";
@@ -16,28 +17,28 @@ export async function POST(request) {
 
     await dbConnect();
 
-    const data = await request.json();
+    let data = await request.json();
+
+    if (data.paymentMethod === "cod" || data.paymentMethod === "pod") {
+      data.isPaid = false;
+    }
+    const userExist = await User.findById(data.user);
+    if (!userExist) {
+      return NextResponse.json("user not exist", { status: 400 });
+    }
 
     const order = await Order.create(data);
+    await User.findByIdAndUpdate(order.user, { $push: { orders: order._id } });
 
-    await Promise.all(
-      order.cartItems.map(async (item) => {
-        await Product.findByIdAndUpdate(
-          item.productId,
-
-          {
-            $push: {
-              orders: order._id,
-            },
-          },
-
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      })
+    const updatePromises = order.cartItems.map((item) =>
+      Product.findByIdAndUpdate(
+        item.productId,
+        { $push: { orders: order._id } },
+        { new: true, runValidators: true }
+      )
     );
+
+    await Promise.all(updatePromises);
 
     return NextResponse.json(order, { status: 201 });
   } catch (err) {

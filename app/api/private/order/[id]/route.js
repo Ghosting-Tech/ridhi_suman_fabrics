@@ -48,22 +48,18 @@ export async function PUT(request, { params }) {
     const { id } = params;
     const data = await request.json();
 
-    const status = data.status;
-
     if (!id) {
       return NextResponse.json("Invalid order id", { status: 400 });
     }
 
-    const order = await Order.findByIdAndUpdate(
-      id,
-      {
-        status,
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const updateFields = {};
+    if (data.status) updateFields.status = data.status;
+    if (typeof data.isPaid === "boolean") updateFields.isPaid = data.isPaid;
+
+    const order = await Order.findByIdAndUpdate(id, updateFields, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!order) {
       return NextResponse.json("Order not found", { status: 404 });

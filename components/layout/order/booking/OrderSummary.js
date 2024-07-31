@@ -4,7 +4,7 @@ import SummaryList from "./SummaryList";
 
 const OrderSummary = () => {
   return (
-    <div className="rounded-lg flex flex-col gap-5 border-2 border-gray-500 w-1/2 p-5">
+    <div className="rounded-lg flex flex-col gap-5 border-2 border-gray-500 lg:w-2/5 w-full p-5 ">
       <div>
         <h1 className="flex gap-1 text-black text-lg">
           <IoBagOutline size={22} />
@@ -14,7 +14,7 @@ const OrderSummary = () => {
           The sum of total payments for goods there
         </p>
       </div>
-      <div className="overflow-auto h-96 px-3">
+      <div className="overflow-auto max-h-96 px-3">
         <SummaryList />
       </div>
       <div className="w-full text-gray-500 flex flex-col gap-4 mt-2">

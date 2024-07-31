@@ -7,6 +7,7 @@ const OrderSchema = new Schema(
         productId: {
           type: Schema.Types.ObjectId,
           ref: "Product",
+          required: true,
         },
 
         quantity: {
@@ -19,10 +20,10 @@ const OrderSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
-
-    deliveryDate: {
-      type: Date,
+    totalAmount: {
+      type: Number,
       required: true,
     },
 
@@ -45,6 +46,11 @@ const OrderSchema = new Schema(
       required: true,
       default: "confirmed",
       lowercase: true,
+    },
+
+    isPaid: {
+      type: Boolean,
+      required: true,
     },
   },
 

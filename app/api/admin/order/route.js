@@ -16,18 +16,20 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
 
     const page = parseInt(searchParams.get("page")) || 1;
-    const limit = parseInt(searchParams.get("limit")) || 10;
+    const limit = parseInt(searchParams.get("limit")) || 12;
 
     const skip = (page - 1) * limit;
 
     await dbConnect();
 
     const orders = await Order.find()
-      .skip(parseInt(skip))
-      .limit(parseInt(pageSize))
+      .skip(skip)
+      .limit(limit)
       .populate("user")
+      .select(
+        "cartItems user totalAmount paymentMethod status isPaid createdAt"
+      )
       .exec();
-
     const totalOrders = await Order.countDocuments();
     const totalPages = Math.ceil(totalOrders / limit);
 
@@ -44,6 +46,7 @@ export async function GET(request) {
       { status: 200 }
     );
   } catch (err) {
+    console.log({ Error: err });
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }
