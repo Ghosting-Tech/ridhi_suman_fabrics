@@ -23,7 +23,7 @@ async function getMostBookedProduct() {
 const MostBookedProduct = async () => {
   const data = await getMostBookedProduct();
 
-  return <ProductCarousel products={data} />;
+  return data && <ProductCarousel products={data} />;
 };
 
 export default MostBookedProduct;

@@ -1,6 +1,6 @@
 "use client";
 
-import { CardHeader, IconButton } from "@material-tailwind/react";
+import { CardHeader } from "@material-tailwind/react";
 
 import React, { useMemo } from "react";
 import Image from "next/image";
@@ -11,10 +11,10 @@ const ProductHeader = React.memo(
     const gridStyle = useMemo(
       () => ({
         display: "grid",
-        gridTemplateColumns: srcs.length === 4 ? "1fr 1fr" : "1fr 1fr 1fr",
-        gridTemplateRows: srcs.length === 4 ? "1fr 1fr" : "1fr",
+        gridTemplateColumns: srcs?.length === 4 ? "1fr 1fr" : "1fr 1fr 1fr",
+        gridTemplateRows: srcs?.length === 4 ? "1fr 1fr" : "1fr",
       }),
-      [srcs.length]
+      [srcs?.length]
     );
 
     const imageStyle = useMemo(
@@ -29,7 +29,7 @@ const ProductHeader = React.memo(
       <CardHeader floated={true} className={isSet ? "h-[500px]" : "h-[420px]"}>
         {isSet ? (
           <div className="h-full w-full" style={gridStyle}>
-            {srcs.map((src, index) => (
+            {srcs?.map((src, index) => (
               <div key={index} className="relative overflow-hidden w-full">
                 <Image
                   fill={true}
@@ -47,14 +47,14 @@ const ProductHeader = React.memo(
           <Image
             fill={true}
             objectFit="cover"
-            src={srcs.url}
+            src={srcs?.url}
             alt={title}
             style={imageStyle}
             className="transition-all"
           />
         )}
 
-        <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-white/80" />
+        <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-black/60" />
 
         <WishlistBtn productId={id} />
       </CardHeader>

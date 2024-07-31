@@ -30,23 +30,33 @@ export async function GET(request, { params }) {
     await dbConnect();
 
     let products = [];
+    let totalProducts = 0;
 
     if (isAdmin) {
       products = await Product.find({ category: name, "subCategory.name": sub })
-        .select("-sizes -description -orders -updatedAt -createdAt")
+        .select("-description -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
+      totalProducts = await Product.countDocuments({
+        category: name,
+        "subCategory.name": sub,
+      });
     } else {
       products = await Product.find({
         category: name,
-        subCategory: sub,
+        "subCategory.name": sub,
         visibility: true,
       })
-        .select("-sizes -description -visibility -orders -updatedAt -createdAt")
+        .select("-description -visibility -orders -updatedAt -createdAt")
         .skip(parseInt(skip))
         .limit(parseInt(pageSize))
         .exec();
+      totalProducts = await Product.countDocuments({
+        category: name,
+        "subCategory.name": sub,
+        visibility: true,
+      });
     }
     if (!products || products.length === 0) {
       return NextResponse.json(
@@ -56,7 +66,18 @@ export async function GET(request, { params }) {
         }
       );
     }
-    return NextResponse.json(products, { status: 200 });
+    return NextResponse.json(
+      {
+        data: products,
+        meta: {
+          page: page,
+          pageSize,
+          totalPages: Math.ceil(totalProducts / pageSize),
+          totalResults: totalProducts,
+        },
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching products:", error);
 

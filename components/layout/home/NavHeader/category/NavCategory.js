@@ -8,6 +8,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 function NavCategory() {
   const [categories, setCategories] = useState([]);
 
@@ -54,19 +55,21 @@ function NavCategory() {
         </Button>
       </MenuHandler>
       <MenuList>
-        {categories.map((category) => (
-          <Menu
-            key={category._id}
-            placement="left-start"
-            allowHover
-            offset={15}
-          >
+        {categories.map((category, index) => (
+          <Menu placement="left-start" allowHover key={index} offset={15}>
             <MenuHandler className="flex items-center justify-between">
               <MenuItem>{category.name}</MenuItem>
             </MenuHandler>
             <MenuList>
+              <Link key={index} href={`/${category.name}`}>
+                <MenuItem>{category.name}</MenuItem>
+              </Link>
               {category.subCategories.map((sub, index) => {
-                return <MenuItem key={index}>{sub.name}</MenuItem>;
+                return (
+                  <Link key={index} href={`/category/${category.name}/${sub.name}`} className="outline-none">
+                    <MenuItem>{sub.name}</MenuItem>
+                  </Link>
+                );
               })}
             </MenuList>
           </Menu>

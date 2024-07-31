@@ -1,16 +1,22 @@
+import { storage } from "@/firebase";
 import { NextResponse } from "next/server";
-import Product from "@/model/product";
-import dbConnect from "@/config/db";
-import { checkAuthorization } from "@/config/checkAuthorization";
+
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadBytes,
 } from "firebase/storage";
-import { storage } from "@/firebase";
+
+import dbConnect from "@/config/db";
+import { checkAuthorization } from "@/config/checkAuthorization";
+
+import User from "@/model/user";
+import Product from "@/model/product";
+
 export async function PUT(request, { params }) {
   let imageObjects = [];
+
   try {
     const isAdmin = await checkAuthorization(request);
 
@@ -21,6 +27,7 @@ export async function PUT(request, { params }) {
     }
 
     const formData = await request.formData();
+
     const title = formData.get("title");
     const price = formData.get("price");
     const discount = formData.get("discount");
@@ -50,12 +57,14 @@ export async function PUT(request, { params }) {
         { status: 400 }
       );
     }
+
     if (sizes.length < 1) {
       return NextResponse.json(
         { error: "Add a minimum of 1 size!" },
         { status: 400 }
       );
     }
+
     if (files.length < 4) {
       return NextResponse.json(
         { error: "Add a minimum of 4 images!" },
@@ -64,21 +73,24 @@ export async function PUT(request, { params }) {
     }
 
     await dbConnect();
-    //Deleting images from firebase storage
+
     deletedImages.map(async (imageObjects) => {
       const parsedImageObject = JSON.parse(imageObjects);
       const imageRef = ref(storage, parsedImageObject.ref);
       await deleteObject(imageRef);
     });
-    // Upload new images to firebase storage
+
     for (const file of files) {
       if (file instanceof File) {
         const imageRef = ref(
           storage,
           `products/${title}/${file.size + file.name}`
         );
+
         await uploadBytes(imageRef, file);
+
         const imageUrl = await getDownloadURL(imageRef);
+
         imageObjects.push({ url: imageUrl, ref: imageRef.fullPath });
       } else {
         imageObjects.push(JSON.parse(file));
@@ -155,6 +167,18 @@ export async function DELETE(request, { params }) {
     });
 
     await Product.findByIdAndDelete(productId);
+
+    const users = await User.updateMany(
+      {},
+      {
+        $pull: {
+          wishlist: productId,
+          cart: { product: productId },
+        },
+      }
+    );
+
+    console.log(users);
 
     return NextResponse.json("Product deleted successfully", { status: 200 });
   } catch (error) {

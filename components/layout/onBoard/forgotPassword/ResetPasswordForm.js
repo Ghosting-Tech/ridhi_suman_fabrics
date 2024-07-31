@@ -83,6 +83,8 @@ const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
           if (!response.ok) {
             reject(data);
+
+            return;
           }
 
           const isSignIn = await signIn("credentials", {
@@ -93,6 +95,8 @@ const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
           if (!isSignIn.ok) {
             reject("Something went wrong: Cannot Sign In");
+
+            return;
           }
 
           router.push("/");

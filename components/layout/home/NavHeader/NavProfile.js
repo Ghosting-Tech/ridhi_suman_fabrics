@@ -143,7 +143,6 @@ const NavProfile = () => {
                   icon={item.icon}
                 />
               ))}
-          ``
         </MenuList>
       </Menu>
     );

@@ -78,12 +78,15 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     }
   };
 
-  const getOtp = (id, phoneNumber) => {
+  const getOtp = (e, id, phoneNumber) => {
     const otpPromise = new Promise(async (resolve, reject) => {
       try {
-        const otpResponse = await fetch(`/api/generate-otp/${id.toString()}`, {
-          method: "GET",
-        });
+        const otpResponse = await fetch(
+          `/api/generate-otp/${id?.toString() || user._id}`,
+          {
+            method: "GET",
+          }
+        );
 
         if (!otpResponse.ok) {
           reject(`Error generating OTP.`);
@@ -92,17 +95,17 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
         const otpData = await otpResponse.json();
 
         const sendOtpResponse = await fetch(
-          `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otpData}`
+          `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber || user.phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otpData}`
         );
 
         if (!sendOtpResponse.ok) {
           reject(`Error sending OTP.`);
+        } else {
+          setIsOtpSent(true);
+          setTimer(10);
+
+          resolve(otpData);
         }
-
-        setIsOtpSent(true);
-        setTimer(60);
-
-        resolve(otpData);
       } catch (error) {
         reject(error);
       }
@@ -185,7 +188,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
         loading: "Creating new user...",
 
         success: async (data) => {
-          getOtp(data._id.toString(), data.phoneNumber);
+          getOtp("_", data._id.toString(), data.phoneNumber);
           return "User created successfully";
         },
 
@@ -210,25 +213,28 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
             body: JSON.stringify({ otp: otpInput }),
           });
 
-          if (!response.ok) {
-            reject(`Error: ${response.statusText}`);
-          }
-
           const data = await response.json();
 
-          const isSignIn = await signIn("credentials", {
-            redirect: false,
-            phoneNumber,
-            password,
-          });
+          if (!response.ok) {
+            reject(`Error: ${data}`);
+          } else {
+            const isSignIn = await signIn("credentials", {
+              redirect: false,
+              phoneNumber,
+              password,
+            });
 
-          if (!isSignIn.ok) {
-            reject("Something went wrong: Cannot Sign In");
+            if (!isSignIn.ok) {
+              reject("Something went wrong: Cannot Sign In");
+
+              return;
+            }
+
+            router.push("/");
+
+            resolve(data);
+            toast.info("Redirecting to home...");
           }
-
-          router.push("/");
-
-          resolve(data);
         } catch (error) {
           reject(error);
         }
@@ -260,7 +266,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
       error: (error) => {
         setIsLoading(false);
 
-        return `${error.error || "Something went wrong"}`;
+        return `${error.error || error.message || error || "Something went wrong"}`;
       },
     });
   };
@@ -279,8 +285,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     setIsLoading(true);
 
     await verifyOtp();
-
-    toast.info("Redirecting to home...");
   };
 
   return (
@@ -429,7 +433,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
                 <button
                   type="button"
                   className="cursor-pointer underline text-red-500 disabled:cursor-default disabled:opacity-50"
-                  onClick={getOtp}
+                  onClick={() => getOtp("_", user._id, user.phoneNumber)}
                   disabled={timer === 0 && !isOtpSent}
                 >
                   Resend OTP

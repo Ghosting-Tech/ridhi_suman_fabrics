@@ -10,13 +10,37 @@ import mongoose from "mongoose";
 
 const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
 
+export async function GET(req) {
+  try {
+    const token = await getToken({ req, secret });
+
+    if (!token) {
+      return NextResponse.json("Unauthorized Access", { status: 200 });
+    }
+
+    await dbConnect();
+
+    const user = await User.findById(token._id);
+
+    if (!user) {
+      return NextResponse.json("User not found", { status: 404 });
+    }
+
+    return NextResponse.json(user.wishlist, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching cart:", error);
+
+    return NextResponse.json("Internal Server Error", { status: 500 });
+  }
+}
+
 export async function PUT(req) {
   try {
     const token = await getToken({ req, secret });
 
-    // if (!token) {
-    //   return NextResponse.json("Unauthorized Request", { status: 401 });
-    // }
+    if (!token) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
 
     const { productId, action } = await req.json();
 
@@ -28,8 +52,6 @@ export async function PUT(req) {
       return NextResponse.json("Invalid action", { status: 400 });
     }
 
-    // const objectId = new mongoose.Types.ObjectId("");
-
     await dbConnect();
 
     const productExists = await Product.findById(productId);
@@ -38,18 +60,13 @@ export async function PUT(req) {
       return NextResponse.json("Product not found", { status: 404 });
     }
 
-    const user = await User.findById("66a09897092d9bdeadb2f9ab");
-    console.log(user);
+    const user = await User.findById(token._id);
 
     if (!user) {
       return NextResponse.json("User not found", { status: 404 });
     }
 
     const productObjectId = new mongoose.Types.ObjectId(productId);
-
-    user.cart = user.cart.filter((item) =>
-      mongoose.Types.ObjectId.isValid(item.product)
-    );
 
     if (action === "add") {
       if (!user.wishlist.includes(productId)) {

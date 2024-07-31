@@ -7,10 +7,14 @@ import { MdDeleteOutline } from "react-icons/md";
 import { IoOpenOutline } from "react-icons/io5";
 import Link from "next/link";
 
-export function ProductCard({ product, setOpenDeleteDialog, setSelectedProduct }) {
+export function ProductCard({
+  product,
+  setOpenDeleteDialog,
+  setSelectedProduct,
+}) {
   return (
-    <Card
-      shadow={false}
+    <Link
+      href={`/products/${product._id}`}
       className="group relative h-[32rem] flex flex-col justify-between overflow-hidden"
     >
       <Image
@@ -37,8 +41,8 @@ export function ProductCard({ product, setOpenDeleteDialog, setSelectedProduct }
         </Link>
         <div
           onClick={() => {
-            setOpenDeleteDialog(true)
-            setSelectedProduct(product)
+            setOpenDeleteDialog(true);
+            setSelectedProduct(product);
           }}
           className="flex gap-2 w-8 h-8 justify-center items-center rounded-md bg-white"
         >
@@ -93,6 +97,6 @@ export function ProductCard({ product, setOpenDeleteDialog, setSelectedProduct }
           <IoOpenOutline />
         </Button>
       </CardBody>
-    </Card>
+    </Link>
   );
 }
