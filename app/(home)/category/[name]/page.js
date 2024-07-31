@@ -3,35 +3,26 @@ import ProductList from "@/components/layout/products/ProductList";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 
 async function getCategoryProduct(params, searchParams) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/category/${params.name}?page=${searchParams.page || 1}`,
-      {
-        cache: "no-store",
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/category/${params.name}?page=${searchParams.page || 1}`,
+    {
+      cache: "no-store",
+      method: "GET",
     }
-    return data;
-  } catch (err) {
-    console.error(err);
-    return [];
+  );
+
+  if (!res.ok) {
+    throw new Error(data);
   }
+
+  return res.json();
 }
 
 const CategoryPage = async ({ params, searchParams }) => {
   const data = await getCategoryProduct(params, searchParams);
 
   return (
-    <>
+    <main>
       <CategoryPageHeader category={params} cat={true} />
 
       <ProductList products={data.data} />
@@ -39,7 +30,7 @@ const CategoryPage = async ({ params, searchParams }) => {
       <div className="mb-6">
         <PaginationBtn totalPages={data?.meta?.totalPages} />
       </div>
-    </>
+    </main>
   );
 };
 

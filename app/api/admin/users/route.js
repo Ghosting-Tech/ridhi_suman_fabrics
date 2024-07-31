@@ -3,16 +3,11 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/config/db";
 
 import User from "@/model/user";
-import { checkAuthorization } from "@/config/checkAuthorization";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request) {
   try {
-    // const isAdmin = await checkAuthorization(request);
-
-    // if (isAdmin === "Unauthorized" || !isAdmin) {
-    //   return NextResponse.json("Unauthorized Request", { status: 401 });
-    // }
-
     const { searchParams } = new URL(request.url);
 
     const page = parseInt(searchParams.get("page")) || 1;
@@ -30,15 +25,7 @@ export async function GET(request) {
 
     const totalUsers = await User.countDocuments();
     const totalPages = Math.ceil(totalUsers / limit);
-    // console.log({
-    //   data: users,
-    //   pagination: {
-    //     totalUsers,
-    //     totalPages,
-    //     currentPage: page,
-    //     pageSize: limit,
-    //   },
-    // });
+
     return NextResponse.json(
       {
         data: users,

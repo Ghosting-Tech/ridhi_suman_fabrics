@@ -11,15 +11,17 @@ import { checkAuthorization } from "@/config/checkAuthorization";
 import { storage } from "@/firebase";
 
 export async function POST(request) {
-  let imageObjects;
   try {
-    // const isAdmin = await checkAuthorization(request);
+    let imageObjects;
 
-    // if (isAdmin === "Unauthorized" || !isAdmin) {
-    //   return NextResponse.json("Unauthorized Request", { status: 401 });
-    // }
+    const isAdmin = await checkAuthorization(request);
+
+    if (isAdmin === "Unauthorized" || !isAdmin) {
+      return NextResponse.json("Unauthorized Request", { status: 401 });
+    }
 
     const formData = await request.formData();
+
     const title = formData.get("title");
     const price = formData.get("price");
     const discount = formData.get("discount");
@@ -48,12 +50,14 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+
     if (sizes.length < 1) {
       return NextResponse.json(
         { error: "Add a minimum of 1 size!" },
         { status: 400 }
       );
     }
+
     if (files.length < 4) {
       return NextResponse.json(
         { error: "Add a minimum of 4 images!" },
@@ -64,6 +68,7 @@ export async function POST(request) {
     await dbConnect();
 
     const productExist = await Product.findOne({ title });
+
     if (productExist) {
       return NextResponse.json(
         { error: "Product title already exists" },
@@ -77,8 +82,10 @@ export async function POST(request) {
           storage,
           `products/${title}/${file.size + file.name}`
         );
+
         await uploadBytes(imageRef, file);
         const imageUrl = await getDownloadURL(imageRef);
+
         return { url: imageUrl, ref: imageRef.fullPath };
       })
     );
@@ -96,13 +103,13 @@ export async function POST(request) {
       sizes,
       images: imageObjects,
     };
+
     const product = await Product.create(productData);
 
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
     console.error("Error saving product:", error);
 
-    // Clean up uploaded images if there's an error
     if (imageObjects) {
       await Promise.all(
         imageObjects.map(async (img) => {
