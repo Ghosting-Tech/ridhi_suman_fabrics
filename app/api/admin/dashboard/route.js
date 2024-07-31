@@ -30,7 +30,10 @@ export async function GET(request) {
       canceledOrdersCount,
     ] = await Promise.all([
       Category.countDocuments(),
-      Category.countDocuments({ sub_categories: { $exists: true, $ne: [] } }),
+      Category.aggregate([
+        { $unwind: "$subCategories" }, // Unwind subCategories array
+        { $group: { _id: null, count: { $sum: 1 } } }, // Group and sum the subCategories
+      ]).then((result) => result[0]?.count || 0), // Get the count or default to 0
 
       User.countDocuments(),
 
