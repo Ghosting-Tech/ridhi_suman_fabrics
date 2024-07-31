@@ -64,7 +64,7 @@ const HeroSection = () => {
 
         <div className="w-full lg:w-3/4 md:block hidden h-80 overflow-hidden relative rounded-xl bg-black">
           <Image
-            src="/hero-banner.jpg"
+            src="/image/home/banner.webp"
             alt="hero banner"
             objectFit="cover"
             fill={true}

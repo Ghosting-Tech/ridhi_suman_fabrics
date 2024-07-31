@@ -26,20 +26,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { RiCoupon4Line } from "react-icons/ri";
+import { RiCoupon4Line, RiUserStarFill } from "react-icons/ri";
+import { FaBoxesStacked } from "react-icons/fa6";
 
 function NavList() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      router.push(`/admin/search?query=${searchQuery}`)
+      router.push(`/admin/search?query=${searchQuery}`);
       setSearchQuery("");
     }
   };
   return (
-    <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-4">
-      <div className="relative flex w-full max-w-80">
+    <div className="w-full justify-end my-4 flex flex-col xl:flex-row items-center gap-2">
+      <div className="relative flex w-full max-w-72">
         <Input
           label="Search Product..."
           value={searchQuery}
@@ -63,7 +64,7 @@ function NavList() {
         </Link>
       </div>
 
-      <div className="lg:flex grid grid-cols-1 sm:grid-cols-3 gap-4 w-full xl:w-fit">
+      <div className="lg:flex grid grid-cols-1 sm:grid-cols-3 gap- w-full xl:w-fit">
         <Link href={"/admin/dashboard"}>
           <Button
             className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
@@ -97,7 +98,7 @@ function NavList() {
             Products
           </Button>
         </Link>
-        <Link href={"/admin/sets"}>
+        {/* <Link href={"/admin/sets"}>
           <Button
             className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
             color="blue-gray"
@@ -107,7 +108,7 @@ function NavList() {
             <ShoppingCartIcon className="h-5 w-5" />
             Sets
           </Button>
-        </Link>
+        </Link> */}
         <Link href={"/admin/coupon"}>
           <Button
             className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
@@ -119,7 +120,18 @@ function NavList() {
             Coupon
           </Button>
         </Link>
-        <Link href={"/admin/sub-admin"}>
+        <Link href={"/admin/orders"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <FaBoxesStacked size={20} />
+            Orders
+          </Button>
+        </Link>
+        <Link href={"/admin/users"}>
           <Button
             className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
             color="blue-gray"
@@ -127,6 +139,17 @@ function NavList() {
             size="sm"
           >
             <UsersIcon className="h-5 w-5" />
+            Users
+          </Button>
+        </Link>
+        <Link href={"/admin/sub-admin"}>
+          <Button
+            className="whitespace-nowrap w-full justify-center flex items-center gap-2 rounded"
+            color="blue-gray"
+            variant="text"
+            size="sm"
+          >
+            <RiUserStarFill size={18} />
             Sub Admin
           </Button>
         </Link>
@@ -160,7 +183,7 @@ export default function AdminNavbar() {
   return (
     <div className="w-full shadow-sm px-4 py-2">
       <div className="flex items-center justify-between text-blue-gray-900">
-        <Link href={"/admin/dashboard"}>
+        <Link href={"/"}>
           <Image src="/ridhi-logo.png" alt="brand" width={150} height={150} />
         </Link>
         <div className="hidden xl:block w-full">

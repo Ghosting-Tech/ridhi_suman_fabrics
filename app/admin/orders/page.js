@@ -165,7 +165,7 @@ const Page = () => {
                       size="sm"
                       variant="ghost"
                       value={order.status}
-                      className={`${statusColors[order.status]} py-2 px-0 text-center`}
+                      className={`${statusColors[order.status]} py-2 px-0 text-center rounded-full`}
                     />
                   </td>
                   <td className={classes}>
