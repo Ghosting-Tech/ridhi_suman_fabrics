@@ -28,10 +28,16 @@ const CartQuantityButton = ({ data, width = 12, height = 12 }) => {
     const res = await product.json();
 
     if (product.ok) {
+      console.log(data);
       dispatch(
         updateItemQuantity({
           itemId: data._id,
           quantity: data.quantity + qty,
+          color: {
+            name: data?.color?.name && null,
+            hex: data?.color?.hex && null,
+          },
+          size: data?.size && null,
         })
       );
 

@@ -51,8 +51,11 @@ function ProductInfo({ product }) {
   useEffect(() => {
     if (isInCart) {
       setSelectedSize(isInCart.size);
+      // setSelectedSize("s");
       setSelectedColor(isInCart.color.name);
+      // setSelectedColor("azure");
       setSelectedColorHex(isInCart.color.hex);
+      // setSelectedColorHex("#007fff");
     }
 
     if (product.sizes.length > 0) {

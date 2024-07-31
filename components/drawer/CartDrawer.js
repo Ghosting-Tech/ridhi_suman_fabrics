@@ -31,6 +31,7 @@ const CartDrawer = () => {
       );
 
       const data = await res.json();
+      console.log(data);
 
       dispatch(addItemToCart(data.data));
       dispatch(

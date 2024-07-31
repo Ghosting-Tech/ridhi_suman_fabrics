@@ -29,11 +29,13 @@ async function getCategoryProduct(params, searchParams) {
 
 const CategoryPage = async ({ params, searchParams }) => {
   const data = await getCategoryProduct(params, searchParams);
-  // console.log(data);
+
   return (
     <>
       <CategoryPageHeader category={params} cat={true} />
+
       <ProductList products={data.data} />
+
       <div className="mb-6">
         <PaginationBtn totalPages={data?.meta?.totalPages} />
       </div>
