@@ -5,6 +5,8 @@ import Product from "@/model/product";
 import dbConnect from "@/config/db";
 import { checkAuthorization } from "@/config/checkAuthorization";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request) {
   try {
     const isAdmin = await checkAuthorization(request);

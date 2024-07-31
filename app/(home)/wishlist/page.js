@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
+// import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
 import Nav from "@/components/layout/home/NavHeader/Nav";
 import Heading from "@/components/ui/heading/Heading";
 import Footer from "@/components/layout/home/Footer";
@@ -19,7 +19,7 @@ const WishlistPage = () => {
             title={"Manage Wishlist"}
           />
 
-          <ProfileWishlist />
+          {/* <ProfileWishlist /> */}
         </div>
       </div>
       <Footer />

@@ -1,11 +1,12 @@
 "use client";
+
 import { ProductCard } from "@/components/layout/admin/products/ProductCard";
 import DeleteProduct from "@/components/modals/admin/products/DeleteProduct";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import { Button, Option, Select } from "@material-tailwind/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { FaTshirt } from "react-icons/fa";
 import { toast } from "sonner";
 
@@ -69,7 +70,7 @@ const Page = () => {
   };
 
   return (
-    <>
+    <Suspense>
       <DeleteProduct
         open={openDeleteDialog}
         setOpen={setOpenDeleteDialog}
@@ -144,7 +145,7 @@ const Page = () => {
           <PaginationBtn totalPages={meta.totalPages} />
         </div>
       </div>
-    </>
+    </Suspense>
   );
 };
 

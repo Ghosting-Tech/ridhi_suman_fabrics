@@ -35,7 +35,11 @@ const AddToCartBtn = ({
   const handleQuantityButton = async (e, qty) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log(isInCart);
+    console.log(
+      isInCart.color?.name,
+      productColor,
+      isInCart.color?.name || productColor
+    );
 
     const product = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/cart`,
@@ -48,10 +52,10 @@ const AddToCartBtn = ({
           productId,
           quantity: qty,
           color: {
-            name: isInCart.color.name,
-            hex: isInCart.color.hex,
+            name: isInCart.color?.name || productColor || null,
+            hex: isInCart.color?.hex || productHex || null,
           },
-          size: isInCart.productSize,
+          size: isInCart.productSize || productSize || null,
         }),
       }
     );
@@ -65,10 +69,10 @@ const AddToCartBtn = ({
           itemId: productId,
           quantity: isInCart.quantity + qty,
           color: {
-            name: productColor,
-            hex: productHex,
+            name: productColor || null,
+            hex: productHex || null,
           },
-          size: productSize,
+          size: productSize || null,
         })
       );
 

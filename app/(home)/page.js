@@ -7,13 +7,13 @@ import MostBookedProduct from "@/components/layout/home/MostBookedProduct";
 
 export default function Home() {
   return (
-    <>
+    <main>
       <HeroSection />
       <CategoriesYouMayLike />
       <MostBookedProduct />
       <WeOffer />
       <HomeBanner />
       <Testimonial />
-    </>
+    </main>
   );
 }

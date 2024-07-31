@@ -52,9 +52,9 @@ function ProductInfo({ product }) {
     if (isInCart) {
       setSelectedSize(isInCart.size);
       // setSelectedSize("s");
-      setSelectedColor(isInCart.color.name);
+      setSelectedColor(isInCart.color?.name);
       // setSelectedColor("azure");
-      setSelectedColorHex(isInCart.color.hex);
+      setSelectedColorHex(isInCart.color?.hex);
       // setSelectedColorHex("#007fff");
     }
 

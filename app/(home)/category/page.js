@@ -20,15 +20,15 @@ const CategoryPage = async () => {
   const data = await getCategories();
 
   return (
-    <Suspense fallback={<CategoryListSkeleton />}>
-      <main className="relative p-4 sm:p-8 bg-gray-50">
-        <h2 className="text-2xl lg:text-4xl font-bold text-center text-pink-500 font-aclonica leading-tight mb-4 sm:mb-8">
-          All Products Categories
-        </h2>
+    <main className="relative p-4 sm:p-8 bg-gray-50">
+      <h2 className="text-2xl lg:text-4xl font-bold text-center text-pink-500 font-aclonica leading-tight mb-4 sm:mb-8">
+        All Products Categories
+      </h2>
 
+      <Suspense fallback={<CategoryListSkeleton />}>
         <CategoriesList categoryData={data} />
-      </main>
-    </Suspense>
+      </Suspense>
+    </main>
   );
 };
 
