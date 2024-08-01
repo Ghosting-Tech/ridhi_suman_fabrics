@@ -16,7 +16,35 @@ const OrderSchema = new Schema(
         },
       },
     ],
-
+    shippingInfo: {
+      name: {
+        type: String,
+        required: true,
+      },
+      phoneNumber: {
+        type: String,
+        required: true,
+      },
+      email: {
+        type: String,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      pincode: {
+        type: String,
+        required: true,
+      },
+      address: {
+        type: String,
+        required: true,
+      },
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -50,6 +78,7 @@ const OrderSchema = new Schema(
 
     isPaid: {
       type: Boolean,
+      default: false,
       required: true,
     },
   },
