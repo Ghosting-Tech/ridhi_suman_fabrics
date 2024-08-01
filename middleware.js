@@ -30,7 +30,14 @@ export async function middleware(request) {
       return res;
     }
 
-    const allowedPaths = ["/", "/products", "/sets", "/categories"];
+    const allowedPaths = [
+      "/",
+      "/products",
+      "/sets",
+      "/categories",
+      "/wishlist",
+      "/orders",
+    ];
     const isAllowedPath = allowedPaths.some((path) =>
       url.pathname.startsWith(path)
     );
@@ -79,6 +86,7 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     "/",
+    "/wishlist",
     "/products/:path*",
     "/sets/:path*",
     "/categories/:path*",

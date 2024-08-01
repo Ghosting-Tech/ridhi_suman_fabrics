@@ -41,7 +41,7 @@ const NavProfile = () => {
     {
       label: "My Wishlist",
       icon: HeartIcon,
-      click: () => router.push("/user/wishlist"),
+      click: () => router.push("/wishlist?page=1&size=12"),
     },
     {
       label: "Sign Out",
