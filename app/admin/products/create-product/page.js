@@ -37,6 +37,7 @@ const Page = () => {
     images: [],
     sizes: [],
   });
+
   const [categories, setCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
 
@@ -56,11 +57,11 @@ const Page = () => {
 
   useEffect(() => {
     if (categories.length > 0) {
-      setFormData({
-        ...formData,
+      setFormData((prevData) => ({
+        ...prevData,
         category: categories[0].name,
         subCategory: categories[0].subCategories[0],
-      });
+      }));
     }
   }, [categories]);
 
