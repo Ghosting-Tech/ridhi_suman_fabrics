@@ -28,7 +28,7 @@ const NavHeader = () => {
 
       const data = await res.json();
 
-      dispatch(updateWishlist(data));
+      dispatch(updateWishlist(data.data));
     } catch (error) {
       console.error("Error fetching wishlists", error);
       toast.error("Error fetching wishlists");
