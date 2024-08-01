@@ -1,7 +1,6 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 
-import { footerInfo } from "@/utils/footerData";
 import TooltipFooter from "@/components/ui/Tooltip";
 
 async function getCategories() {

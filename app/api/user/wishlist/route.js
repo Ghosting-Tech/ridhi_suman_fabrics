@@ -10,6 +10,8 @@ import mongoose from "mongoose";
 
 const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req) {
   try {
     const token = await getToken({ req, secret });

@@ -10,7 +10,7 @@ export default function TooltipFooter({ label, children }) {
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0, y: 25 },
       }}
-      className="border border-blue-gray-50 bg-white text-black px-4 py-3 shadow-xl shadow-black/10"
+      className="border border-blue-gray-50 bg-white text-black px-4 py-3 shadow-xl shadow-black/10 capitalize"
     >
       {children}
     </Tooltip>
