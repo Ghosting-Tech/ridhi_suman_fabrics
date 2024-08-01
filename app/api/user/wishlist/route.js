@@ -18,14 +18,8 @@ export async function GET(req) {
 
     if (!token) {
       return NextResponse.json({
-        data: [],
-
-        meta: {
-          page: 0,
-          size: 0,
-          totalPages: 0,
-          totalItems: 0,
-        },
+        data: "Unauthorized Access",
+        meta: { page: 1, size: 12, totalPages: 0, totalItems: 0 },
       }, { status: 200 });
     }
 
