@@ -32,7 +32,6 @@ const CartDrawer = () => {
       );
 
       const data = await res.json();
-      console.log(data);
 
       dispatch(addItemToCart(data.data));
       dispatch(
@@ -65,7 +64,7 @@ const CartDrawer = () => {
     <Drawer
       placement="right"
       open={open}
-      dismiss={{ enabled: false}}
+      dismiss={{ enabled: false }}
       onClose={toggleDrawer}
       className="px-8 py-4 shadow-lg bg-gray-100 flex flex-col justify-between"
       size={480}

@@ -15,20 +15,20 @@ export async function middleware(request) {
     const res = NextResponse.next();
 
     // Add CORS headers
-    res.headers.append("Access-Control-Allow-Credentials", "true");
-    res.headers.append("Access-Control-Allow-Origin", "https://example.com");
-    res.headers.append(
-      "Access-Control-Allow-Methods",
-      "GET,DELETE,PATCH,POST,PUT,OPTIONS"
-    );
-    res.headers.append(
-      "Access-Control-Allow-Headers",
-      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-    );
+    // res.headers.append("Access-Control-Allow-Credentials", "true");
+    // res.headers.append("Access-Control-Allow-Origin", "https://example.com");
+    // res.headers.append(
+    //   "Access-Control-Allow-Methods",
+    //   "GET,DELETE,PATCH,POST,PUT,OPTIONS"
+    // );
+    // res.headers.append(
+    //   "Access-Control-Allow-Headers",
+    //   "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    // );
 
-    if (request.method === "OPTIONS") {
-      return res;
-    }
+    // if (request.method === "OPTIONS") {
+    //   return res;
+    // }
 
     const allowedPaths = [
       "/",

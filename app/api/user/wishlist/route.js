@@ -17,7 +17,16 @@ export async function GET(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json("Unauthorized Access", { status: 200 });
+      return NextResponse.json({
+        data: [],
+
+        meta: {
+          page: 0,
+          size: 0,
+          totalPages: 0,
+          totalItems: 0,
+        },
+      }, { status: 200 });
     }
 
     const searchParams = new URL(req.url).searchParams;
