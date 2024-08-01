@@ -4,9 +4,9 @@ import SummaryList from "./SummaryList";
 
 const OrderSummary = () => {
   return (
-    <div className="rounded-lg flex flex-col gap-5 border-2 border-gray-500 lg:w-2/5 w-full p-5 ">
+    <div className="rounded-lg flex flex-col gap-5 border-2 border-gray-500 w-1/2 p-5 ">
       <div>
-        <h1 className="flex gap-1 text-black text-lg">
+        <h1 className="flex gap-1 text-black text-lg font-bold">
           <IoBagOutline size={22} />
           ORDER SUMMARY
         </h1>
@@ -17,7 +17,7 @@ const OrderSummary = () => {
       <div className="overflow-auto max-h-96 px-3">
         <SummaryList />
       </div>
-      <div className="w-full text-gray-500 flex flex-col gap-4 mt-2">
+      <div className="w-full text-gray-800 flex flex-col gap-4 mt-2">
         <div className="flex justify-between font-bold">
           <span>Subtotal</span>
           <span>&#x20B9;5240.37</span>
