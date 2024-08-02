@@ -218,6 +218,9 @@ const Page = () => {
                       <Option value="packed">Packed</Option>
                       <Option value="shipped">Shipped</Option>
                       <Option value="delivered">Delivered</Option>
+                      <Option value="canceled" disabled>
+                        Canceled
+                      </Option>
                     </Select>
                   </td>
                   <td className={classes}>

@@ -1,6 +1,6 @@
 "use client";
-import OrderSummary from "@/components/layout/order/booking/OrderSummary";
 import OrderInfoCard from "@/components/layout/order/order-details/OrderInfoCard";
+import OrderSummary from "@/components/layout/order/order-details/OrderSummary";
 import UserInfoCard from "@/components/layout/order/order-details/UserInfoCard";
 import Heading from "@/components/ui/heading/Heading";
 import { useParams } from "next/navigation";
@@ -17,7 +17,6 @@ const Page = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/private/order/${id}`
       );
       res = await res.json();
-      console.log({ Data: res });
       setData(res);
     } catch (error) {
       console.error("Failed to fetch Orders", error);
@@ -43,9 +42,9 @@ const Page = () => {
         title={"Order Details"}
       />
       <div className="my-5 gap-8 flex flex-col lg:flex-row mx-auto">
-        <OrderSummary />
+        <OrderSummary data={data} />
         <div className="w-full lg:w-3/5 flex flex-col gap-5">
-          <UserInfoCard data={data.user} />
+          <UserInfoCard data={data.shippingInfo} />
           <OrderInfoCard data={data} setData={setData} />
         </div>
       </div>

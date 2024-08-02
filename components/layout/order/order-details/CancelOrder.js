@@ -7,7 +7,7 @@ import { RxCross1 } from "react-icons/rx";
 import { TiCancelOutline } from "react-icons/ti";
 import { toast } from "sonner";
 
-const DeleteOrder = ({ open, setOpen, id, setData }) => {
+const CancelOrder = ({ open, setOpen, id, setData }) => {
   const [pending, setPending] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
   const handleOpen = () => setOpen(!open);
@@ -61,47 +61,49 @@ const DeleteOrder = ({ open, setOpen, id, setData }) => {
           </IconButton>,
         ]}
       />
-      <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 my-4 rounded-md">
-        <div className="flex gap-1">
-          <MdOutlineError size={25} />
-          Are you sure you want to cancel the Order{" "}
+      <form>
+        <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 my-4 rounded-md">
+          <div className="flex gap-1">
+            <MdOutlineError size={25} />
+            Are you sure you want to cancel the Order{" "}
+          </div>
         </div>
-      </div>
-      <div>
-        <Input
-          variant="static"
-          label="Cancellation Reason"
-          placeholder=""
-          required
-          value={cancellationReason}
-          onChange={(e) => setCancellationReason(e.target.value)}
-        />
-      </div>
-      <div className="flex justify-end items-center gap-4">
-        <Button
-          variant="outlined"
-          size="sm"
-          className="rounded"
-          color="red"
-          onClick={handleOpen}
-          type="button"
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="gradient"
-          size="sm"
-          className="rounded"
-          color="red"
-          type="submit"
-          onClick={() => handleCancel(id, "canceled", cancellationReason)}
-          loading={pending ? true : false}
-        >
-          Cancel Order
-        </Button>
-      </div>
+        <div>
+          <Input
+            variant="static"
+            label="Cancellation Reason"
+            placeholder=""
+            required
+            value={cancellationReason}
+            onChange={(e) => setCancellationReason(e.target.value)}
+          />
+        </div>
+        <div className="flex justify-end items-center gap-4">
+          <Button
+            variant="outlined"
+            size="sm"
+            className="rounded"
+            color="red"
+            onClick={handleOpen}
+            type="button"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="gradient"
+            size="sm"
+            className="rounded"
+            color="red"
+            type="submit"
+            onClick={() => handleCancel(id, "canceled", cancellationReason)}
+            loading={pending ? true : false}
+          >
+            Cancel Order
+          </Button>
+        </div>
+      </form>
     </Dialog>
   );
 };
 
-export default DeleteOrder;
+export default CancelOrder;

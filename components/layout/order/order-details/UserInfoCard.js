@@ -8,12 +8,11 @@ import DataCard from "./DataCard";
 import { FaRegUser } from "react-icons/fa6";
 
 const UserInfoCard = ({ data }) => {
-  console.log({ Check: data });
   return (
     <div className="rounded-lg flex flex-col gap-5 border-2 border-gray-500 w-full p-4">
       <Heading
         icon={
-          <div className="inline-block pr-1">
+          <div className="inline-block pr-1 font-bold">
             <FaRegUser size={25} color="red" />
           </div>
         }
@@ -35,17 +34,27 @@ const UserInfoCard = ({ data }) => {
           title="Email"
           data={data.email}
         />
-        <DataCard icon={<BiBuilding size={20} />} title="City" data="Patna" />
-        <DataCard icon={<BiMapPin size={20} />} title="State" data="Bihar" />
-        <DataCard icon={<BiMapPin size={20} />} title="Pincode" data="800006" />
+        <DataCard
+          icon={<BiBuilding size={20} />}
+          title="City"
+          data={data.city}
+        />
+        <DataCard
+          icon={<BiMapPin size={20} />}
+          title="State"
+          data={data.state}
+        />
+        <DataCard
+          icon={<BiMapPin size={20} />}
+          title="Pincode"
+          data={data.pincode}
+        />
 
         <div className="col-span-1 sm:col-span-2 flex items-start">
           <DataCard
             icon={<BiMap size={20} />}
             title="Delivery Address"
-            data="178A Bleecker Street, New York City, NY 10012-1406, on the
-                corner of Bleecker Street and Fenno Place in the heart of
-                Greenwich Village."
+            data={data.address}
           />
         </div>
       </div>

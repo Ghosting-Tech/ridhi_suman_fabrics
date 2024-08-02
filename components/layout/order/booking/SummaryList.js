@@ -2,7 +2,7 @@ import React from "react";
 import { products } from "@/utils/productData";
 import SmProductCard from "@/components/cards/SmProductCard";
 
-const SummaryList = ({}) => {
+const SummaryList = () => {
   return (
     <div className="flex flex-col gap-2">
       {products.map((product, index) => (

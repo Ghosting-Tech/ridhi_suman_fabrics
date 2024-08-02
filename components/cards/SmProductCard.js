@@ -1,22 +1,22 @@
 import Image from "next/image";
 import React from "react";
 
-const SmProductCard = ({ product }) => {
+const SmProductCard = ({ product, qty }) => {
   return (
-    <div className=" bg-gray-50 shadow-md border rounded-lg overflow-hidden">
-      <div className="flex items-center p-3 gap-4">
+    <div className=" bg-white border shadow-md rounded-lg overflow-hidden mb-2">
+      <div className="flex items-center p-3 gap-2">
         <Image
-          src={product.image}
+          src={product.images[0].url}
           width={100}
-          height={110}
+          height={80}
           className="rounded-lg mr-4"
         />
         <div className="flex flex-col gap-3">
           <h3 className="text-md font-semibold">{product.title}</h3>
           <p className="text-sm text-[#11998E] font-bold">
-            {product.discountedPrice}
+            &#x20B9;{product.price}
           </p>
-          <p className="text-sm text-gray-500">Quantity: 2</p>
+          <p className="text-sm text-gray-500">Quantity: {qty}</p>
         </div>
       </div>
     </div>

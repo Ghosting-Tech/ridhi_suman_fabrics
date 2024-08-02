@@ -4,22 +4,27 @@ import { Button } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import DataCard from "./DataCard";
-import { CiCalendarDate } from "react-icons/ci";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import { CiCalendarDate, CiCircleInfo } from "react-icons/ci";
+import { RiPriceTag2Line, RiSecurePaymentLine } from "react-icons/ri";
 import { TiCancelOutline } from "react-icons/ti";
 import { TbMessageCancel } from "react-icons/tb";
-import DeleteOrder from "./DeleteOrder";
 import { IoPricetagOutline } from "react-icons/io5";
 import { PiContactlessPaymentLight } from "react-icons/pi";
+import CancelOrder from "./CancelOrder";
+import { MdInfoOutline } from "react-icons/md";
 
 const OrderInfoCard = ({ data, setData }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
   return (
     <div className="rounded-lg flex flex-col gap-4 border-2 border-gray-500 w-full p-4">
       <Heading
         icon={
-          <div className="inline-block pr-1">
-            <IoMdHelpCircleOutline size={25} color="red" />
+          <div className="inline-block pr-1 font-bold">
+            <MdInfoOutline size={25} color="red" />
           </div>
         }
         title={"ORDER INFORMATION"}
@@ -28,7 +33,7 @@ const OrderInfoCard = ({ data, setData }) => {
         <DataCard
           icon={<CiCalendarDate size={20} />}
           title="Order Date"
-          data={data.createdAt}
+          data={formatDate(data.createdAt)}
         />
         <DataCard
           icon={<CiCalendarDate size={20} />}
@@ -41,7 +46,7 @@ const OrderInfoCard = ({ data, setData }) => {
           data={data.paymentMethod}
         />
         <DataCard
-          icon={<RiSecurePaymentLine size={20} />}
+          icon={<RiPriceTag2Line size={20} />}
           title="Payment Status"
           data={data.isPaid ? "Paid" : "UnPaid"}
         />
@@ -79,7 +84,7 @@ const OrderInfoCard = ({ data, setData }) => {
           </Button>
         )}
       </div>
-      <DeleteOrder
+      <CancelOrder
         open={openDeleteDialog}
         setOpen={setOpenDeleteDialog}
         id={data._id}
