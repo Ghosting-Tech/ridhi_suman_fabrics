@@ -74,19 +74,11 @@ function ProductInfo({ product }) {
         selectedColor={selectedColor}
         handleSelectedColor={handleSelectedColor}
         handleSelectedSize={handleSelectedSize}
+        product={product}
+        selectedColorHex={selectedColorHex}
       />
 
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
-        <AddToCartBtn
-          productColor={selectedColor}
-          productSize={selectedSize}
-          productHex={selectedColorHex}
-          price={product.price}
-          discount={product.discount}
-        />
-
-        <BuyNowBtn />
-      </div>
+      
 
       <ProductDetails fabric={product.fabric} brand={product.brand} />
 

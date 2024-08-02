@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import React from "react";
+import AddToCartBtn from "./button/AddToCartBtn";
+import BuyNowBtn from "./button/BuyNowBtn";
 
 const ProductSizeColor = ({
   sizes,
@@ -10,6 +12,8 @@ const ProductSizeColor = ({
   selectedColor,
   handleSelectedColor,
   handleSelectedSize,
+  selectedColorHex,
+  product
 }) => {
   const { data: session, status } = useSession();
 
@@ -99,60 +103,6 @@ const ProductSizeColor = ({
           Choose Colour
         </div>
 
-        {/* <div className="flex flex-wrap items-center gap-2 mt-3 md:mt-0 capitalize">
-          {selectedSize
-            ? sizes
-                .find((item) => item.size === selectedSize)
-                ?.colours.map((color, idx) => (
-                  <div
-                    className={`flex flex-row border border-black px-3 py-1 rounded-md justify-center items-center gap-2
-                                   ${
-                                     selectedColor === color.colour.name
-                                       ? "border-[#52057B] text-[#52057B] bg-[#F0E5FF]"
-                                       : "border-black text-black"
-                                   }${color.quantity === "0" ? "opacity-50 cursor-not-allowed" : ""}
-                              `}
-                    onClick={() =>
-                      handleSelectedColor(color.colour.name, color.colour.hex)
-                    }
-                    key={idx}
-                  >
-                    <div
-                      className={`h-3 w-3 rounded-xl ${color.quantity === "0" ? "opacity-50 cursor-not-allowed" : ""}`}
-                      style={{ backgroundColor: color.colour.hex }}
-                      title={color.colour.name}
-                    ></div>
-
-                    <div
-                      className={`text-xs cursor-pointer  ${color.quantity === "0" ? "opacity-50 cursor-not-allowed text-red " : ""}`}
-                      title={color.colour.name}
-                    >
-                      {color.colour.name}
-                    </div>
-                  </div>
-                ))
-            : sizes.map((size) =>
-                size.colours.map((color, idx) => (
-                  <div
-                    key={idx}
-                    className={`flex flex-row border px-3 py-1 rounded-md cursor-pointer items-center gap-2 ${
-                      selectedColor === color.colour.name
-                        ? "border-[#52057B] text-[#52057B] bg-[#F0E5FF]"
-                        : "border-black text-black"
-                    }`}
-                    onClick={() => handleSelectedColor(color.colour.hex)}
-                  >
-                    <div
-                      className="h-3 w-3 rounded-xl"
-                      style={{ backgroundColor: color.colour.hex }}
-                      title={color.colour.name}
-                    ></div>
-                    <div>{color.colour.name}</div>
-                  </div>
-                ))
-              )}
-        </div> */}
-
         <div className="flex flex-wrap items-center gap-2 mt-3 md:mt-0 capitalize">
           {sizes
             .filter((item) => !selectedSize || item.size === selectedSize)
@@ -165,7 +115,11 @@ const ProductSizeColor = ({
                 isSelected
                   ? "border-[#52057B] text-[#52057B] bg-[#F0E5FF]"
                   : "border-black text-black"
-              } ${isOutOfStock ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`;
+              } ${
+                isOutOfStock
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
+              }`;
 
               return (
                 <div
@@ -181,7 +135,9 @@ const ProductSizeColor = ({
                     title={color.colour.name}
                   ></div>
                   <div
-                    className={`text-xs ${isOutOfStock ? "opacity-50 text-red" : ""}`}
+                    className={`text-xs ${
+                      isOutOfStock ? "opacity-50 text-red" : ""
+                    }`}
                     title={color.colour.name}
                   >
                     {color.colour.name}
@@ -190,6 +146,17 @@ const ProductSizeColor = ({
               );
             })}
         </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
+        <AddToCartBtn
+          productColor={selectedColor}
+          productSize={selectedSize}
+          productHex={selectedColorHex}
+          price={product.price}
+          discount={product.discount}
+        />
+
+        <BuyNowBtn />
       </div>
     </div>
   );
