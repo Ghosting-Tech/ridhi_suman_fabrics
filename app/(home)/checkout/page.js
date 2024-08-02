@@ -72,17 +72,17 @@ const CheckoutPage = () => {
 
       // Prepare the order data object
 
-      const arrayOfProductId = cart.items.map((item) => {
-        const productObject = { productId: item._id, quantity: item.quantity };
+      const cartItems = cart.items.map((item) => {
+        const productObject = { productId: item._id, quantity: item.quantity, size: item.size, colour: item.color};
         return productObject;
       });
 
-      console.log(cart.items);
+      console.log(cartItems);
       const orderData = {
-        cartItems: arrayOfProductId,
+        cartItems,
         shippingInfo: shippingData,
         user: session.user._id,
-        totalAmount: cart.totalPrice,
+        totalAmount: cart.totalPrice + 120,
         paymentMethod: "Phone Pay", // Update payment method as needed
         isPaid: false,
       };
@@ -94,7 +94,9 @@ const CheckoutPage = () => {
         },
         body: JSON.stringify(orderData),
       });
-      await res.json();
+      const order = await res.json();
+      console.log(order);
+
 
       dispatch(clearCart());
       setShippingData({
@@ -106,8 +108,6 @@ const CheckoutPage = () => {
         pincode: "",
         address: "",
       });
-
-      // Left to minus stock of the cart items!
 
       if (res.ok) {
         toast.success("Order placed successfully!");
@@ -121,7 +121,7 @@ const CheckoutPage = () => {
           pincode: "",
           address: "",
         });
-        router.push("/my-orders"); // Redirect to home page
+        router.push("/"); // Redirect to home page
       } else {
         toast.error("An error occurred while placing order!");
       }

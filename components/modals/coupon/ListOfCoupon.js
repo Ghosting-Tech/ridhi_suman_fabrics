@@ -102,7 +102,14 @@ const ListOfCoupon = ({ open, setOpen, setTotalAmount }) => {
                 <p className="text-gray-700">{coupon.discount}% off</p>
               </div>
               <p className="text-sm text-pink-500">
-                Min spent ₹{coupon.minAmt}
+                {cart.totalPrice < coupon.minAmt ? (
+                  <span>
+                    Purchase ₹{coupon.minAmt - cart.totalPrice} to get this
+                    coupon!
+                  </span>
+                ) : (
+                  <span>Min spent ₹{coupon.minAmt}</span>
+                )}
               </p>
             </div>
             <Button
@@ -110,6 +117,7 @@ const ListOfCoupon = ({ open, setOpen, setTotalAmount }) => {
               size="sm"
               color="pink"
               className="rounded h-fit"
+              disabled={cart.totalPrice < coupon.minAmt}
               onClick={() => handleApplyCoupon(coupon)}
             >
               Apply code

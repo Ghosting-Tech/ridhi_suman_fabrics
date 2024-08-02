@@ -14,6 +14,15 @@ const OrderSchema = new Schema(
           type: Number,
           required: true,
         },
+        size: {
+          type: String,
+          required: true,
+          lowercase: true,
+        },
+        colour: {
+          type: Object,
+          required: true,
+        },
       },
     ],
     shippingInfo: {
