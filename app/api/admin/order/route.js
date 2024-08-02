@@ -9,16 +9,16 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request) {
   try {
-    const isAdmin = await checkAuthorization(request);
+    // const isAdmin = await checkAuthorization(request);
 
-    if (isAdmin === "Unauthorized" || !isAdmin) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
-    }
+    // if (isAdmin === "Unauthorized" || !isAdmin) {
+    //   return NextResponse.json("Unauthorized Request", { status: 401 });
+    // }
 
     const { searchParams } = new URL(request.url);
 
     const page = parseInt(searchParams.get("page")) || 1;
-    const limit = parseInt(searchParams.get("limit")) || 12;
+    const limit = parseInt(searchParams.get("limit")) || 10;
 
     const skip = (page - 1) * limit;
 
