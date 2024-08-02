@@ -11,12 +11,16 @@ async function getProducts(page = 1, size = 12) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/product?page=${page}&size=${size}`,
     {
-      cache: "no-cache",
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error("Failed to fetch all Products");
   }
 
   return res.json();

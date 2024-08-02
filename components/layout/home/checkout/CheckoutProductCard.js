@@ -1,6 +1,8 @@
-"use client"
-import ImageContainer from "@/components/ui/ImageContainer";
+"use client";
+
 import { Button } from "@material-tailwind/react";
+
+import ImageContainer from "@/components/ui/ImageContainer";
 
 const CheckoutProductCard = ({ data }) => {
   return (

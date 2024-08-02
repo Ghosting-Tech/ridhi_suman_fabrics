@@ -1,20 +1,26 @@
 "use client";
-import { useEffect, useState } from "react";
+
 import { FaTshirt } from "react-icons/fa";
 import { RiApps2AddFill } from "react-icons/ri";
-import Nav from "@/components/layout/home/NavHeader/Nav";
-import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
-import Heading from "@/components/ui/heading/Heading";
 
-import CreateCategory from "@/components/modals/admin/category/CreateCategory";
-import EditCategory from "@/components/modals/admin/category/EditCategory";
-import DeleteCategory from "@/components/modals/admin/category/DeleteCategory";
+import { useEffect, useState } from "react";
+
+import Heading from "@/components/ui/heading/Heading";
+import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
+
 import CategoryCard from "@/components/layout/admin/CategoryCard";
+import EditCategory from "@/components/modals/admin/category/EditCategory";
+import CreateCategory from "@/components/modals/admin/category/CreateCategory";
+import DeleteCategory from "@/components/modals/admin/category/DeleteCategory";
 
 const Page = () => {
-  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
   const [selectedCategory, setSelectedCategory] = useState({
     image: "",
     name: "",
@@ -31,9 +37,6 @@ const Page = () => {
       }}
     />,
   ];
-
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const fetchCategories = async () => {
     try {
@@ -68,6 +71,7 @@ const Page = () => {
           <span></span>
         </div>
       </div>
+
       <main
         className={`${
           loading ? "hidden" : "block"
@@ -79,13 +83,13 @@ const Page = () => {
           deleteCategory={deleteCategory}
           setCategories={setCategories}
         />
-        {/* Create category dialog */}
+
         <CreateCategory
           open={openCreateDialog}
           setOpen={setOpenCreateDialog}
           setCategories={setCategories}
         />
-        {/* Edit category dialog */}
+
         <EditCategory
           setCategories={setCategories}
           category={selectedCategory}
@@ -105,6 +109,7 @@ const Page = () => {
               buttons={btns}
             />
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 px-10 mx-auto gap-8 place-items-center">
             {categories?.map((category) => (
               <CategoryCard

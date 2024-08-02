@@ -2,10 +2,11 @@
 
 import { CardHeader } from "@material-tailwind/react";
 
-import React, { useMemo } from "react";
 import Image from "next/image";
-import WishlistBtn from "@/components/ui/buttons/WishlistBtn";
+import React, { useMemo } from "react";
+
 import ShimmerImage from "@/components/ui/ShimmerImage";
+import WishlistBtn from "@/components/ui/buttons/WishlistBtn";
 
 const ProductHeader = React.memo(
   ({ isHovered, isSet = false, srcs, title, id, isWishlist = false }) => {
@@ -58,7 +59,7 @@ const ProductHeader = React.memo(
 
         <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-black/60" />
 
-        {/* {isWishlist ? null : <WishlistBtn productId={id} />} */}
+        {isWishlist ? null : <WishlistBtn productId={id} />}
       </CardHeader>
     );
   }

@@ -11,7 +11,7 @@ const CategoryItem = ({ category }) => {
         <ShimmerImage src={category.image.url} alt={category.name} />
       </div>
 
-      <p className="text-lg mt-2 sm:mt-4">{category.name}</p>
+      <p className="text-lg mt-2 sm:mt-4 capitalize">{category.name}</p>
     </Link>
   );
 };

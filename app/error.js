@@ -9,16 +9,17 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
+    <div className="flex justify-center items-center h-screen bg-gray-100 text-gray-800">
+      <div className="text-center max-w-lg p-6 border border-gray-300 rounded-lg bg-white shadow-lg">
+        <h1 className="text-6xl font-bold text-red-500">404</h1>
+        <h2 className="text-2xl mt-4">Oops! Something went wrong.</h2>
+        <button
+          className="mt-6 px-4 py-2 text-lg font-medium text-white bg-blue-600 rounded hover:bg-blue-700"
+          onClick={() => reset()}
+        >
+          Try again
+        </button>
+      </div>
     </div>
   );
 }

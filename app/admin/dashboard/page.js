@@ -29,10 +29,11 @@ const DashboardPage = () => {
           "Content-Type": "application/json",
         },
       });
+
       const data = await response.json();
+
       setData(data);
     } catch (err) {
-      console.error(err);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -60,7 +61,9 @@ const DashboardPage = () => {
       </div>
 
       <div
-        className={`transition-all duration-700 ${loading ? "hidden" : "block"} w-full`}
+        className={`transition-all duration-700 ${
+          loading ? "hidden" : "block"
+        } w-full`}
       >
         <div class="px-8 mt-4">
           <Heading

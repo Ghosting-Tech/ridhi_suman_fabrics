@@ -67,7 +67,9 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
       setIsLoading(true);
 
-      const userResponse = await fetch(`/api/user/number/${phoneNumber}`);
+      const userResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/number/${phoneNumber}`
+      );
 
       const data = await userResponse.json();
 
@@ -83,7 +85,9 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
       const otpPromise = new Promise(async (resolve, reject) => {
         try {
           const otpResponse = await fetch(
-            `/api/generate-otp/${data.toString()}`,
+            `${
+              process.env.NEXT_PUBLIC_BACKEND_URL
+            }/generate-otp/${data.toString()}`,
             {
               method: "GET",
             }
@@ -149,7 +153,9 @@ const ForgotPasswordForm = ({ isAnimated, setIsAnimated }) => {
 
       setIsLoading(true);
 
-      const url = `/api/generate-otp/${user.toString()}`;
+      const url = `${
+        process.env.NEXT_PUBLIC_BACKEND_URL
+      }/generate-otp/${user.toString()}`;
 
       const promiseFunction = () =>
         new Promise(async (resolve, reject) => {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
 import {
   Menu,
   MenuHandler,
@@ -8,8 +8,12 @@ import {
   Button,
 } from "@material-tailwind/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+
 function NavCategory() {
+  const [openMenu, setOpenMenu] = useState(false);
   const [categories, setCategories] = useState([]);
 
   const handleCategories = async () => {
@@ -27,8 +31,6 @@ function NavCategory() {
   useEffect(() => {
     handleCategories();
   }, []);
-
-  const [openMenu, setOpenMenu] = useState(false);
 
   return (
     <Menu
@@ -54,19 +56,26 @@ function NavCategory() {
           />
         </Button>
       </MenuHandler>
+
       <MenuList>
         {categories.map((category, index) => (
           <Menu placement="left-start" allowHover key={index} offset={15}>
-            <MenuHandler className="flex items-center justify-between">
-              <MenuItem>{category.name}</MenuItem>
+            <MenuHandler className="flex items-center justify-between capitalize">
+              <MenuItem className="capitalize">{category.name}</MenuItem>
             </MenuHandler>
+
             <MenuList>
               <Link key={index} href={`/${category.name}`}>
-                <MenuItem>{category.name}</MenuItem>
+                <MenuItem className="capitalize">{category.name}</MenuItem>
               </Link>
+
               {category.subCategories.map((sub, index) => {
                 return (
-                  <Link key={index} href={`/category/${category.name}/${sub.name}`} className="outline-none">
+                  <Link
+                    key={index}
+                    href={`/category/${category.name}/${sub.name}`}
+                    className="outline-none capitalize"
+                  >
                     <MenuItem>{sub.name}</MenuItem>
                   </Link>
                 );

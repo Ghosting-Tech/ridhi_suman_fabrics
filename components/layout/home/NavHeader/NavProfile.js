@@ -36,7 +36,7 @@ const NavProfile = () => {
     {
       label: "My Orders",
       icon: ShoppingBagIcon,
-      click: () => router.push("my-orders"),
+      click: () => router.push("/user/orders"),
     },
     {
       label: "My Wishlist",
@@ -121,7 +121,7 @@ const NavProfile = () => {
           </Button>
         </MenuHandler>
 
-        <MenuList className="p-1 flex flex-col gap-1">
+        <MenuList className="p-1">
           {session.user.role === "admin"
             ? adminMenuItems.map((item, index) => (
                 <ProfileMenuItem

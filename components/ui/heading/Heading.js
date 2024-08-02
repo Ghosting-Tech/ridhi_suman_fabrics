@@ -8,11 +8,13 @@ const Heading = ({ icon, title, buttons }) => {
           {icon && icon}
           <h2 className="text-sm lg:text-lg">{title}</h2>
         </div>
+
         <div className="flex gap-4 items-center">
           {buttons &&
             buttons.map((button, index) => <div key={index}>{button}</div>)}
         </div>
       </div>
+
       <div
         className={`rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400 h-1`}
       ></div>

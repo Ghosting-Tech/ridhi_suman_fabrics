@@ -74,10 +74,13 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           data.append("image", formData.image);
         }
 
-        const response = await fetch("/api/admin/sub-admin", {
-          method: "POST",
-          body: data,
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/sub-admin`,
+          {
+            method: "POST",
+            body: data,
+          }
+        );
 
         const newAdmin = await response.json();
 

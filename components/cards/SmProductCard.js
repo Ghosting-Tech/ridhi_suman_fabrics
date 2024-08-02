@@ -10,6 +10,7 @@ const SmProductCard = ({ product, qty }) => {
           width={100}
           height={80}
           className="rounded-lg mr-4"
+          alt={product.title}
         />
         <div className="flex flex-col gap-3">
           <h3 className="text-md font-semibold">{product.title}</h3>

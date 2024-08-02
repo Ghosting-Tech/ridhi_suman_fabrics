@@ -1,31 +1,42 @@
-import CategoryPageHeader from "@/components/layout/home/categories/CategoryPageHeader";
-import ProductList from "@/components/layout/products/ProductList";
-import PaginationBtn from "@/components/ui/PaginationBtn";
+import { Suspense } from "react";
 
-async function getCategoryProduct(params, searchParams) {
+import ProductList from "@/components/layout/products/ProductList";
+import CategoryPageHeader from "@/components/layout/home/categories/CategoryPageHeader";
+
+import PaginationBtn from "@/components/ui/PaginationBtn";
+import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
+
+async function getCategoryProducts(params, searchParams) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/category/${params.name}?page=${searchParams.page || 1}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/category/${
+      params.name
+    }?page=${searchParams.page || 1}&size=12`,
     {
-      cache: "no-store",
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
     }
   );
 
   if (!res.ok) {
-    throw new Error(data);
+    throw new Error("Failed to fetch all Category Products");
   }
 
   return res.json();
 }
 
 const CategoryPage = async ({ params, searchParams }) => {
-  const data = await getCategoryProduct(params, searchParams);
+  const data = await getCategoryProducts(params, searchParams);
 
   return (
     <main>
       <CategoryPageHeader category={params} cat={true} />
 
-      <ProductList products={data.data} />
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ProductList products={data.data} />
+      </Suspense>
 
       <div className="mb-6">
         <PaginationBtn totalPages={data?.meta?.totalPages} />

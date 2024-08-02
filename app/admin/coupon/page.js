@@ -1,15 +1,20 @@
 "use client";
-import CouponCard from "@/components/layout/admin/coupon/CouponCard";
-import CreateCoupon from "@/components/modals/admin/coupon/CreateCoupon";
-import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
-import Heading from "@/components/ui/heading/Heading";
-import React, { useEffect, useState } from "react";
+
 import { LuPlusCircle } from "react-icons/lu";
 import { RiCoupon4Line } from "react-icons/ri";
 
+import React, { useEffect, useState } from "react";
+
+import Heading from "@/components/ui/heading/Heading";
+import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
+
+import CouponCard from "@/components/layout/admin/coupon/CouponCard";
+import CreateCoupon from "@/components/modals/admin/coupon/CreateCoupon";
+
 const Page = () => {
-  const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [couponCode, setCouponCode] = useState([]);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+
   const getCoupon = async () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/coupon`);
@@ -30,9 +35,11 @@ const Page = () => {
       }}
     />,
   ];
+
   useEffect(() => {
     getCoupon();
   }, []);
+
   return (
     <div className="m-5 flex flex-col gap-5">
       <Heading
@@ -44,13 +51,12 @@ const Page = () => {
         title={"Coupon Details"}
         buttons={btns}
       />
-      {/* Coupon Create Model  */}
+
       <CreateCoupon
         open={openCreateDialog}
         setOpen={setOpenCreateDialog}
         setCouponCode={setCouponCode}
       />
-      {/* Coupon Delete Model  */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-5 place-items-center">
         {couponCode.map((coupon) => (

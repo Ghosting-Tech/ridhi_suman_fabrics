@@ -8,6 +8,8 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 
+import Link from "next/link";
+import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 
 import CartItems from "./CartItems";
@@ -16,7 +18,6 @@ import CartListSkeleton from "../ui/skeletons/product/CartListSkeleton";
 
 import { toggleCartDrawer } from "@/redux/slice/modalSlice";
 import { addItemToCart, updateCart } from "@/redux/slice/cartSlice";
-import Link from "next/link";
 
 const CartDrawer = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,6 @@ const CartDrawer = () => {
 
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching cart:", error);
       toast.error("Error fetching cart items");
 
       setLoading(false);
@@ -137,7 +137,7 @@ const CartDrawer = () => {
             Checkout
           </Button>
         ) : (
-          <Link href={`/checkout`}>
+          <Link href="/checkout">
             <Button
               color="pink"
               variant="gradient"

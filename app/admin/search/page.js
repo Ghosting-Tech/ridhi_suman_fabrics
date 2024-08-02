@@ -6,7 +6,9 @@ import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSk
 
 async function getSearchResults(searchParams) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/search?query=${searchParams.query}&page=${searchParams.page || 1}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/search?query=${
+      searchParams.query
+    }&page=${searchParams.page || 1}`,
     {
       cache: "no-store",
       method: "GET",

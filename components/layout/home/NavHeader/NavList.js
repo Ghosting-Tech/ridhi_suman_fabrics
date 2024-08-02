@@ -51,6 +51,7 @@ const NavList = () => {
           }}
           onKeyDown={handleKeyDown}
         />
+
         <IconButton
           size="sm"
           className="!absolute right-1 top-1 rounded"

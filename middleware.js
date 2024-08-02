@@ -5,7 +5,7 @@ import { getToken } from "next-auth/jwt";
 
 export { default } from "next-auth/middleware";
 
-const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+const secret = process.env.NEXTAUTH_SECRET;
 
 export async function middleware(request) {
   try {

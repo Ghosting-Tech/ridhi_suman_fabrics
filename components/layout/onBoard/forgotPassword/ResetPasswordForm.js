@@ -74,10 +74,13 @@ const ResetPasswordForm = ({ isAnimated, setIsAnimated }) => {
     const promiseFunction = () =>
       new Promise(async (resolve, reject) => {
         try {
-          const response = await fetch("api/reset-password", {
-            method: "POST",
-            body: formDataToSend,
-          });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/reset-password`,
+            {
+              method: "POST",
+              body: formDataToSend,
+            }
+          );
 
           data = await response.json();
 

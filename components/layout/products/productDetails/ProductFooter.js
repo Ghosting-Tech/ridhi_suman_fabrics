@@ -5,13 +5,18 @@ const ProductFooter = () => {
   return (
     <div className="grid grid-cols-2 gap-4 pb-5 border-b">
       <div className="flex items-center gap-3">
-        <Image src="\Product_detail\Vector.svg" alt="" width={18} height={22} />
+        <Image
+          src="/products/details/original-product.svg"
+          alt=""
+          width={18}
+          height={22}
+        />
         <span className="capitalize">Original store product</span>
       </div>
 
       <div className="flex items-center gap-3">
         <Image
-          src="\Product_detail\Vector (2).svg"
+          src="/products/details/long-term-warranty.svg"
           alt=""
           width={18}
           height={22}
@@ -21,7 +26,7 @@ const ProductFooter = () => {
 
       <div className="flex items-center gap-3">
         <Image
-          src="\Product_detail\Vector (1).svg"
+          src="/products/details/trust.svg"
           alt=""
           width={18}
           height={22}
@@ -31,7 +36,7 @@ const ProductFooter = () => {
 
       <div className="flex items-center gap-3">
         <Image
-          src="\Product_detail\Vector (3).svg"
+          src="/products/details/most-loveable.svg"
           alt=""
           width={18}
           height={22}

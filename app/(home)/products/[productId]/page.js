@@ -3,23 +3,27 @@ import { Suspense } from "react";
 import ImageSlider from "@/components/layout/products/productDetails/ImageSlider";
 import ProductInfo from "@/components/layout/products/productDetails/ProductInfo";
 
-const fetchProductData = async (productId) => {
+const getProductById = async (productId) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/${productId}`,
     {
+      method: "GET",
       cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error("Failed to fetch Product Details");
   }
 
   return res.json();
 };
 
 export default async function ProductData({ params: { productId } }) {
-  const productData = await fetchProductData(productId);
+  const productData = await getProductById(productId);
 
   return (
     <Suspense>

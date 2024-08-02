@@ -5,12 +5,15 @@ import CategoryListSkeleton from "@/components/ui/skeletons/category/CategoryLis
 
 async function getCategories() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`, {
-    cache: "no-store",
     method: "GET",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    throw new Error("Failed to fetch all Categories");
   }
 
   return res.json();

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, select } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import {
   MinusIcon,
   PlusIcon,
@@ -61,7 +61,6 @@ const AddToCartBtn = ({
     );
 
     const data = await product.json();
-    console.log(data);
 
     if (product.ok) {
       dispatch(

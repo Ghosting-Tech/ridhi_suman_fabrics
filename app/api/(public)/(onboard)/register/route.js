@@ -1,14 +1,17 @@
-import { NextResponse } from "next/server";
-import dbConnect from "@/config/db";
-import User from "@/model/user";
 import { storage } from "@/firebase";
+import { NextResponse } from "next/server";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-export const POST = async (req, res) => {
+import User from "@/model/user";
+
+import dbConnect from "@/config/db";
+
+export const POST = async (req) => {
   try {
     const formData = await req.formData();
 
     const file = formData.get("image");
+
     const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
@@ -70,6 +73,7 @@ export const POST = async (req, res) => {
     const blob = new Blob([buffer], { type: file.type });
 
     await uploadBytes(imageRef, blob);
+
     const imageUrl = await getDownloadURL(imageRef);
     const imageObject = { url: imageUrl, ref: imageRef._location.path_ };
 

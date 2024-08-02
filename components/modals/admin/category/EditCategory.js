@@ -83,13 +83,16 @@ const EditCategory = ({ open, setOpen, category, setCategories }) => {
         image: imageObject,
       };
 
-      const res = await fetch(`/api/admin/category/${category._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/category/${category._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        }
+      );
 
       const responseData = await res.json(); // Assuming the response is JSON
 

@@ -1,8 +1,10 @@
-import React from "react";
-import ProfileSection from "@/components/layout/profile/ProfileSection";
-import Footer from "@/components/layout/home/Footer";
-import Heading from "@/components/ui/heading/Heading";
 import { FaUser } from "react-icons/fa";
+
+import React from "react";
+
+import Heading from "@/components/ui/heading/Heading";
+
+import ProfileSection from "@/components/layout/profile/ProfileSection";
 import AddressSection from "@/components/layout/profile/AddressSection";
 
 const page = () => {
@@ -17,6 +19,7 @@ const page = () => {
           }
           title={"PROFILE"}
         />
+
         <div className="flex gap-5 sm:mt-5">
           <ProfileSection />
           <AddressSection />

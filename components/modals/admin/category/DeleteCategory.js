@@ -21,9 +21,12 @@ const DeleteCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
           console.warn("Failed to delete image:", error);
         }
       }
-      const res = await fetch(`/api/admin/category/${deleteCategory._id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/category/${deleteCategory._id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
         toast.success(`Category ${deleteCategory.name} deleted successfully!`);
         setCategories((prev) =>

@@ -1,5 +1,6 @@
-import AuthContainer from "@/components/layout/onBoard/AuthContainer";
 import React from "react";
+
+import AuthContainer from "@/components/layout/onBoard/AuthContainer";
 
 const page = () => {
   return <AuthContainer />;

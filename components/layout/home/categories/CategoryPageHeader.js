@@ -1,7 +1,10 @@
 "use client";
-import { Breadcrumbs } from "@material-tailwind/react";
+
 import { FaHome } from "react-icons/fa";
+import { Breadcrumbs } from "@material-tailwind/react";
+
 import Link from "next/link";
+
 const CategoryPageHeader = ({ category, cat }) => {
   const categoryName = category.name
     ? category.name.replaceAll("%20", " ")

@@ -10,17 +10,12 @@ import {
   CardFooter,
   Select,
   Option,
-  Switch,
-  CardHeader,
 } from "@material-tailwind/react";
 import { IoIosRefresh } from "react-icons/io";
 import Heading from "@/components/ui/heading/Heading";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import { RiCoupon4Line } from "react-icons/ri";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
-import PaginationBtn from "@/components/ui/PaginationBtn";
-import Link from "next/link";
 
 const statusColors = {
   confirmed: "bg-blue-100 text-blue-800",
@@ -31,9 +26,6 @@ const statusColors = {
 };
 
 const Page = () => {
-  const searchParams = useSearchParams();
-  const [meta, setMeta] = useState({});
-
   const [orders, setOrders] = useState([]);
 
   const handleStatusChange = async (id, field, newStatus) => {
@@ -47,7 +39,6 @@ const Page = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        toast.success("Status updated successfully");
         setOrders((prevOrders) => {
           return prevOrders.map((order) => {
             if (order._id === id) {
@@ -57,6 +48,7 @@ const Page = () => {
                 return { ...order, status: data.status };
               }
             }
+            toast.success("Status updated successfully");
             return order;
           });
         });
@@ -68,23 +60,21 @@ const Page = () => {
     }
   };
 
-  const getOrders = async (page) => {
+  const getOrders = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/order?size=7&page=${page}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/order`
       );
       const data = await res.json();
       setOrders(data.data);
-      setMeta(data.pagination);
     } catch (e) {
       console.error("Failed to fetch Orders", e);
     }
   };
 
-  const currentPage = searchParams.get("page");
   useEffect(() => {
-    getOrders(currentPage);
-  }, [currentPage]);
+    getOrders();
+  }, []);
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -103,7 +93,7 @@ const Page = () => {
 
   return (
     <Card className="h-full w-full shadow-none">
-      <CardHeader className="py-3 shadow-none mt-2">
+      <CardFooter className="py-3">
         <Heading
           icon={
             <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
@@ -113,7 +103,7 @@ const Page = () => {
           title={"Order Details"}
           buttons={btns}
         />
-      </CardHeader>
+      </CardFooter>
       <CardBody className="p-2 mx-8">
         <table className="w-full min-w-max table-auto text-left">
           <thead className="bg-gray-100">
@@ -158,7 +148,7 @@ const Page = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      &#8377;{order.totalAmount}
+                      {order.totalAmount}
                     </Typography>
                   </td>
                   <td className={`${classes} px-5`}>
@@ -175,7 +165,9 @@ const Page = () => {
                       size="sm"
                       variant="ghost"
                       value={order.status}
-                      className={`${statusColors[order.status]} py-2 px-0 text-center rounded-full`}
+                      className={`${
+                        statusColors[order.status]
+                      } py-2 px-0 text-center rounded-full`}
                     />
                   </td>
                   <td className={classes}>
@@ -187,7 +179,7 @@ const Page = () => {
                       {order.paymentMethod}
                     </Typography>
                   </td>
-                  <td className={`${classes} w-16 text-center`}>
+                  <td className={`${classes} w-16`}>
                     <Select
                       label="Select status"
                       value={order.isPaid ? "paid" : "unpaid"}
@@ -208,7 +200,6 @@ const Page = () => {
                     <Select
                       label="Select status"
                       color="blue"
-                      className=""
                       value={order.status}
                       onChange={(value) =>
                         handleStatusChange(order._id, "status", value)
@@ -218,17 +209,13 @@ const Page = () => {
                       <Option value="packed">Packed</Option>
                       <Option value="shipped">Shipped</Option>
                       <Option value="delivered">Delivered</Option>
-                      <Option value="canceled" disabled>
-                        Canceled
-                      </Option>
+                      <Option value="canceled">Canceled</Option>
                     </Select>
                   </td>
                   <td className={classes}>
-                    <Link href={`/admin/orders/${order._id}`}>
-                      <Button variant="outlined" color="blue">
-                        View
-                      </Button>
-                    </Link>
+                    <Button variant="outlined" color="blue">
+                      View
+                    </Button>
                   </td>
                 </tr>
               );
@@ -236,9 +223,6 @@ const Page = () => {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter>
-        <PaginationBtn totalPages={meta.totalPages} />
-      </CardFooter>
     </Card>
   );
 };

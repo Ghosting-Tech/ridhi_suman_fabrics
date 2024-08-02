@@ -1,5 +1,6 @@
-import categoryData from "@/utils/categoryData";
 import CategoriesList from "../../categories/CategoriesList";
+
+import categoryData from "@/utils/categoryData";
 
 function Category() {
   return (

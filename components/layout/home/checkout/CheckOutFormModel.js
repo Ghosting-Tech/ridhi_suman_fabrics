@@ -1,69 +1,86 @@
-import { Input, Textarea } from "@material-tailwind/react";
+import { FaTshirt } from "react-icons/fa";
+import { RxCross1 } from "react-icons/rx";
+import {
+  Button,
+  Dialog,
+  IconButton,
+  Input,
+  Textarea,
+} from "@material-tailwind/react";
 
-const CheckOutFormModel = ({ data, setData }) => {
+import React from "react";
+
+import Heading from "@/components/ui/heading/Heading";
+
+const CheckOutFormModel = ({ open, setOpen }) => {
+  const handleOpen = () => setOpen(!open);
   return (
-    <div className="flex flex-wrap gap-4">
-      <div className="flex flex-col lg:flex-row w-full gap-4">
-        <Input
-          label="Full Name"
-          value={data.name}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, name: e.target.value }))
-          }
-        />
-        <Input
-          label="Phone Number"
-          variant="outlined"
-          value={data.phoneNumber}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, phoneNumber: e.target.value }))
-          }
-        />
-      </div>
-      <div className="flex flex-col lg:flex-row w-full gap-4">
-        <Input
-          label="Email"
-          variant="outlined"
-          value={data.email}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, email: e.target.value }))
-          }
-        />
-        <Input
-          label="City"
-          variant="outlined"
-          value={data.city}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, city: e.target.value }))
-          }
-        />
-      </div>
-      <div className="flex flex-col lg:flex-row w-full gap-4">
-        <Input
-          label="State"
-          variant="outlined"
-          value={data.state}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, state: e.target.value }))
-          }
-        />
-        <Input
-          label="Pincode"
-          variant="outlined"
-          value={data.pincode}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, pincode: e.target.value }))
-          }
-        />
-      </div>
-      <Textarea
-        label="Address"
-        value={data.address}
-        onChange={(e) =>
-          setData((prev) => ({ ...prev, address: e.target.value }))
+    <Dialog
+      open={open}
+      handler={handleOpen}
+      animate={{
+        mount: { scale: 1, x: 0 },
+        unmount: { scale: 0, x: 600 },
+      }}
+      className="p-6 flex flex-col gap-4"
+    >
+      <Heading
+        icon={
+          <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
+            <FaTshirt size={20} color="white" />
+          </div>
         }
+        title={"Add Address"}
+        buttons={[
+          <IconButton key={1} variant="text" onClick={handleOpen}>
+            <RxCross1 size={20} />
+          </IconButton>,
+        ]}
       />
-    </div>
+      <div className="flex flex-wrap gap-5">
+        <div className="flex size">
+          <Input label="Full name" variant="outlined" />
+        </div>
+
+        <div className="flex size">
+          <Input label="Phone Number" variant="outlined" />
+        </div>
+
+        <div className="flex size">
+          <Input label="Email" variant="outlined" />
+        </div>
+
+        <div className="flex size">
+          <Input label="City" variant="outlined" />
+        </div>
+
+        <div className="flex size">
+          <Input label="State" variant="outlined" />
+        </div>
+
+        <div className="flex size">
+          <Input label="Pincode" variant="outlined" />
+        </div>
+
+        <Textarea label="Address" />
+      </div>
+
+      <div className="flex items-center gap-4">
+        <Button
+          className="rounded"
+          variant="gradient"
+          fullWidth
+          color="red"
+          onClick={handleOpen}
+        >
+          Cancel
+        </Button>
+
+        <Button className="rounded" variant="gradient" fullWidth color="teal">
+          Add Address
+        </Button>
+      </div>
+    </Dialog>
   );
 };
 

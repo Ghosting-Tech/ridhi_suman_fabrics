@@ -14,9 +14,12 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/admin/product/${product._id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/product/${product._id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       const data = await response.json();
       if (!response.ok) {
@@ -59,13 +62,15 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
         ]}
       />
       <div className="w-full h-full flex border p-4  bg-white rounded-xl">
-        {product?.images && (
+        {product.images && (
           <Image
             src={product.images[0].url}
             alt="Image"
             width={150}
             style={{
-              filter: `${product.visibility ? "grayscale(0)" : "grayscale(100%)"}`,
+              filter: `${
+                product.visibility ? "grayscale(0)" : "grayscale(100%)"
+              }`,
             }}
             height={150}
             className="w-40 aspect-square object-top rounded-full object-cover"
@@ -75,27 +80,27 @@ const DeleteProduct = ({ open, setOpen, product, setProducts }) => {
         <div className="p-4 w-full flex flex-col gap-1">
           <div
             style={{
-              background: `${product?.subCategory?.colour}`,
+              background: `${product.subCategory?.colour}`,
             }}
             className="w-fit font-medium text-black py-0.5 rounded-md px-2 text-sm truncate "
           >
-            {product?.category} / {product?.subCategory?.name}
+            {product.category} / {product.subCategory?.name}
           </div>
 
           <h2 className="text-x lg:text-3xl font-bold text-pink-500">
-            {product?.title}
+            {product.title}
           </h2>
 
           <div className="flex gap-1 items-center">
             <div className="text-pink-500 font-semibold">
               ₹
               {(
-                product?.price -
-                (product?.discount / 100) * product?.price
+                product.price -
+                (product.discount / 100) * product.price
               ).toFixed(2)}
             </div>
 
-            <div className="text-xs line-through">₹{product?.price}</div>
+            <div className="text-xs line-through">₹{product.price}</div>
           </div>
         </div>
       </div>

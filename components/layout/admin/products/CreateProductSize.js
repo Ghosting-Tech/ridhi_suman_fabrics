@@ -43,18 +43,22 @@ const CreateProductSize = ({ formData, setFormData }) => {
     const updatedSizes = formData.sizes.map((size, i) =>
       i === index ? { ...size, size: newSize } : size
     );
+
     setFormData({ ...formData, sizes: updatedSizes });
   };
+
   const handleAddNewColorInEditSize = (index) => {
     const updatedSizes = formData.sizes.map((size, i) => {
       if (i === index) {
         const isColorExists = size.colours.some(
           (c) => c.colour.hex === newColorForEditSection.colour.hex
         );
+
         if (isColorExists) {
           toast.error("Colour already exists!");
           return size;
         }
+
         return {
           ...size,
           colours: [...size.colours, newColorForEditSection],
@@ -62,6 +66,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
       }
       return size;
     });
+
     setFormData({ ...formData, sizes: updatedSizes });
   };
 
@@ -70,31 +75,38 @@ const CreateProductSize = ({ formData, setFormData }) => {
     setFormData({ ...formData, sizes: updatedSizes });
     setSelectedSizeToEdit(null);
   };
+
   const handleDeleteColor = (sizeIndex, colorIndex, colorsLength) => {
     if (colorsLength <= 1) {
       toast.error("Minimum one colour & stock quantity is required!");
       return;
     }
+
     const updatedSizes = formData.sizes.map((size, i) => {
       if (i === sizeIndex) {
         const updatedColors = size.colours.filter((colour, j) => {
           return j !== colorIndex;
         });
+
         return { ...size, colours: updatedColors };
       }
       return size;
     });
+
     setFormData({ ...formData, sizes: updatedSizes });
   };
+
   const handleDeleteCreatedColor = (colorIndex, colorsLength) => {
     if (colorsLength <= 1) {
       toast.error("Minimum one colour & stock quantity is required!");
       return;
     }
+
     setSize((prev) => {
       const updatedColors = prev.colours.filter((colour, j) => {
         return j !== colorIndex;
       });
+
       return { ...prev, colours: updatedColors };
     });
   };
@@ -104,6 +116,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
       toast.error("Color and quantity are required!");
       return;
     }
+
     if (parseInt(colorQuantity.quantity) <= 0) {
       toast.error("Quantity should be greater than zero!");
       return;
@@ -140,29 +153,37 @@ const CreateProductSize = ({ formData, setFormData }) => {
       toast.error("Size is required!");
       return;
     }
+
     if (size.colours.length === 0) {
       toast.error("Please add at least a colour and quantity for the size!");
       return;
     }
+
     const isSizeExist = formData.sizes.some((s) => {
       return s.size.toLowerCase() === size.size.toLowerCase();
     });
+
     if (isSizeExist) {
       toast.error(`${size.size} is already exist!`);
       return;
     }
+
     setFormData((prev) => {
       const sizeExist = prev.sizes.includes(size.size);
+
       if (sizeExist) {
         toast.warning("Size " + size.size + " already exists");
         return prev;
       }
+
       return { ...prev, sizes: [...prev.sizes, size] };
     });
+
     setSize({
       size: "",
       colours: [],
     });
+
     setColorQuantity({
       colour: {
         name: "Black",
@@ -177,6 +198,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
       size: "",
       colours: [],
     });
+
     setColorQuantity({
       colour: {
         name: "Black",
@@ -195,6 +217,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
           value={size.size}
           onChange={(e) => setSize({ ...size, size: e.target.value })}
         />
+
         <div className="flex items-center gap-2 [&>div]:min-w-0">
           <Select
             label="Colour"
@@ -238,6 +261,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
               </Option>
             ))}
           </Select>
+
           <Input
             label="Quantity"
             type="number"
@@ -252,6 +276,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
               });
             }}
           />
+
           <IconButton
             className="w-20 max-h-9 rounded-full"
             variant="outlined"
@@ -289,6 +314,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
             );
           })}
         </ul>
+
         <div className="flex items-center gap-4 w-full">
           <Button
             variant="outlined"
@@ -301,6 +327,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
             Reset Fields
             <ArrowPathIcon className="h-5 w-5" />
           </Button>
+
           <Button
             variant="gradient"
             colour="pink"
@@ -314,6 +341,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
           </Button>
         </div>
       </div>
+
       {formData.sizes.length > 0 &&
         formData.sizes.map((size, index) => {
           return selectedSizeToEdit === index ? (
@@ -335,15 +363,18 @@ const CreateProductSize = ({ formData, setFormData }) => {
                             size.size.toLowerCase() ===
                             e.target.value.toLowerCase()
                         );
+
                         if (!e.target.value) {
                           setEditValidationError(true);
                           return;
                         }
+
                         if (sizeAlreadyExists) {
                           setEditValidationError(true);
                           toast.error(`${e.target.value} size already exists!`);
                           return;
                         }
+
                         if (e.target.value) {
                           setEditValidationError(false);
                           return;
@@ -351,6 +382,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                       }}
                     />
                   </div>
+
                   <div className="flex space-x-2">
                     <button
                       className="text-teal-500 hover:text-teal-800"
@@ -366,6 +398,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                     >
                       <CheckCircleIcon className="h-6 w-6" />
                     </button>
+
                     <button
                       className="text-red-300 hover:text-red-500"
                       title="Delete size"
@@ -375,6 +408,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                     </button>
                   </div>
                 </div>
+
                 <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
                   {size.colours?.map((colour, colorIndex) => {
                     return (
@@ -404,6 +438,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                   })}
                 </ul>
               </div>
+
               <div className="flex items-center gap-2 [&>div]:min-w-0">
                 <Select
                   label="Colour"
@@ -447,6 +482,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                     </Option>
                   ))}
                 </Select>
+
                 <Input
                   label="Quantity"
                   type="number"
@@ -461,6 +497,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                     });
                   }}
                 />
+
                 <IconButton
                   className="w-20 max-h-9 rounded-full"
                   variant="outlined"
@@ -479,6 +516,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
             >
               <div className="flex justify-between items-center">
                 <div>Size: {size.size}</div>
+
                 <div className="flex space-x-2">
                   <button
                     className="text-gray-500 hover:text-gray-800"
@@ -495,6 +533,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                   >
                     <FiEdit size={20} />
                   </button>
+
                   <button
                     className="text-red-300 hover:text-red-500"
                     title="Delete category"
@@ -504,6 +543,7 @@ const CreateProductSize = ({ formData, setFormData }) => {
                   </button>
                 </div>
               </div>
+
               <ul className="w-full flex flex-wrap justify-start items-start gap-2 overflow-y-auto">
                 {size.colours.map((colour) => {
                   return (

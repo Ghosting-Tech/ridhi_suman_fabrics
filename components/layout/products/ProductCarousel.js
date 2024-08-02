@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import React, { useState, useEffect, useMemo, Suspense } from "react";
 
 import ProductList from "./ProductList";
+
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 

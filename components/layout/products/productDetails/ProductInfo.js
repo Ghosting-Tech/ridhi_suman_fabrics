@@ -64,7 +64,7 @@ function ProductInfo({ product }) {
   }, [isInCart, product?.sizes]);
 
   return (
-    <div className="w-full max-w-3xl md:w-2/3 flex flex-col gap-6 p-5 md:px-0 mr-5">
+    <section className="w-full max-w-3xl md:w-2/3 flex flex-col gap-6 p-5 md:px-0 mr-5">
       <ProductHeading {...product} backgroundColor={backgroundColor} />
 
       <ProductSizeColor
@@ -91,7 +91,7 @@ function ProductInfo({ product }) {
       <ProductDetails fabric={product.fabric} brand={product.brand} />
 
       <ProductFooter />
-    </div>
+    </section>
   );
 }
 

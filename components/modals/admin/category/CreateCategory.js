@@ -64,13 +64,16 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
 
       const postData = { ...formData, image: imageObject };
 
-      const res = await fetch("/api/admin/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/category`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(postData),
+        }
+      );
 
       if (res.ok) {
         const responseData = await res.json(); // Assuming the response is JSON

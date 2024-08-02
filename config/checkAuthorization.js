@@ -1,10 +1,10 @@
 import { getToken } from "next-auth/jwt";
 
-const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+const secret = process.env.NEXTAUTH_SECRET;
 
 export async function checkAuthorization(request) {
   const token = await getToken({ req: request, secret });
-  // console.log("checkAuthorization token", token)
+
   if (!token) {
     return "Unauthorized";
   }

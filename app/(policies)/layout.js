@@ -1,11 +1,13 @@
-import Nav from "@/components/layout/home/NavHeader/Nav";
 import CartDrawer from "@/components/drawer/CartDrawer";
-import Footer from "@/components/layout/home/Footer";
+
+import Nav from "@/components/layout/home/NavHeader/Nav";
+import Footer from "@/components/layout/home/footer/Footer";
 
 const layoutHome = ({ children }) => {
   return (
     <>
       <CartDrawer />
+
       <Nav />
       {children}
       <Footer />

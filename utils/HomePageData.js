@@ -28,15 +28,15 @@ const weOfferData = [
 
 const bannerData = [
   {
-    src: "/category/bottom (2).svg",
+    src: "/home/banners/banner1.svg",
     alt: "Salwar Kameez Banner",
   },
   {
-    src: "/category/bottom (3).svg",
+    src: "/home/banners/banner2.svg",
     alt: "Saree Banner",
   },
   {
-    src: "/category/bottom (3).svg",
+    src: "/home/banners/banner3.svg",
     alt: "Lehenga Banner",
   },
 ];

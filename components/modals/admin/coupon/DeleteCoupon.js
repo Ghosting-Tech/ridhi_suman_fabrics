@@ -15,9 +15,12 @@ const DeleteCoupon = ({ open, setOpen, coupon, setCouponCode }) => {
     // console.log({ Id: coupon._id });
     setPending(true);
     try {
-      const res = await fetch(`/api/admin/coupon/${coupon._id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/coupon/${coupon._id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
         toast.success(`Coupon ${coupon.code} deleted successfully!`);
         setCouponCode((prev) => prev.filter((c) => c._id !== coupon._id));

@@ -82,7 +82,9 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     const otpPromise = new Promise(async (resolve, reject) => {
       try {
         const otpResponse = await fetch(
-          `/api/generate-otp/${id?.toString() || user._id}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/generate-otp/${
+            id?.toString() || user._id
+          }`,
           {
             method: "GET",
           }
@@ -95,7 +97,9 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
         const otpData = await otpResponse.json();
 
         const sendOtpResponse = await fetch(
-          `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${phoneNumber || user.phoneNumber}&country_code=91&sid=8732&company=GhostingTech&otp=${otpData}`
+          `https://api.authkey.io/request?authkey=ea048f1e37474761&mobile=${
+            phoneNumber || user.phoneNumber
+          }&country_code=91&sid=8732&company=GhostingTech&otp=${otpData}`
         );
 
         if (!sendOtpResponse.ok) {
@@ -121,7 +125,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const url = "/api/register";
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/register`;
 
     if (!profileImage) {
       toast.error("Please upload a profile image");
@@ -200,7 +204,9 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
   };
 
   const verifyOtp = async () => {
-    const url = `/api/generate-otp/${user._id.toString()}`;
+    const url = `${
+      process.env.NEXT_PUBLIC_BACKEND_URL
+    }/generate-otp/${user._id.toString()}`;
 
     const promiseFunction = () =>
       new Promise(async (resolve, reject) => {
@@ -266,7 +272,9 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
       error: (error) => {
         setIsLoading(false);
 
-        return `${error.error || error.message || error || "Something went wrong"}`;
+        return `${
+          error.error || error.message || error || "Something went wrong"
+        }`;
       },
     });
   };
