@@ -8,6 +8,7 @@ const Footer = async () => {
       { href: "/privacy-policy", text: "Privacy Policy" },
       { href: "/terms-and-condition", text: "Terms Of Condition" },
       { href: "/refund-policy", text: "Refund Policy" },
+      { href: "/shipping-policy", text: "Shipping Policy" },
     ],
   };
 
@@ -38,7 +39,7 @@ const Footer = async () => {
 
           <div className="flex space-x-4 mt-4 md:mt-0">
             {footerInfo.links.map((link, index) => (
-              <Link key={index} href={link.href} className="hover:underline">
+              <Link key={index} href={link.href} className="hover:underline text-xs">
                 {link.text}
               </Link>
             ))}
