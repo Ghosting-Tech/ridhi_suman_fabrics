@@ -36,37 +36,6 @@ async function getWishlist(page = 1, size = 12) {
 const WishlistPage = async ({ searchParams: { page, size } }) => {
   const data = await getWishlist(page, size);
 
-  // const getWishlist = async (page = 1, size = 12) => {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist?page=${page}&size=${size}`,
-  //     {
-  //       cache: "no-cache",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-
-  //   if (!res.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-
-  //   return res.json();
-  // };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await getWishlist();
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.error("Error fetching wishlist:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   return (
     <main className="flex flex-col min-h-screen">
       <div className="flex-grow mx-4 my-5 flex flex-col gap-5">

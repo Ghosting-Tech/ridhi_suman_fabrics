@@ -82,7 +82,7 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     const otpPromise = new Promise(async (resolve, reject) => {
       try {
         const otpResponse = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/generate-otp/${
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/generate-otp/${
             id?.toString() || user._id
           }`,
           {

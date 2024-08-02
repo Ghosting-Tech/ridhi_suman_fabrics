@@ -6,7 +6,7 @@ import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
 
-const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+const secret = process.env.NEXTAUTH_SECRET;
 
 export async function GET(req) {
   try {

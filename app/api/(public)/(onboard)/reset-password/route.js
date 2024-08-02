@@ -6,7 +6,7 @@ import User from "@/model/user";
 
 import jwt from "jsonwebtoken";
 
-const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+const secret = process.env.NEXTAUTH_SECRET;
 
 export const POST = async (req) => {
   const formData = await req.formData();
