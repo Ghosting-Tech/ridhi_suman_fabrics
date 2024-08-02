@@ -6,7 +6,7 @@ import dbConnect from "@/config/db";
 
 import User from "@/model/user";
 
-const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+const secret = process.env.NEXTAUTH_SECRET;
 
 export async function GET(req, { params }) {
   try {

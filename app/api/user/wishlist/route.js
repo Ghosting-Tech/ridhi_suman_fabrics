@@ -8,7 +8,7 @@ import dbConnect from "@/config/db";
 
 import mongoose from "mongoose";
 
-const secret = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET;
+const secret = process.env.NEXTAUTH_SECRET;
 
 export const dynamic = "force-dynamic";
 
@@ -17,10 +17,13 @@ export async function GET(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json({
-        data: "Unauthorized Access",
-        meta: { page: 1, size: 12, totalPages: 0, totalItems: 0 },
-      }, { status: 200 });
+      return NextResponse.json(
+        {
+          data: "Unauthorized Access",
+          meta: { page: 1, size: 12, totalPages: 0, totalItems: 0 },
+        },
+        { status: 200 }
+      );
     }
 
     const searchParams = new URL(req.url).searchParams;
