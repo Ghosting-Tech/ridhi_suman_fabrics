@@ -5,9 +5,10 @@ import { CardHeader } from "@material-tailwind/react";
 import React, { useMemo } from "react";
 import Image from "next/image";
 import WishlistBtn from "@/components/ui/buttons/WishlistBtn";
+import ShimmerImage from "@/components/ui/ShimmerImage";
 
 const ProductHeader = React.memo(
-  ({ isHovered, isSet = false, srcs, title, id }) => {
+  ({ isHovered, isSet = false, srcs, title, id, isWishlist = false }) => {
     const gridStyle = useMemo(
       () => ({
         display: "grid",
@@ -21,6 +22,8 @@ const ProductHeader = React.memo(
       () => ({
         filter: isHovered ? "brightness(1)" : "brightness(0.9)",
         transform: isHovered ? "scale(1.05)" : "scale(1)",
+        objectFit: "cover",
+        objectPosition: "top",
       }),
       [isHovered]
     );
@@ -32,9 +35,7 @@ const ProductHeader = React.memo(
             {srcs?.map((src, index) => (
               <div key={index} className="relative overflow-hidden w-full">
                 <Image
-                  fill={true}
-                  objectFit="cover"
-                  objectPosition="top"
+                  fill
                   src="/image/image.png"
                   alt="ui/ux review check"
                   style={imageStyle}
@@ -44,19 +45,20 @@ const ProductHeader = React.memo(
             ))}
           </div>
         ) : (
-          <Image
-            fill={true}
-            objectFit="cover"
-            src={srcs?.url}
-            alt={title}
-            style={imageStyle}
-            className="transition-all"
-          />
+          // <Image
+          //   fill={true}
+          //   objectFit="cover"
+          //   src={srcs?.url}
+          //   alt={title}
+          //   style={imageStyle}
+          //   className="transition-all"
+          // />
+          <ShimmerImage src={srcs?.url} alt={title} />
         )}
 
         <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-black/60" />
 
-        <WishlistBtn productId={id} />
+        {/* {isWishlist ? null : <WishlistBtn productId={id} />} */}
       </CardHeader>
     );
   }

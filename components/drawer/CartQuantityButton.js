@@ -21,7 +21,15 @@ const CartQuantityButton = ({ data, width = 12, height = 12 }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ productId: data._id, quantity: qty }),
+        body: JSON.stringify({
+          productId: data._id,
+          quantity: qty,
+          color: {
+            name: data.color?.name || null,
+            hex: data.color?.hex || null,
+          },
+          size: data.size || null,
+        }),
       }
     );
 
@@ -32,6 +40,11 @@ const CartQuantityButton = ({ data, width = 12, height = 12 }) => {
         updateItemQuantity({
           itemId: data._id,
           quantity: data.quantity + qty,
+          color: {
+            name: data?.color?.name || "",
+            hex: data?.color?.hex || "",
+          },
+          size: data?.size || "",
         })
       );
 

@@ -7,24 +7,22 @@ import AddressSection from "@/components/layout/profile/AddressSection";
 
 const page = () => {
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <div className="flex-grow m-5 flex flex-col gap-5">
-          <Heading
-            icon={
-              <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
-                <FaUser size={20} color="white" />
-              </div>
-            }
-            title={"PROFILE"}
-          />
-          <div className="flex gap-5 sm:mt-5">
-            <ProfileSection />
-            <AddressSection />
-          </div>
+    <main className="flex flex-col min-h-screen">
+      <div className="flex-grow m-5 flex flex-col gap-5">
+        <Heading
+          icon={
+            <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
+              <FaUser size={20} color="white" />
+            </div>
+          }
+          title={"PROFILE"}
+        />
+        <div className="flex gap-5 sm:mt-5">
+          <ProfileSection />
+          <AddressSection />
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

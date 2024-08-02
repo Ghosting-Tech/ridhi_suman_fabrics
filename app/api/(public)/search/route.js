@@ -5,9 +5,9 @@ import Product from "@/model/product";
 import dbConnect from "@/config/db";
 import { checkAuthorization } from "@/config/checkAuthorization";
 
-export async function GET(request) {
-  await dbConnect();
+export const dynamic = "force-dynamic";
 
+export async function GET(request) {
   try {
     const isAdmin = await checkAuthorization(request);
 
@@ -29,6 +29,8 @@ export async function GET(request) {
     const sanitizedQuery = searchQuery.replace(/[\W_]+/g, "");
 
     let products, totalProducts;
+
+    await dbConnect();
 
     if (isAdmin) {
       products = await Product.find({

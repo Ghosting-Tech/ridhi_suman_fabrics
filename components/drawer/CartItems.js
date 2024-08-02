@@ -2,15 +2,14 @@
 
 import { Button } from "@material-tailwind/react";
 
-import Image from "next/image";
 import { toast } from "sonner";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
+import ImageContainer from "../ui/ImageContainer";
 import CartQuantityButton from "./CartQuantityButton";
 
 import { removeItemFromCart } from "@/redux/slice/cartSlice";
-import ImageContainer from "../ui/ImageContainer";
 
 const CartItems = ({ data }) => {
   const dispatch = useDispatch();
@@ -54,12 +53,12 @@ const CartItems = ({ data }) => {
     <div className="border border-gray-300 rounded-xl p-2.5 flex gap-3 bg-white shadow-sm relative">
       <div
         style={{
-          borderColor: data.color.hex,
+          borderColor: data?.color?.hex || "gray",
         }}
         className="absolute right-3 top-3 px-1.5 rounded flex items-center text-xs border-2"
       >
         <p className="text-black uppercase">{data.size}/</p>
-        <p className="text-black capitalize"> {data.color.name}</p>
+        <p className="text-black capitalize"> {data?.color?.name}</p>
       </div>
 
       <div className="w-4/12 min-h-28">

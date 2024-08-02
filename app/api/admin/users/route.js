@@ -4,6 +4,8 @@ import dbConnect from "@/config/db";
 
 import User from "@/model/user";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -18,9 +20,7 @@ export async function GET(request) {
     const users = await User.find()
       .skip(skip)
       .limit(limit)
-      .select(
-        "-password -otp -updatedAt -createdAt -shippingInfo -cart -wishlist"
-      )
+      .select("-password -otp -updatedAt -shippingInfo -cart -wishlist")
       .exec();
 
     const totalUsers = await User.countDocuments();
@@ -29,7 +29,7 @@ export async function GET(request) {
     return NextResponse.json(
       {
         data: users,
-        pagination: {
+        meta: {
           totalUsers,
           totalPages,
           currentPage: page,
@@ -39,6 +39,6 @@ export async function GET(request) {
       { status: 200 }
     );
   } catch (err) {
-    return NextResponse.json({ error: err }, { status: 500 });
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

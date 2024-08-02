@@ -25,8 +25,11 @@ const ShimmerImage = ({ src, alt }) => {
       alt={alt}
       src={src}
       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer())}`}
-      fill={true}
-      objectFit="cover"
+      fill
+      style={{
+        objectFit: "cover",
+        objectPosition: "top",
+      }}
     />
   );
 };

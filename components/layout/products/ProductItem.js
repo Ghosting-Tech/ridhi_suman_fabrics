@@ -23,6 +23,7 @@ const ProductItem = memo(
       sizes,
       subCategory,
     },
+    isWishlist,
   }) => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -38,6 +39,7 @@ const ProductItem = memo(
         >
           {images[0] && (
             <ProductHeader
+              isWishlist={isWishlist}
               title={title}
               id={_id}
               srcs={images[0]}

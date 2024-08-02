@@ -1,154 +1,228 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import { Button, Input, Textarea, Typography } from "@material-tailwind/react";
-import SmProductCard from "@/components/cards/SmProductCard";
-import Link from "next/link";
-import { products } from "@/utils/productData";
+import React, { useEffect, useState } from "react";
+import { Button, Typography } from "@material-tailwind/react";
 import Heading from "@/components/ui/heading/Heading";
-import { FaCheck } from "react-icons/fa6";
+import { FaAddressCard, FaCheck } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import CheckoutProductCard from "@/components/layout/home/checkout/CheckoutProductCard";
+import CheckOutFormModel from "@/components/layout/home/checkout/CheckOutFormModel";
+import { SparklesIcon } from "@heroicons/react/24/solid";
+import ListOfCoupon from "@/components/modals/coupon/ListOfCoupon";
+import { getSession, useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { clearCart } from "@/redux/slice/cartSlice";
+import { useRouter } from "next/navigation";
 
 const CheckoutPage = () => {
-  const [quantity1, setQuantity1] = useState(2);
-  const handleQuantityChange = (delta) => {
-    setQuantity1((prevQuantity) => Math.max(1, prevQuantity + delta));
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const [shippingData, setShippingData] = useState({
+    name: "",
+    phoneNumber: "",
+    email: "",
+    city: "",
+    state: "",
+    pincode: "",
+    address: "",
+  });
+  const [openListOfCoupon, setOpenListOfCoupon] = useState(false);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    setTotalAmount(cart?.totalPrice);
+  }, [cart?.totalPrice]);
+  const router = useRouter();
+  const { data: session, status } = useSession();
+
+  const handleSubmitOrder = async () => {
+    console.log("clicked");
+    console.log(session.user._id);
+
+    try {
+      // Validate that at least one product is in the cart
+      if (cart.items.length <= 0) {
+        toast.error("Minimum one product is required");
+        return;
+      }
+
+      // Validate that all required shipping data fields are filled out
+      if (
+        !shippingData.name ||
+        !shippingData.phoneNumber ||
+        !shippingData.city ||
+        !shippingData.state ||
+        !shippingData.address ||
+        !shippingData.pincode
+      ) {
+        toast.error("All shipping data is required except email.");
+        return;
+      }
+
+      // Check if the user is logged in
+      if (!session.user._id) {
+        toast.error("Login before continue!");
+        return;
+      }
+
+      // Ensure that the total amount is available and valid
+      if (!cart.totalPrice) {
+        toast.error("An error occurred while processing amount!");
+        return;
+      }
+
+      // Prepare the order data object
+
+      const arrayOfProductId = cart.items.map((item) => {
+        const productObject = { productId: item._id, quantity: item.quantity };
+        return productObject;
+      });
+
+      console.log(cart.items);
+      const orderData = {
+        cartItems: arrayOfProductId,
+        shippingInfo: shippingData,
+        user: session.user._id,
+        totalAmount: cart.totalPrice,
+        paymentMethod: "Phone Pay", // Update payment method as needed
+        isPaid: false,
+      };
+
+      const res = await fetch(`/api/private/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+      await res.json();
+
+      dispatch(clearCart());
+      setShippingData({
+        name: "",
+        phoneNumber: "",
+        email: "",
+        city: "",
+        state: "",
+        pincode: "",
+        address: "",
+      });
+
+      // Left to minus stock of the cart items!
+
+      if (res.ok) {
+        toast.success("Order placed successfully!");
+        dispatch(clearCart());
+        setShippingData({
+          name: "",
+          phoneNumber: "",
+          email: "",
+          city: "",
+          state: "",
+          pincode: "",
+          address: "",
+        });
+        router.push("/my-orders"); // Redirect to home page
+      } else {
+        toast.error("An error occurred while placing order!");
+      }
+    } catch (err) {
+      console.log("Error while submitting order:", err);
+    }
   };
 
   return (
-    <div className="p-4 flex flex-col mt-2 lg:flex-row gap-6">
-      <div className="w-full lg:w-3/5 bg-white rounded-lg shadow-md p-4">
-        <Heading
-          icon={
-            <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
-              <FaCheck size={18} color="white" />
-            </div>
-          }
-          title={"Shipping Information | Payment Details"}
-        />
-        <form className="mt-4 mb-2 w-full flex flex-col gap-5">
-          <Typography variant="h4" color="blue-gray">
-            Fill Your Shipping Address
-          </Typography>
-          <div className="flex flex-wrap gap-5">
-            <div className="flex size">
-              <Input label="Fullname" variant="outlined" />
-            </div>
-            <div className="flex size">
-              <Input label="Phone Number" variant="outlined" />
-            </div>
-            <div className="flex size">
-              <Input label="Email" variant="outlined" />
-            </div>
-            <div className="flex size">
-              <Input label="City" variant="outlined" />
-            </div>
-            <div className="flex size">
-              <Input label="State" variant="outlined" />
-            </div>
-            <div className="flex size">
-              <Input label="Pincode" variant="outlined" />
-            </div>
-            <Textarea label="Address" />
+    <div className="p-4 flex flex-col gap-4">
+      <Heading
+        icon={
+          <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
+            <FaCheck size={18} color="white" />
           </div>
-          {/* payment method  */}
-          <div className="flex flex-col gap-5">
-            <div>
-              <Typography variant="h4" color="blue-gray">
-                Payment Method
-              </Typography>
-              <Typography color="gray" className="mt-2 font-normal">
-                Select a payment option to place your order.
-              </Typography>
-            </div>
-            {/* online  */}
-            <div className="border p-4 rounded-md  flex flex-col">
-              <div className="w-full flex justify-between items-center mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="relative w-24 h-12">
-                    <Image
-                      src="/PhonePe.png"
-                      alt="PhonePe"
-                      layout="fill"
-                      objectFit="contain"
-                    />
-                  </div>
-                </div>
-                <input type="radio" name="payment" />
-              </div>
-              <Typography
-                variant="small"
-                color="gray"
-                className="mt-1 font-normal"
-              >
-                Supports UPI and bank transfers.
-              </Typography>
-            </div>
-            {/* cash  */}
-            <div className="border p-4 rounded-md flex flex-col">
-              <div className="w-full flex justify-between items-center mb-2">
-                <div className="flex items-center gap-1">
-                  <div className="relative w-10 h-10">
-                    <Image
-                      src="/money.png"
-                      alt="Money"
-                      layout="fill"
-                      objectFit="contain"
-                    />
-                  </div>
-                  <span>COD | POD</span>
-                </div>
-                <input type="radio" name="payment" />
-              </div>
-              <Typography
-                variant="small"
-                color="gray"
-                className="mt-1 font-normal"
-              >
-                Cash on delivery | Pay on delivery.
-              </Typography>
-            </div>
-          </div>
-        </form>
-      </div>
-      {/* current order  */}
+        }
+        title={"Shipping Information | Payment Details"}
+      />
 
-      <div className="w-full lg:w-2/5 bg-gray-100 rounded-lg shadow-md p-4">
-        <Typography variant="h4" color="blue-gray">
-          Current Order
-        </Typography>
-        <Typography color="gray" className="my-1 font-normal">
-          The sum of all total payments for goods there
-        </Typography>
-        <div className="max-h-[510px] overflow-y-auto">
-          {products.map((product, index) => (
-            <SmProductCard
-              key={index}
-              product={product}
-              check="checkout"
-              size="small"
-              onIncrement={() => handleQuantityChange(index, 1)}
-              onDecrement={() => handleQuantityChange(index, -1)}
-            />
-          ))}
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full lg:w-2/5 bg-white shadow-lg border rounded-lg p-4">
+          <Typography variant="h4" color="blue-gray">
+            Current Order
+          </Typography>
+          <Typography color="gray" className="my-1 font-normal">
+            The sum of all total payments for goods there
+          </Typography>
+          <div className="max-h-96 overflow-y-auto">
+            {cart.items?.map((product, index) => (
+              <CheckoutProductCard key={product._id} data={product} />
+            ))}
+          </div>
+          <div
+            onClick={() => setOpenListOfCoupon(!openListOfCoupon)}
+            className="flex items-center gap-1 cursor-pointer mt-4 py-2 justify-center rounded-md bg-gradient-to-r from-red-400 to-pink-400 text-white shadow-md shadow-pink-100 hover:scale-95 transition-all duration-500"
+          >
+            Apply coupon <SparklesIcon className="h-4 w-4" />
+          </div>
+          <ListOfCoupon
+            open={openListOfCoupon}
+            setOpen={setOpenListOfCoupon}
+            setTotalAmount={setTotalAmount}
+          />
+          <div className="pt-4">
+            <div className="flex justify-between mb-2">
+              <span>Subtotal</span>
+              <span>₹{totalAmount}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>Delivery Service</span>
+              <span>₹120</span>
+            </div>
+            <hr className="my-2 bg-gray-400 h-px" />
+            <div className="flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span>₹{totalAmount + 120}</span>
+            </div>
+          </div>
         </div>
-        <div className="border-t pt-4">
-          <div className="flex justify-between mb-2">
-            <span>Subtotal</span>
-            <span>₹ 1245.30</span>
+
+        <div className="w-full lg:w-3/5 flex flex-col gap-4 bg-white shadow-lg border p-6 rounded-lg">
+          <Heading
+            icon={
+              <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
+                <FaAddressCard size={20} color="white" />
+              </div>
+            }
+            title={"Continue with your Shipping Information "}
+          />
+          <CheckOutFormModel data={shippingData} setData={setShippingData} />
+          <div className="bg-gray-100 border-l-4 border-pink-500 text-gray-700 p-4 mb-6 rounded-lg shadow-md">
+            <h2 className="font-semibold text-lg mb-2 text-pink-700">
+              Important Information
+            </h2>
+            <ul className="list-disc ml-4 space-y-2">
+              <li className="text-xs lg:text-base">
+                Check your order information in the order page of your profile!
+              </li>
+              <li className="text-xs lg:text-base">
+                Refunds will be credited within 2-3 working days after receiving
+                returns.
+              </li>
+              <li className="text-xs lg:text-base">
+                Ensure discount codes are applied before checkout; they cannot
+                be added afterward.
+              </li>
+              <li className="text-xs lg:text-base">
+                Shipping times may vary due to high demand or unforeseen
+                circumstances.
+              </li>
+            </ul>
           </div>
-          <div className="flex justify-between mb-2">
-            <span>Delivery Service</span>
-            <span>₹ 120</span>
-          </div>
-          <div className="flex justify-between font-bold text-lg">
-            <span>Total</span>
-            <span>₹ 1365.30</span>
-          </div>
-          <Link href={"/booking-detail-page"}>
-            <Button className="bg-gradient-to-r from-teal-500 to-blue-500 text-white w-full text-lg mt-4 p-2 rounded-lg">
-              Pay ₹ 1365.30
-            </Button>
-          </Link>
+          <Button
+            className="rounded w-full"
+            variant="gradient"
+            size="lg"
+            onClick={handleSubmitOrder}
+            color="teal"
+          >
+            Pay ₹{totalAmount + 120}
+          </Button>
         </div>
       </div>
     </div>

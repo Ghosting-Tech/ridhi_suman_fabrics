@@ -16,6 +16,7 @@ import CartListSkeleton from "../ui/skeletons/product/CartListSkeleton";
 
 import { toggleCartDrawer } from "@/redux/slice/modalSlice";
 import { addItemToCart, updateCart } from "@/redux/slice/cartSlice";
+import Link from "next/link";
 
 const CartDrawer = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const CartDrawer = () => {
     <Drawer
       placement="right"
       open={open}
+      dismiss={{ enabled: false }}
       onClose={toggleDrawer}
       className="px-8 py-4 shadow-lg bg-gray-100 flex flex-col justify-between"
       size={480}
@@ -113,8 +115,8 @@ const CartDrawer = () => {
         </section>
       )}
 
-      <div className="mt-8 border-t pt-2 border-gray-400 relative space-y-4">
-        <div className="flex justify-between mx-3">
+      <div className="mt-8 border-t py-2 border-gray-400 relative space-y-4">
+        <div className="flex justify-between mx-3 mb-2">
           <Typography variant="h6" color="blue-gray">
             Total Amount
           </Typography>
@@ -130,15 +132,22 @@ const CartDrawer = () => {
             )}
           </Typography>
         </div>
-
-        <Button
-          color="red"
-          variant="filled"
-          className="w-full"
-          onClick={toggleDrawer}
-        >
-          Checkout
-        </Button>
+        {cart?.items?.length === 0 ? (
+          <Button color="pink" disabled variant="gradient" className="w-full">
+            Checkout
+          </Button>
+        ) : (
+          <Link href={`/checkout`}>
+            <Button
+              color="pink"
+              variant="gradient"
+              className="w-full"
+              onClick={toggleDrawer}
+            >
+              Checkout
+            </Button>
+          </Link>
+        )}
       </div>
     </Drawer>
   );

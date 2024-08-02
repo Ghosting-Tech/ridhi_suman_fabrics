@@ -1,33 +1,35 @@
 "use client";
+
 import { ProductCard } from "@/components/layout/admin/products/ProductCard";
 import DeleteProduct from "@/components/modals/admin/products/DeleteProduct";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import { Button, Option, Select } from "@material-tailwind/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { FaTshirt } from "react-icons/fa";
 import { toast } from "sonner";
 
-const Page = () => {
+const ProductPage = () => {
   const searchParams = useSearchParams();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState({});
   const [showSubCategory, setShowSubCategory] = useState([]);
-
   const [category, setCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
-
   const [categories, setCategories] = useState([]);
+
+  const currentPage = searchParams.get("page") || 1;
+
   const fetchProducts = async (page) => {
     try {
       const res = await fetch(
         `/api/product?size=8&page=${page}&category=${category || "all"}&subCategory=${selectedSubCategory || "all"}`
       );
+      if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
-
       setProducts(data.data);
       setMeta(data.meta);
     } catch (err) {
@@ -37,15 +39,16 @@ const Page = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/category");
-      const data = await response.json();
-
+      const res = await fetch("/api/category");
+      if (!res.ok) throw new Error("Failed to fetch categories");
+      const data = await res.json();
       setCategories(data);
     } catch (error) {
       console.error(error);
+      toast.error("Error fetching categories!");
     }
   };
-  const currentPage = searchParams.get("page");
+
   useEffect(() => {
     fetchProducts(currentPage);
   }, [currentPage, category, selectedSubCategory]);
@@ -54,17 +57,15 @@ const Page = () => {
     fetchCategories();
   }, []);
 
-  const handleFilterByCategory = async (val) => {
+  const handleFilterByCategory = (val) => {
     setShowSubCategory([]);
     setSelectedSubCategory("");
     setCategory(val);
-    categories.map((cat) => {
-      if (cat.name == val) {
-        return setShowSubCategory(cat.subCategories);
-      }
-    });
+    const selectedCategory = categories.find((cat) => cat.name === val);
+    if (selectedCategory) setShowSubCategory(selectedCategory.subCategories);
   };
-  const handleFilterBySubCategory = async (val) => {
+
+  const handleFilterBySubCategory = (val) => {
     setSelectedSubCategory(val);
   };
 
@@ -92,16 +93,14 @@ const Page = () => {
                 </Button>
               </Link>
             </div>
-            <div
-              className={`w-full lg:w-[32rem] flex gap-4 items-center [&>*]:min-w-24`}
-            >
+            <div className="w-full lg:w-[32rem] flex gap-4 items-center">
               <Select
                 label="Categories"
                 color="pink"
-                onChange={handleFilterByCategory}
+                onChange={(e) => handleFilterByCategory(e.target.value)}
                 className="w-full"
               >
-                {categories?.map((category) => (
+                {categories.map((category) => (
                   <Option key={category._id} value={category.name}>
                     {category.name}
                   </Option>
@@ -113,9 +112,9 @@ const Page = () => {
                   color="pink"
                   value={selectedSubCategory}
                   className="w-full"
-                  onChange={handleFilterBySubCategory}
+                  onChange={(e) => handleFilterBySubCategory(e.target.value)}
                 >
-                  {showSubCategory?.map((subCategory) => (
+                  {showSubCategory.map((subCategory) => (
                     <Option key={subCategory._id} value={subCategory.name}>
                       {subCategory.name}
                     </Option>
@@ -124,27 +123,31 @@ const Page = () => {
               )}
             </div>
           </div>
-          <div
-            className={`rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400 h-1`}
-          ></div>
+          <div className="rounded-full w-full bg-gradient-to-r from-red-400 to-pink-400 h-1"></div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4 gap-4">
-          {products?.map((product, index) => {
-            return (
-              <ProductCard
-                key={index}
-                product={product}
-                setOpenDeleteDialog={setOpenDeleteDialog}
-                setSelectedProduct={setSelectedProduct}
-              />
-            );
-          })}
+          {products.map((product, index) => (
+            <ProductCard
+              key={index}
+              product={product}
+              setOpenDeleteDialog={setOpenDeleteDialog}
+              setSelectedProduct={setSelectedProduct}
+            />
+          ))}
         </div>
         <div className="mt-4">
           <PaginationBtn totalPages={meta.totalPages} />
         </div>
       </div>
     </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductPage />
+    </Suspense>
   );
 };
 

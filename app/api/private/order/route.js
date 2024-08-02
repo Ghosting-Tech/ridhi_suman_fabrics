@@ -19,16 +19,20 @@ export async function POST(request) {
 
     let data = await request.json();
 
-    if (data.paymentMethod === "cod" || data.paymentMethod === "pod") {
-      data.isPaid = false;
-    }
+    // if (data.paymentMethod === "cod" || data.paymentMethod === "pod") {
+    //   data.isPaid = false;
+    // }
+
     const userExist = await User.findById(data.user);
     if (!userExist) {
       return NextResponse.json("user not exist", { status: 400 });
     }
 
     const order = await Order.create(data);
-    await User.findByIdAndUpdate(order.user, { $push: { orders: order._id } });
+    await User.findByIdAndUpdate(order.user, {
+      $set: { cart: [] }, // Clear the cart
+      $push: { orders: order._id }, // Add the order ID to the orders array
+    });
 
     const updatePromises = order.cartItems.map((item) =>
       Product.findByIdAndUpdate(

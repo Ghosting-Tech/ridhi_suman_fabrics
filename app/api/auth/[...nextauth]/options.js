@@ -62,10 +62,6 @@ export const options = {
         session.user.image = token.image;
         session.user.email = token.email;
         session.user.role = token.role;
-
-        // user = await User.findById(session.user._id).select(
-        //   "-password updatedAt isVerified otp otpExpires createdBy"
-        // );
       }
 
       return session;

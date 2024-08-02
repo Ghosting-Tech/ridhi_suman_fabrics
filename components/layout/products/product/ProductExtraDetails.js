@@ -19,7 +19,7 @@ const ProductExtraDetails = ({ isHovered, isSet = false, sizes }) => {
           {sizes.slice(0, 6).map((size) => (
             <span
               key={size.size}
-              className="px-2 py-1 border rounded-md text-xs text-white"
+              className="px-2 py-1 border rounded-md text-xs text-white uppercase"
             >
               {size.size}
             </span>

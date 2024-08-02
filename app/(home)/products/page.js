@@ -10,12 +10,8 @@ import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSk
 async function getProducts(page = 1, size = 12) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/product?page=${page}&size=${size}`,
-
     {
       cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
     }
   );
 

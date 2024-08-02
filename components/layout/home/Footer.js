@@ -1,7 +1,6 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 
-import { categories, footerInfo } from "@/utils/footerData";
 import TooltipFooter from "@/components/ui/Tooltip";
 
 async function getCategories() {
@@ -16,7 +15,13 @@ async function getCategories() {
 
 const Footer = async () => {
   const data = await getCategories();
-  // console.log(data)
+  const footerInfo = {
+    links: [
+      { href: "/privacy-policy", text: "Privacy Policy" },
+      { href: "/terms-and-condition", text: "Terms Of Condition" },
+      { href: "/refund-policy", text: "Refund Policy" },
+    ],
+  };
 
   return (
     <footer className="bg-white pt-10 container mx-auto ">
