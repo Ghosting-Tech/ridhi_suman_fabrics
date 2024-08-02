@@ -15,10 +15,7 @@ export function ProductCard({
   setSelectedProduct,
 }) {
   return (
-    <Link
-      href={`/products/${product._id}`}
-      className="group relative h-[32rem] flex flex-col justify-between overflow-hidden"
-    >
+    <div className="group relative h-[32rem] flex flex-col justify-between overflow-hidden">
       <Image
         fill
         src={product?.images[0]?.url}
@@ -99,15 +96,17 @@ export function ProductCard({
           </div>
         </div>
 
-        <Button
-          variant="gradient"
-          size="sm"
-          className="flex items-center gap-1 justify-center"
-        >
-          View
-          <IoOpenOutline />
-        </Button>
+        <Link href={`/products/${product._id}`} className="w-full">
+          <Button
+            variant="gradient"
+            size="sm"
+            className="w-full flex items-center gap-1 justify-center"
+          >
+            View
+            <IoOpenOutline />
+          </Button>
+        </Link>
       </CardBody>
-    </Link>
+    </div>
   );
 }
