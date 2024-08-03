@@ -12,7 +12,7 @@ async function fetchData() {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    return []
   }
   return res.json();
 }

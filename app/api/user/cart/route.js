@@ -75,9 +75,8 @@ export async function PUT(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json("Login to add items in cart.", { status: 401 });
+      return NextResponse.json("Login to see orders!", { status: 401 });
     }
-
     const {
       productId,
       quantity = 1,

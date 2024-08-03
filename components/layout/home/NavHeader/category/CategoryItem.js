@@ -11,7 +11,7 @@ const CategoryItem = ({ category }) => {
   return (
     <Menu allowHover>
       <MenuHandler>
-        <div className="cursor-pointer capitalize">{category.name}</div>
+        <Link href={`/category/${category.name}/`} className="cursor-pointer capitalize">{category.name}</Link>
       </MenuHandler>
       <MenuList>
         {category?.subCategories?.map((sub, index) => {

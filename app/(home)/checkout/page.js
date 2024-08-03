@@ -35,9 +35,6 @@ const CheckoutPage = () => {
   const { data: session, status } = useSession();
 
   const handleSubmitOrder = async () => {
-    console.log("clicked");
-    console.log(session.user._id);
-
     try {
       // Validate that at least one product is in the cart
       if (cart.items.length <= 0) {
@@ -73,11 +70,15 @@ const CheckoutPage = () => {
       // Prepare the order data object
 
       const cartItems = cart.items.map((item) => {
-        const productObject = { productId: item._id, quantity: item.quantity, size: item.size, colour: item.color};
+        const productObject = {
+          productId: item._id,
+          quantity: item.quantity,
+          size: item.size,
+          colour: item.color,
+        };
         return productObject;
       });
 
-      console.log(cartItems);
       const orderData = {
         cartItems,
         shippingInfo: shippingData,
@@ -96,7 +97,6 @@ const CheckoutPage = () => {
       });
       const order = await res.json();
       console.log(order);
-
 
       dispatch(clearCart());
       setShippingData({
@@ -121,7 +121,7 @@ const CheckoutPage = () => {
           pincode: "",
           address: "",
         });
-        router.push("/"); // Redirect to home page
+        router.push("/my-orders");
       } else {
         toast.error("An error occurred while placing order!");
       }

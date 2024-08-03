@@ -69,6 +69,7 @@ const ProductSchema = new Schema(
       {
         size: {
           type: String,
+          lowercase: true,
           required: true,
         },
 
@@ -77,6 +78,7 @@ const ProductSchema = new Schema(
             colour: {
               name: {
                 type: String,
+                lowercase: true,
                 required: true,
               },
 
@@ -87,7 +89,7 @@ const ProductSchema = new Schema(
             },
 
             quantity: {
-              type: String,
+              type: Number,
               required: true,
             },
 
