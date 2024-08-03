@@ -17,6 +17,7 @@ import {
   updateCart,
   updateItemQuantity,
 } from "@/redux/slice/cartSlice";
+import { toggleCartDrawer } from "@/redux/slice/modalSlice";
 
 const AddToCartBtn = ({
   price,
@@ -35,11 +36,6 @@ const AddToCartBtn = ({
   const handleQuantityButton = async (e, qty) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log(
-      isInCart.color?.name,
-      productColor,
-      isInCart.color?.name || productColor
-    );
 
     const product = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/cart`,
@@ -85,7 +81,7 @@ const AddToCartBtn = ({
     e.stopPropagation();
     e.preventDefault();
 
-    if (productColor === null || productColor === null) {
+    if (productColor === null || productSize === null) {
       toast.warning("Please select product size and color");
       return;
     }
@@ -122,6 +118,8 @@ const AddToCartBtn = ({
             Number((price - (discount / 100) * price).toFixed(2)),
         })
       );
+
+      dispatch(toggleCartDrawer());
 
       toast.success("Product added to cart.");
     } else {

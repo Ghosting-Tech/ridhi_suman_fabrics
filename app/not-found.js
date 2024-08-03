@@ -12,8 +12,6 @@ export default async function NotFound() {
       <div className="text-center p-6 border border-gray-300 rounded-lg bg-white shadow-lg">
         <h2 className="text-3xl font-bold text-red-500 mb-4">404 Not Found</h2>
 
-        <h3 className="text-xl mb-2">Page Not Found</h3>
-
         <p className="mb-4">We couldn't find the page you were looking for.</p>
 
         <Link

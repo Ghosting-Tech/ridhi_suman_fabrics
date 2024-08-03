@@ -7,8 +7,9 @@ import { useDispatch } from "react-redux";
 
 import { updateItemQuantity } from "@/redux/slice/cartSlice";
 
-const CartQuantityButton = ({ data, width = 12, height = 12 }) => {
+const CartQuantityButton = ({ data, width = 12, height = 12, isInCart }) => {
   const dispatch = useDispatch();
+  console.log(isInCart, data);
 
   const handleItemQuantity = async (e, qty) => {
     e.stopPropagation();

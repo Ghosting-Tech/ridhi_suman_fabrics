@@ -46,20 +46,12 @@ const ProductHeader = React.memo(
             ))}
           </div>
         ) : (
-          // <Image
-          //   fill={true}
-          //   objectFit="cover"
-          //   src={srcs?.url}
-          //   alt={title}
-          //   style={imageStyle}
-          //   className="transition-all"
-          // />
           <ShimmerImage src={srcs?.url} alt={title} />
         )}
 
         <div className="to-bg-black-10 absolute inset-0 h-1/2 w-1/2 left-1/2 bg-gradient-to-tr from-transparent via-transparent to-black/60" />
 
-        {isWishlist ? null : <WishlistBtn productId={id} />}
+        {/* {isWishlist ? null : <WishlistBtn productId={id} />} */}
       </CardHeader>
     );
   }

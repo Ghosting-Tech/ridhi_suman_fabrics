@@ -13,7 +13,7 @@ const ProductSizeColor = ({
   handleSelectedColor,
   handleSelectedSize,
   selectedColorHex,
-  product
+  product,
 }) => {
   const { data: session, status } = useSession();
 
@@ -156,7 +156,13 @@ const ProductSizeColor = ({
           discount={product.discount}
         />
 
-        <BuyNowBtn />
+        <BuyNowBtn
+          productColor={selectedColor}
+          productSize={selectedSize}
+          productHex={selectedColorHex}
+          price={product.price}
+          discount={product.discount}
+        />
       </div>
     </div>
   );

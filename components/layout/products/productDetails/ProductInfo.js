@@ -9,9 +9,6 @@ import ProductDetails from "./ProductDetails";
 import ProductHeading from "./ProductHeading";
 import ProductSizeColor from "./ProductSizeColor";
 
-import BuyNowBtn from "./button/BuyNowBtn";
-import AddToCartBtn from "./button/AddToCartBtn";
-
 function ProductInfo({ product }) {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -51,11 +48,8 @@ function ProductInfo({ product }) {
   useEffect(() => {
     if (isInCart) {
       setSelectedSize(isInCart.size);
-      // setSelectedSize("s");
       setSelectedColor(isInCart.color?.name);
-      // setSelectedColor("azure");
       setSelectedColorHex(isInCart.color?.hex);
-      // setSelectedColorHex("#007fff");
     }
 
     if (product.sizes.length > 0) {
@@ -77,8 +71,6 @@ function ProductInfo({ product }) {
         product={product}
         selectedColorHex={selectedColorHex}
       />
-
-      
 
       <ProductDetails fabric={product.fabric} brand={product.brand} />
 
