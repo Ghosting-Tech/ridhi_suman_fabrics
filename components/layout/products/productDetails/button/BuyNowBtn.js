@@ -4,7 +4,7 @@ import React from "react";
 
 const BuyNowBtn = () => {
   return (
-    <Link href="/booking-detail-page" className="w-full h-full">
+    <Link href="/checkout" className="w-full h-full">
       <Button
         variant="gradient"
         color="teal"

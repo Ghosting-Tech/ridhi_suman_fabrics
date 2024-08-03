@@ -21,7 +21,7 @@ async function getCategoryProducts(params, searchParams) {
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch all Category Products");
+    return [];
   }
 
   return res.json();

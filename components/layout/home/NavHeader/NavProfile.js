@@ -31,12 +31,12 @@ const NavProfile = () => {
     {
       label: "My Profile",
       icon: UserCircleIcon,
-      click: () => router.push("/user/profile"),
+      click: () => router.push("/profile"),
     },
     {
       label: "My Orders",
       icon: ShoppingBagIcon,
-      click: () => router.push("/user/orders"),
+      click: () => router.push("/my-orders"),
     },
     {
       label: "My Wishlist",

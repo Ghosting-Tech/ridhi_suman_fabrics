@@ -13,7 +13,7 @@ async function getCategories() {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch all Categories");
+    return []
   }
 
   return res.json();

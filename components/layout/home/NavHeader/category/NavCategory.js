@@ -65,7 +65,7 @@ function NavCategory() {
             </MenuHandler>
 
             <MenuList>
-              <Link key={index} href={`/${category.name}`}>
+              <Link key={index} href={`/category/${category.name}/`}>
                 <MenuItem className="capitalize">{category.name}</MenuItem>
               </Link>
 

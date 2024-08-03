@@ -16,22 +16,22 @@ export default function ShippingPolicy() {
       </div>
       <ul className="space-y-3 text-gray-700">
         <li className="flex items-center gap-2">
-          Takes 5-6 days to delivery the product
+          - Takes 5-6 days to delivery the product
         </li>
         <li className="flex items-center gap-2">
-          One Day Delivery for NCR on request.
+          - One Day Delivery for NCR on request.
         </li>
         <li className="flex items-center gap-2">
-          For Metro Cities Delivery Time 3-5 Days
+          - For Metro Cities Delivery Time 3-5 Days
         </li>
         <li className="flex items-center gap-2">
-          For Tier II Cities Delivery Time 4-7 Days
+          - For Tier II Cities Delivery Time 4-7 Days
         </li>
         <li className="flex items-center gap-2">
-          For Villages Delivery Time 7-10 Days
+          - For Villages Delivery Time 7-10 Days
         </li>
         <li className="flex items-center gap-2">
-          If courier company delays shipment we are not responsible
+          - If courier company delays shipment we are not responsible
         </li>
       </ul>
       <div className="text-gray-700 leading-relaxed">

@@ -21,7 +21,7 @@ async function getSubCategoryProducts(params, searchParams) {
   );
 
   if (!res.ok) {
-    throw new Error("Failed to fetch all Sub Category Products");
+    return []
   }
 
   return res.json();
