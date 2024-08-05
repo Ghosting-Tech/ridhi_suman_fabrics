@@ -18,8 +18,11 @@ const OrderCard = ({ order }) => {
   }, [order.createdAt]);
   return (
     <div className="p-4 shadow-lg border rounded-lg ">
-      <div>Order ID: {order._id}</div>
-      <div>Order Date: {formattedDate}</div>
+      <div className="flex justify-between items-center text-sm">
+        <div className="flex gap-1 items-center">
+          Order Date <div className="text-xs">{formattedDate}</div>
+        </div>
+      </div>
       <div>Total Amount: {order.totalAmount}</div>
       <div>Status: {order.status}</div>
     </div>
