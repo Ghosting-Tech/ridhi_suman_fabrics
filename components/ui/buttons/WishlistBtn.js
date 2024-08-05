@@ -72,7 +72,9 @@ const WishlistBtn = ({ productId }) => {
 
   return (
     <button
-      className={`flex items-center justify-center mt-2 w-8 h-8 bg-transparent p-0 z-40 absolute right-5 ${isAnimating ? "wishlist-animation-in" : ""} ${isInWishlist ? "text-red-500" : "text-gray-500"}`}
+      className={`flex items-center justify-center mt-2 w-8 h-8 bg-transparent p-0 z-40 absolute right-5 ${
+        isAnimating ? "wishlist-animation-in" : ""
+      } ${isInWishlist ? "text-red-500" : "text-gray-500"}`}
       onClick={handleWishlistToggle}
     >
       <HeartIcon
