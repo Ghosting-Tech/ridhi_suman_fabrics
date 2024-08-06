@@ -1,13 +1,15 @@
 "use server";
 
+import { HeartIcon } from "@heroicons/react/24/solid";
+
+import Link from "next/link";
 import { cookies } from "next/headers";
 import React, { Suspense } from "react";
 
-import Heading from "@/components/ui/heading/Heading";
-import { HeartIcon } from "@heroicons/react/24/solid";
-import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 import ProductCarousel from "../products/ProductCarousel";
-import Link from "next/link";
+
+import Heading from "@/components/ui/heading/Heading";
+import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
 async function getWishlist(page = 1, size = 12) {
   const cookieStore = cookies();

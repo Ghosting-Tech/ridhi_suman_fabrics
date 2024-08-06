@@ -19,7 +19,7 @@ export async function GET(req) {
     if (!token) {
       return NextResponse.json(
         {
-          data: "Unauthorized Access",
+          data: [],
           meta: { page: 1, size: 12, totalPages: 0, totalItems: 0 },
         },
         { status: 200 }

@@ -15,7 +15,7 @@ const WishlistBtn = ({ productId }) => {
 
   const wishlist = useSelector((state) => state.wishlist.items);
 
-  const isInWishlist = wishlist.includes(productId);
+  const isInWishlist = wishlist ? wishlist.includes(productId) : false;
 
   const handleWishlistToggle = async (e) => {
     e.stopPropagation();
