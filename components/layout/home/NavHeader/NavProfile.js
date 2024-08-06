@@ -36,7 +36,7 @@ const NavProfile = () => {
     {
       label: "My Orders",
       icon: ShoppingBagIcon,
-      click: () => router.push("/my-orders"),
+      click: () => router.push("/my-orders?page=1&size=12"),
     },
     {
       label: "My Wishlist",

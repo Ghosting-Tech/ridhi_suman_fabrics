@@ -3,12 +3,12 @@ import OrderCard from "@/components/layout/home/orders/OrderCard";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
 import { BsEmojiDizzy } from "react-icons/bs";
 
-const Page = () => {
+const MyOrders = () => {
   const { data: session, status } = useSession();
   const [orders, setOrders] = useState([]);
   const [meta, setMeta] = useState({});
@@ -33,7 +33,7 @@ const Page = () => {
 
       fetchOrders();
     }
-  }, [session, page]); // Only fetch orders if the session is available
+  }, [session, page]);
 
   if (!orders) {
     return (
@@ -52,10 +52,11 @@ const Page = () => {
   }
 
   return (
-    <div>
+    <>
       <div className="w-full text-center text-3xl font-aclonica flex justify-center mt-4 gap-2 text-gray-700">
         Welcome, <div className="text-blue-500">{session.user.name}</div>
       </div>
+
       {orders.length > 0 ? (
         <div>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mx-10 place-items-center">
@@ -73,7 +74,15 @@ const Page = () => {
           <BsEmojiDizzy /> No orders found.
         </div>
       )}
-    </div>
+    </>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense>
+      <MyOrders />
+    </Suspense>
   );
 };
 

@@ -22,11 +22,6 @@ const WishlistBtn = ({ productId }) => {
     e.preventDefault();
 
     try {
-      if (wishlist === "Unauthorized Access") {
-        toast.error("Please log in to add to wishlist");
-        return;
-      }
-
       setIsAnimating(true);
 
       const action = isInWishlist ? "remove" : "add";

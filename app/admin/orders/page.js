@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Card,
   Typography,
@@ -10,7 +10,6 @@ import {
   CardFooter,
   Select,
   Option,
-  Switch,
   CardHeader,
 } from "@material-tailwind/react";
 import { IoIosRefresh } from "react-icons/io";
@@ -30,7 +29,7 @@ const statusColors = {
   canceled: "bg-red-100 text-red-800",
 };
 
-const Page = () => {
+const AdminOrders = () => {
   const searchParams = useSearchParams();
   const [meta, setMeta] = useState({});
 
@@ -243,6 +242,14 @@ const Page = () => {
         <PaginationBtn totalPages={meta.totalPages} />
       </CardFooter>
     </Card>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense>
+      <AdminOrders />
+    </Suspense>
   );
 };
 

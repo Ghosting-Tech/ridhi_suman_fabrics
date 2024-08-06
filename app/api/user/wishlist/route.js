@@ -85,7 +85,7 @@ export async function PUT(req) {
     const token = await getToken({ req, secret });
 
     if (!token) {
-      return NextResponse.json("Unauthorized Request", { status: 401 });
+      return NextResponse.json([], { status: 401 });
     }
 
     const { productId, action } = await req.json();
