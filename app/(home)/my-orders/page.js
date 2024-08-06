@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { toast } from "sonner";
+import { BsEmojiDizzy } from "react-icons/bs";
 
 const Page = () => {
   const { data: session, status } = useSession();
@@ -39,11 +40,19 @@ const Page = () => {
   }, [session, page]); // Only fetch orders if the session is available
 
   if (status === "loading") {
-    return <AiOutlineLoading className="animate-spin" />;
+    return (
+      <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
+        <AiOutlineLoading className="animate-spin" />
+      </div>
+    );
   }
 
   if (!session) {
-    return <div>Please log in to access this page.</div>;
+    return (
+      <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
+        Please log in to access this page.
+      </div>
+    );
   }
 
   return (
@@ -61,7 +70,10 @@ const Page = () => {
           <PaginationBtn totalPages={meta.totalPages} />
         </div>
       ) : (
-        <div>No orders found.</div>
+        <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
+          {" "}
+          <BsEmojiDizzy /> No orders found.
+        </div>
       )}
     </div>
   );

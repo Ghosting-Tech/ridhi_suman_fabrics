@@ -46,15 +46,18 @@ export async function PUT(request, { params }) {
     await dbConnect();
 
     const { id } = params;
-    const data = await request.json();
+    const { status, isPaid, cancellationReason } = await request.json();
+    console.log({ Data: status, pay: isPaid, Cancel: cancellationReason });
 
     if (!id) {
       return NextResponse.json("Invalid order id", { status: 400 });
     }
 
     const updateFields = {};
-    if (data.status) updateFields.status = data.status;
-    if (typeof data.isPaid === "boolean") updateFields.isPaid = data.isPaid;
+    if (status) updateFields.status = status;
+    if (typeof isPaid === "boolean") updateFields.isPaid = isPaid;
+    if (cancellationReason)
+      updateFields.cancellationReason = cancellationReason;
 
     const order = await Order.findByIdAndUpdate(id, updateFields, {
       new: true,

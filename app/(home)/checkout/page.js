@@ -96,37 +96,58 @@ const CheckoutPage = () => {
         body: JSON.stringify(orderData),
       });
       const order = await res.json();
-      console.log(order);
-
-      dispatch(clearCart());
-      setShippingData({
-        name: "",
-        phoneNumber: "",
-        email: "",
-        city: "",
-        state: "",
-        pincode: "",
-        address: "",
-      });
 
       if (res.ok) {
-        toast.success("Order placed successfully!");
-        dispatch(clearCart());
-        setShippingData({
-          name: "",
-          phoneNumber: "",
-          email: "",
-          city: "",
-          state: "",
-          pincode: "",
-          address: "",
-        });
-        router.push("/my-orders");
+
+        console.log("session", session)
+        try {
+          const response = await fetch(
+            `/api/private/payments/initiate-payment`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                orderId: order._id,
+                amount: order.totalAmount + 120,
+                userId: session.user._id,
+                userPhoneNumber: session.user.phoneNumber,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          console.log("phone pe data", data);
+          // Handle the response data
+        } catch (err) {
+          toast.error("Error while submitting payment");
+          console.log(err);
+        }
+
+        // toast.success("Order placed successfully!");
+        // dispatch(clearCart());
+        // setShippingData({
+        //   name: "",
+        //   phoneNumber: "",
+        //   email: "",
+        //   city: "",
+        //   state: "",
+        //   pincode: "",
+        //   address: "",
+        // });
+        // router.push("/my-orders");
       } else {
         toast.error("An error occurred while placing order!");
       }
     } catch (err) {
-      console.log("Error while submitting order:", err);
+      toast.error("Error while submitting order");
+      console.log(err);
     }
   };
 
