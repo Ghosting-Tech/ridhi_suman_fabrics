@@ -10,12 +10,17 @@ import {
   CardFooter,
   Select,
   Option,
+  Switch,
+  CardHeader,
 } from "@material-tailwind/react";
 import { IoIosRefresh } from "react-icons/io";
 import Heading from "@/components/ui/heading/Heading";
 import DefaultBtn from "@/components/ui/buttons/DefaultBtn";
 import { RiCoupon4Line } from "react-icons/ri";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
+import PaginationBtn from "@/components/ui/PaginationBtn";
+import Link from "next/link";
 
 const statusColors = {
   confirmed: "bg-blue-100 text-blue-800",
@@ -26,6 +31,9 @@ const statusColors = {
 };
 
 const Page = () => {
+  const searchParams = useSearchParams();
+  const [meta, setMeta] = useState({});
+
   const [orders, setOrders] = useState([]);
 
   const handleStatusChange = async (id, field, newStatus) => {
@@ -39,6 +47,7 @@ const Page = () => {
       });
       const data = await res.json();
       if (res.ok) {
+        toast.success("Status updated successfully");
         setOrders((prevOrders) => {
           return prevOrders.map((order) => {
             if (order._id === id) {
@@ -48,7 +57,6 @@ const Page = () => {
                 return { ...order, status: data.status };
               }
             }
-            toast.success("Status updated successfully");
             return order;
           });
         });
@@ -60,21 +68,23 @@ const Page = () => {
     }
   };
 
-  const getOrders = async () => {
+  const getOrders = async (page) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/order`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/order?size=7&page=${page}`
       );
       const data = await res.json();
       setOrders(data.data);
+      setMeta(data.pagination);
     } catch (e) {
       console.error("Failed to fetch Orders", e);
     }
   };
 
+  const currentPage = searchParams.get("page");
   useEffect(() => {
-    getOrders();
-  }, []);
+    getOrders(currentPage);
+  }, [currentPage]);
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -93,7 +103,7 @@ const Page = () => {
 
   return (
     <Card className="h-full w-full shadow-none">
-      <CardFooter className="py-3">
+      <CardHeader className="py-3 shadow-none mt-2">
         <Heading
           icon={
             <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">
@@ -103,7 +113,7 @@ const Page = () => {
           title={"Order Details"}
           buttons={btns}
         />
-      </CardFooter>
+      </CardHeader>
       <CardBody className="p-2 mx-8">
         <table className="w-full min-w-max table-auto text-left">
           <thead className="bg-gray-100">
@@ -122,6 +132,7 @@ const Page = () => {
             {orders.map((order, index) => {
               const isLast = index === orders.length - 1;
               const classes = isLast ? "p-2" : "p-2 border-b border-gray-200";
+              console.log({ Order: order });
 
               return (
                 <tr key={order._id} className="text-center hover:bg-gray-50">
@@ -148,7 +159,7 @@ const Page = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {order.totalAmount}
+                      &#8377;{order.totalAmount}
                     </Typography>
                   </td>
                   <td className={`${classes} px-5`}>
@@ -179,7 +190,7 @@ const Page = () => {
                       {order.paymentMethod}
                     </Typography>
                   </td>
-                  <td className={`${classes} w-16`}>
+                  <td className={`${classes} w-16 text-center`}>
                     <Select
                       label="Select status"
                       value={order.isPaid ? "paid" : "unpaid"}
@@ -200,6 +211,7 @@ const Page = () => {
                     <Select
                       label="Select status"
                       color="blue"
+                      className=""
                       value={order.status}
                       onChange={(value) =>
                         handleStatusChange(order._id, "status", value)
@@ -209,13 +221,17 @@ const Page = () => {
                       <Option value="packed">Packed</Option>
                       <Option value="shipped">Shipped</Option>
                       <Option value="delivered">Delivered</Option>
-                      <Option value="canceled">Canceled</Option>
+                      <Option value="canceled" disabled>
+                        Canceled
+                      </Option>
                     </Select>
                   </td>
                   <td className={classes}>
-                    <Button variant="outlined" color="blue">
-                      View
-                    </Button>
+                    <Link href={`/admin/orders/${order._id}`}>
+                      <Button variant="outlined" color="blue">
+                        View
+                      </Button>
+                    </Link>
                   </td>
                 </tr>
               );
@@ -223,6 +239,9 @@ const Page = () => {
           </tbody>
         </table>
       </CardBody>
+      <CardFooter>
+        <PaginationBtn totalPages={meta.totalPages} />
+      </CardFooter>
     </Card>
   );
 };

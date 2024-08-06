@@ -12,7 +12,12 @@ const CancelOrder = ({ open, setOpen, id, setData }) => {
   const [cancellationReason, setCancellationReason] = useState("");
   const handleOpen = () => setOpen(!open);
 
-  const handleCancel = async (id, newStatus, cancellationReason) => {
+  const handleCancel = async (e, id, newStatus, cancellationReason) => {
+    e.preventDefault();
+    // if (!cancellationReason.trim()) {
+    //   toast.error("Please provide a cancellation reason");
+    //   return;
+    // }
     setPending(true);
     try {
       const res = await fetch(`/api/private/order/${id}`, {
@@ -61,7 +66,10 @@ const CancelOrder = ({ open, setOpen, id, setData }) => {
           </IconButton>,
         ]}
       />
-      <form>
+      <form
+        onSubmit={(e) => handleCancel(e, id, "canceled", cancellationReason)}
+        className="flex flex-col gap-3"
+      >
         <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 my-4 rounded-md">
           <div className="flex gap-1">
             <MdOutlineError size={25} />
@@ -95,7 +103,6 @@ const CancelOrder = ({ open, setOpen, id, setData }) => {
             className="rounded"
             color="red"
             type="submit"
-            onClick={() => handleCancel(id, "canceled", cancellationReason)}
             loading={pending ? true : false}
           >
             Cancel Order
