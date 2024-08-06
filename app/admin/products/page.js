@@ -68,7 +68,6 @@ const ProductPage = () => {
   const handleFilterBySubCategory = (val) => {
     setSelectedSubCategory(val);
   };
-
   return (
     <>
       <DeleteProduct

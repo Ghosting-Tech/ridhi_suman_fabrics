@@ -31,7 +31,7 @@ export async function POST(req) {
     );
 
   const timestamp = Date.now().toString();
-  let merchantTransactionId = `MT${userId}${timestamp}`;
+  let merchantTransactionId = `MT${timestamp}`;
 
   // Remove any special characters except underscores and hyphens
   merchantTransactionId = merchantTransactionId.replace(/[^a-zA-Z0-9_-]/g, "");
@@ -42,7 +42,7 @@ export async function POST(req) {
   }
   // Create payload
   const payload = {
-    merchantId: PHONEPE_MERCHANT_ID,
+    merchantId: "PGTESTPAYUAT",
     merchantTransactionId, // Unique transaction ID
     merchantUserId: userId,
     amount: amount * 100, // Convert to smallest currency unit
@@ -71,7 +71,7 @@ export async function POST(req) {
     // Set request options for axios
     const options = {
       method: "POST",
-      url: `https://api.phonepe.com/apis/hermes/pg/v1/pay`,
+      url: `	https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
