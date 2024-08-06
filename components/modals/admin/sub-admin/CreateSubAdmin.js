@@ -89,6 +89,8 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           setOpen(false);
 
           setFormData({ image: null, phoneNumber: "", password: "", name: "" });
+
+          resolve(newAdmin);
         } else {
           reject(newAdmin);
         }

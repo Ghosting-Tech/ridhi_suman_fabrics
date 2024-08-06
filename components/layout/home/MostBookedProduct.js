@@ -28,7 +28,9 @@ const MostBookedProduct = async () => {
   return (
     <>
       <Suspense fallback={<ProductListSkeleton />}>
-        {data && <ProductCarousel products={data} />}
+        {data && (
+          <ProductCarousel products={data} label="Most Booked Products" />
+        )}
       </Suspense>
     </>
   );
