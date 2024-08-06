@@ -12,6 +12,7 @@ import { toast } from "sonner";
 const DeleteCategory = ({ open, setOpen, deleteCategory, setCategories }) => {
   const handleOpen = () => setOpen(!open);
 
+
   const handleDeleteCategory = async () => {
     try {
       if (deleteCategory.image?.ref) {

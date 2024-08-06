@@ -4,12 +4,12 @@ import React from "react";
 
 import Heading from "@/components/ui/heading/Heading";
 
-import ProfileSection from "@/components/layout/profile/ProfileSection";
-import AddressSection from "@/components/layout/profile/AddressSection";
+import ProfileCard from "@/components/layout/profile/ProfileSection";
+import ProfileWishlist from "@/components/layout/profile/ProfileWishlist";
 
 const page = () => {
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex flex-col">
       <div className="flex-grow m-5 flex flex-col gap-5">
         <Heading
           icon={
@@ -17,12 +17,12 @@ const page = () => {
               <FaUser size={20} color="white" />
             </div>
           }
-          title={"PROFILE"}
+          title="Profile"
         />
 
-        <div className="flex gap-5 sm:mt-5">
-          <ProfileSection />
-          <AddressSection />
+        <div className="space-y-16">
+          <ProfileCard />
+          <ProfileWishlist />
         </div>
       </div>
     </main>

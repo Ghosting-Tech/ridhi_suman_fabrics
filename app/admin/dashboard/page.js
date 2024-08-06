@@ -65,7 +65,7 @@ const DashboardPage = () => {
           loading ? "hidden" : "block"
         } w-full`}
       >
-        <div class="px-8 mt-4">
+        <div className="px-8 mt-4">
           <Heading
             icon={
               <div className="bg-gradient-to-r from-red-400 to-pink-400 p-1 rounded-full inline-block">

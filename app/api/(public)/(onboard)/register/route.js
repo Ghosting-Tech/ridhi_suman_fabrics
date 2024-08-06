@@ -59,25 +59,24 @@ export const POST = async (req) => {
       );
     }
 
-    if (!file) {
-      return NextResponse.json(
-        { error: "No files received." },
-        { status: 400 }
-      );
+    let userData;
+
+    if (file) {
+      const imageRef = ref(storage, `users/${file.size + file.name}`);
+
+      const buffer = await file.arrayBuffer();
+      const blob = new Blob([buffer], { type: file.type });
+
+      await uploadBytes(imageRef, blob);
+
+      const imageUrl = await getDownloadURL(imageRef);
+      const imageObject = { url: imageUrl, ref: imageRef._location.path_ };
+
+      userData = { name, phoneNumber, email, password, image: imageObject };
+    } else {
+      userData = { name, phoneNumber, email, password };
     }
 
-    const imageRef = ref(storage, `users/${file.size + file.name}`);
-
-    // Convert the file to a buffer or blob before uploading
-    const buffer = await file.arrayBuffer();
-    const blob = new Blob([buffer], { type: file.type });
-
-    await uploadBytes(imageRef, blob);
-
-    const imageUrl = await getDownloadURL(imageRef);
-    const imageObject = { url: imageUrl, ref: imageRef._location.path_ };
-
-    const userData = { name, phoneNumber, email, password, image: imageObject };
     const user = await User.create(userData);
 
     return NextResponse.json(user, { status: 201 });

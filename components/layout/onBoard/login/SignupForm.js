@@ -127,11 +127,6 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
 
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/register`;
 
-    if (!profileImage) {
-      toast.error("Please upload a profile image");
-      return;
-    }
-
     if (!name) {
       toast.error("Please enter your name");
       return;
@@ -163,11 +158,15 @@ const SignupForm = ({ isAnimated, setIsAnimated }) => {
     }
 
     const formDataToSend = new FormData();
+
     formDataToSend.append("name", name);
     formDataToSend.append("email", email);
     formDataToSend.append("password", password);
     formDataToSend.append("phoneNumber", phoneNumber);
-    formDataToSend.append("image", profileImage);
+
+    if (profileImage) {
+      formDataToSend.append("image", profileImage);
+    }
 
     try {
       let data;

@@ -29,10 +29,10 @@ export async function POST(request) {
     }
 
     const order = await Order.create(data);
-    await User.findByIdAndUpdate(order.user, {
-      $set: { cart: [] }, // Clear the cart
-      $push: { orders: order._id }, // Add the order ID to the orders array
-    });
+    // await User.findByIdAndUpdate(order.user, {
+    //   $set: { cart: [] }, // Clear the cart
+    //   $push: { orders: order._id }, // Add the order ID to the orders array
+    // });
 
     const updatePromises = order.cartItems.map(async (item) => {
       try {
