@@ -27,7 +27,7 @@ const useWindowSize = () => {
   return size;
 };
 
-const ProductCarousel = ({ products }) => {
+const ProductCarousel = ({ products, label = "" }) => {
   const [width] = useWindowSize();
 
   const slides = useMemo(() => {
@@ -55,7 +55,9 @@ const ProductCarousel = ({ products }) => {
 
   return (
     <section className="my-10">
-      <SectionHeading label="Most Booked Products" className="text-pink-400" />
+      {label.length !== 0 && (
+        <SectionHeading label={label} className="text-pink-400" />
+      )}
 
       <Suspense fallback={<ProductListSkeleton />}>
         <Carousel

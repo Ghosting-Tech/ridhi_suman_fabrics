@@ -14,8 +14,8 @@ const userSchema = new Schema(
     image: {
       type: Object,
       default: {
-        url: "",
-        ref: "",
+        url: "https://firebasestorage.googleapis.com/v0/b/musharraf-39357.appspot.com/o/profile.svg?alt=media&token=a214a5c7-9b64-4251-be52-4292a57055c9",
+        ref: "user/default.svg",
       },
       required: true,
     },

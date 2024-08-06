@@ -26,7 +26,9 @@ const ProductPage = () => {
   const fetchProducts = async (page) => {
     try {
       const res = await fetch(
-        `/api/product?size=8&page=${page}&category=${category || "all"}&subCategory=${selectedSubCategory || "all"}`
+        `/api/product?size=8&page=${page}&category=${
+          category || "all"
+        }&subCategory=${selectedSubCategory || "all"}`
       );
       if (!res.ok) throw new Error("Failed to fetch products");
       const data = await res.json();
@@ -97,7 +99,7 @@ const ProductPage = () => {
               <Select
                 label="Categories"
                 color="pink"
-                onChange={(e) => handleFilterByCategory(e.target.value)}
+                onChange={(value) => handleFilterByCategory(value)}
                 className="w-full"
               >
                 {categories.map((category) => (
@@ -112,7 +114,7 @@ const ProductPage = () => {
                   color="pink"
                   value={selectedSubCategory}
                   className="w-full"
-                  onChange={(e) => handleFilterBySubCategory(e.target.value)}
+                  onChange={(value) => handleFilterBySubCategory(value)}
                 >
                   {showSubCategory.map((subCategory) => (
                     <Option key={subCategory._id} value={subCategory.name}>

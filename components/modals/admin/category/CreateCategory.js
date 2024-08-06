@@ -188,7 +188,7 @@ const CreateCategory = ({ open, setOpen, setCategories }) => {
                 });
               }}
             />
-            <div class="flex gap-2 items-center justify-center w-full">
+            <div className="flex gap-2 items-center justify-center w-full">
               <Select
                 label="Choose a colour"
                 value={subCategory.colour}
