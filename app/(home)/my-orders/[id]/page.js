@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { FaRegAddressCard } from "react-icons/fa6";
+import { toast } from "sonner";
 
 const Page = () => {
   const [data, setData] = useState(null);
@@ -20,7 +21,7 @@ const Page = () => {
       res = await res.json();
       setData(res);
     } catch (error) {
-      console.error("Failed to fetch Orders", error);
+      toast.error("Failed to fetch Orders", error);
     }
   };
 

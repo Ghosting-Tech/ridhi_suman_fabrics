@@ -1,13 +1,20 @@
 "use client";
 import Heading from "@/components/ui/heading/Heading";
-import { Button, Dialog, IconButton, Input } from "@material-tailwind/react";
+import {
+  Button,
+  Dialog,
+  IconButton,
+  Input,
+  Option,
+  Select,
+} from "@material-tailwind/react";
 import React, { useState } from "react";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { TiCancelOutline } from "react-icons/ti";
 import { toast } from "sonner";
 
-const CancelOrder = ({ open, setOpen, id, setData }) => {
+const CancelOrder = ({ open, setOpen, id, setData, role }) => {
   const [pending, setPending] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
   const handleOpen = () => setOpen(!open);
@@ -77,14 +84,32 @@ const CancelOrder = ({ open, setOpen, id, setData }) => {
           </div>
         </div>
         <div>
-          <Input
-            variant="static"
-            label="Cancellation Reason"
-            placeholder=""
-            required
-            value={cancellationReason}
-            onChange={(e) => setCancellationReason(e.target.value)}
-          />
+          {role === "admin" ? (
+            <Input
+              variant="static"
+              label="Cancellation Reason"
+              placeholder=""
+              required
+              value={cancellationReason}
+              onChange={(e) => setCancellationReason(e.target.value)}
+            />
+          ) : (
+            <Select
+              label="Please select the reason for your Cancellation "
+              color="blue"
+              value={cancellationReason}
+              onChange={(value) => setCancellationReason(value)}
+            >
+              <Option value="Accidental purchase">Acciedental Purchase</Option>
+              <Option value="Changed my mind">Changed My Mind</Option>
+              <Option value="Need to Add/Remove items">
+                Need to Add/Remove items
+              </Option>
+              <Option value="Wrong size">Wrong Size</Option>
+              <Option value="Wrong Color">Wrong Color</Option>
+              <Option value="Other Reasons">Other Reasons</Option>
+            </Select>
+          )}
         </div>
         <div className="flex justify-end items-center gap-4">
           <Button

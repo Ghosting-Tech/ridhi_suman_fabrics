@@ -61,10 +61,10 @@ const Page = () => {
           });
         });
       } else {
-        console.error("Failed to update status");
+        toast.error("Failed to update status");
       }
     } catch (error) {
-      console.error("Failed to update status", error);
+      toast.error("Failed to update status", error);
     }
   };
 
@@ -77,7 +77,7 @@ const Page = () => {
       setOrders(data.data);
       setMeta(data.pagination);
     } catch (e) {
-      console.error("Failed to fetch Orders", e);
+      toast.error("Failed to fetch Orders", e);
     }
   };
 

@@ -24,10 +24,6 @@ const Page = () => {
             cache: "no-store",
           });
           const ordersData = await response.json();
-          if (!response.ok) {
-            toast.error("Failed to fetch orders");
-            return;
-          }
           setOrders(ordersData.data);
           setMeta(ordersData.meta);
         } catch (err) {
@@ -39,7 +35,7 @@ const Page = () => {
     }
   }, [session, page]); // Only fetch orders if the session is available
 
-  if (status === "loading") {
+  if (!orders) {
     return (
       <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
         <AiOutlineLoading className="animate-spin" />
@@ -62,12 +58,14 @@ const Page = () => {
       </div>
       {orders.length > 0 ? (
         <div>
-          <div className="grid grid-cols-3 gap-4 px-6 my-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mx-10 place-items-center">
             {orders.map((order) => (
               <OrderCard key={order._id} order={order} />
             ))}
           </div>
-          <PaginationBtn totalPages={meta.totalPages} />
+          <div className="mt-5">
+            <PaginationBtn totalPages={meta.totalPages} />
+          </div>
         </div>
       ) : (
         <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">

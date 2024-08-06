@@ -2,7 +2,6 @@
 import Heading from "@/components/ui/heading/Heading";
 import { Button } from "@material-tailwind/react";
 import React, { useState } from "react";
-import { IoMdHelpCircleOutline } from "react-icons/io";
 import DataCard from "./DataCard";
 import { CiCalendarDate, CiCircleInfo } from "react-icons/ci";
 import { RiPriceTag2Line, RiSecurePaymentLine } from "react-icons/ri";
@@ -89,6 +88,7 @@ const OrderInfoCard = ({ data, setData }) => {
         setOpen={setOpenDeleteDialog}
         id={data._id}
         setData={setData}
+        role={data.user.role}
       />
     </div>
   );
