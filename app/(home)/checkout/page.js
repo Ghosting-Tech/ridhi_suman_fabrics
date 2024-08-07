@@ -115,11 +115,13 @@ const CheckoutPage = () => {
           );
 
           if (!response.ok) {
-            toast.error("Error while submitting payment");
+            toast.error("Error while initiating payment");
             return;
           }
 
-          const data = await response.json();
+          const phonePeRedirectUrl = await response.json();
+
+          router.push(phonePeRedirectUrl);
         } catch (err) {
           toast.error("Error while submitting payment");
         }
