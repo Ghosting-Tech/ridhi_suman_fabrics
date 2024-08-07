@@ -98,8 +98,6 @@ const CheckoutPage = () => {
       const order = await res.json();
 
       if (res.ok) {
-
-        console.log("session", session)
         try {
           const response = await fetch(
             `/api/private/payments/initiate-payment`,
@@ -118,13 +116,13 @@ const CheckoutPage = () => {
           );
 
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            toast.error("Error while initiating payment");
+            return;
           }
 
-          const data = await response.json();
+          const phonePeRedirectUrl = await response.json();
 
-          console.log("phone pe data", data);
-          // Handle the response data
+          router.push(phonePeRedirectUrl);
         } catch (err) {
           toast.error("Error while submitting payment");
           console.log(err);
