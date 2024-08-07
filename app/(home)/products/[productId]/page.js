@@ -16,7 +16,6 @@ const getProductById = async (productId) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "omit",
     });
 
     if (!res.ok) {
@@ -32,6 +31,7 @@ const getProductById = async (productId) => {
 
     return {
       success: true,
+      message: "Product details fetched successfully",
       data,
     };
   } catch (error) {
@@ -45,6 +45,10 @@ const getProductById = async (productId) => {
 
 export default async function ProductData({ params: { productId } }) {
   const productData = await getProductById(productId);
+
+  if (!productData.success) {
+    return <div>{productData.message}</div>;
+  }
 
   return (
     <Suspense>

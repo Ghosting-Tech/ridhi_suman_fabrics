@@ -8,22 +8,44 @@ import ProductList from "@/components/layout/products/ProductList";
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
 async function getProducts(page = 1, size = 12) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product?page=${page}&size=${size}`,
-    {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/product?page=${page}&size=${size}`,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch all Products",
+        status: res.status,
+        data: [],
+        meta: { page, size, totalPages: 1, totalItems: 0 },
+      };
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch all Products");
+    const data = await res.json();
+
+    return {
+      success: true,
+      message: "Products fetched successfully",
+      data: data.data,
+      meta: data.meta,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the products",
+      data: [],
+      meta: { page, size, totalPages: 1, totalItems: 0 },
+    };
   }
-
-  return res.json();
 }
 
 const page = async ({ searchParams: { page, size } }) => {

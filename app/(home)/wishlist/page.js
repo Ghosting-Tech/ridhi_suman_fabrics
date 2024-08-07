@@ -16,9 +16,7 @@ async function getWishlist(page = 1, size = 12) {
   const headersList = headers();
 
   const activePath = headersList.get("x-url");
-  console.log(activePath);
   const token = cookieStore.get("next-auth.session-token");
-  console.log(token);
 
   try {
     const res = await fetch(
@@ -50,8 +48,6 @@ async function getWishlist(page = 1, size = 12) {
       meta: data.meta,
     };
   } catch (error) {
-    console.error("Error fetching wishlist:", error);
-
     return {
       success: false,
       message: "An error occurred while fetching the wishlist",
@@ -66,6 +62,15 @@ const WishlistPage = async ({ searchParams: { page = 1, size = 12 } }) => {
   size = parseInt(size) || 12;
 
   const data = await getWishlist(page, size);
+  console.log(data.data);
+
+  if (!data.success) {
+    return (
+      <main className="flex flex-col min-h-screen">
+        <div className="my-10 text-xl font-semibold">{data.message}</div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col min-h-screen">
@@ -80,7 +85,7 @@ const WishlistPage = async ({ searchParams: { page = 1, size = 12 } }) => {
         />
 
         <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList products={data.data} isWishlist={true} />
+          <ProductList products={data.data} isWishlist={false} />
         </Suspense>
 
         <PaginationBtn totalPages={data.meta.totalPages} />

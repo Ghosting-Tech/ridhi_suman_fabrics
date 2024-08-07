@@ -1,28 +1,60 @@
 import React, { Suspense } from "react";
 
-import PaginationBtn from "@/components/ui/PaginationBtn";
 import { ProductCard } from "@/components/layout/admin/products/ProductCard";
+
+import PaginationBtn from "@/components/ui/PaginationBtn";
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
 async function getSearchResults(searchParams) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/search?query=${
-      searchParams.query
-    }&page=${searchParams.page || 1}size=12`,
-    {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/search?query=${
+        searchParams.query
+      }&page=${searchParams.page || 1}&size=12`,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch search results",
+        status: res.status,
+        data: [],
+        meta: {
+          page: searchParams.page || 1,
+          size: 12,
+          totalPages: 1,
+          totalItems: 0,
+        },
+      };
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    const data = await res.json();
+
+    return {
+      success: true,
+      data: data.data,
+      meta: data.meta,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the search results",
+      data: [],
+      meta: {
+        page: searchParams.page || 1,
+        size: 12,
+        totalPages: 1,
+        totalItems: 0,
+      },
+    };
   }
-
-  return res.json();
 }
 
 const page = async ({ searchParams }) => {

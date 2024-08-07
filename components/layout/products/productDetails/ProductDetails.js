@@ -9,13 +9,13 @@ const ProductDetails = ({ fabric, brand }) => {
         Product Detail
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-1">
+      <div className="flex flex-row items-center gap-1">
         <div className="text-gray-600 text-sm">Fabric : </div>
 
         <div className="text-gray-600 text-sm capitalize">{fabric}</div>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-1">
+      <div className="flex flex-row items-center gap-1">
         <div className="text-gray-600 text-sm">Brand : </div>
 
         <div className="text-gray-600 text-sm capitalize">{brand}</div>
