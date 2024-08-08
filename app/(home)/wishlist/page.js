@@ -1,34 +1,22 @@
-"use server";
+"use client";
 
 import { IoIosHeart } from "react-icons/io";
-
-import React, { Suspense } from "react";
-import { cookies, headers } from "next/headers";
+import React, { Suspense, useEffect, useState } from "react";
 
 import ProductList from "@/components/layout/products/ProductList";
-
 import Heading from "@/components/ui/heading/Heading";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
+import { useSearchParams } from "next/navigation";
 
-async function getWishlist(page = 1, size = 12) {
-  const cookieStore = cookies();
-  const headersList = headers();
-
-  const activePath = headersList.get("x-url");
-  const token = cookieStore.get("next-auth.session-token");
-
+const getWishlist = async (page, size) => {
   try {
-    const res = await fetch(
-      `${activePath}/api/user/wishlist?page=${page}&size=${size}&populate=true`,
-      {
-        cache: "no-cache",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token.value}`,
-        },
-      }
-    );
+    const res = await fetch(`/api/user/my-wishlist?page=${page}&size=${size}`, {
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!res.ok) {
       return {
@@ -55,19 +43,36 @@ async function getWishlist(page = 1, size = 12) {
       meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
     };
   }
-}
+};
 
-const WishlistPage = async ({ searchParams: { page = 1, size = 12 } }) => {
-  page = parseInt(page) || 1;
-  size = parseInt(size) || 12;
+const WishlistPage = () => {
+  const searchParams = useSearchParams();
 
-  const data = await getWishlist(page, size);
-  console.log(data.data);
+  const page = parseInt(searchParams.get("page")) || 1;
+  const size = parseInt(searchParams.get("size")) || 12;
 
-  if (!data.success) {
+  const [wishlistData, setWishlistData] = useState({
+    success: false,
+    data: [],
+    meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
+  });
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const data = await getWishlist(page, size);
+      console.log("data: ", data);
+      setWishlistData(data);
+    };
+
+    fetchWishlist();
+  }, [page, size]);
+
+  if (!wishlistData.success) {
     return (
       <main className="flex flex-col min-h-screen">
-        <div className="my-10 text-xl font-semibold">{data.message}</div>
+        <div className="my-10 text-xl font-semibold">
+          {wishlistData.message}
+        </div>
       </main>
     );
   }
@@ -85,10 +90,10 @@ const WishlistPage = async ({ searchParams: { page = 1, size = 12 } }) => {
         />
 
         <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList products={data.data} isWishlist={false} />
+          <ProductList products={wishlistData.data} isWishlist={false} />
         </Suspense>
 
-        <PaginationBtn totalPages={data.meta.totalPages} />
+        <PaginationBtn totalPages={wishlistData.meta.totalPages} />
       </div>
     </main>
   );

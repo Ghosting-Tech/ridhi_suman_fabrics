@@ -32,17 +32,19 @@ export async function middleware(request) {
     //   return res;
     // }
 
-    const allowedPaths = [
-      "/",
-      "/products",
-      "/sets",
-      "/categories",
-      "/wishlist",
-      "/orders",
-    ];
+    const allowedPaths = ["/", "/products", "/sets", "/category"];
     const isAllowedPath = allowedPaths.some((path) =>
       url.pathname.startsWith(path)
     );
+
+    if (
+      !token &&
+      (url.pathname.startsWith("/my-orders") ||
+        url.pathname.startsWith("/wishlist") ||
+        url.pathname.startsWith("/profile"))
+    ) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
 
     // Redirect to login if no token and trying to access restricted paths
     if (!token && !isAllowedPath) {
@@ -84,17 +86,18 @@ export async function middleware(request) {
   }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
   matcher: [
     "/",
-    "/wishlist",
-    "/products/:path*",
-    "/sets/:path*",
-    "/categories/:path*",
     "/login",
     "/forgot-password",
-    "/admin/:path*",
+    "/sets/:path*",
+    "/products/:path*",
+    "/categories/:path*",
+    "/profile",
+    "/wishlist",
+    "/my-orders",
     "/user/:path*",
+    "/admin/:path*",
   ],
 };
