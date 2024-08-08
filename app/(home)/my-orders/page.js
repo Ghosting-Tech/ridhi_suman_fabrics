@@ -37,7 +37,7 @@ const MyOrders = () => {
 
   if (status === "loading") {
     return (
-      <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
+      <div className="w-full flex gap-1 justify-center items-center my-48 text-2xl text-pink-500">
         <AiOutlineLoading className="animate-spin" />
       </div>
     );

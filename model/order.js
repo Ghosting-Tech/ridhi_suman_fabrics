@@ -111,6 +111,10 @@ const OrderSchema = new Schema(
       type: Number,
       required: true,
     },
+
+    transactionId: {
+      type: String,
+    },
   },
 
   {
