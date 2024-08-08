@@ -29,7 +29,7 @@ const page = async ({ searchParams: { page, size } }) => {
             <RiCoupon4Line size={20} color="white" />
           </div>
         }
-        title={"Coupon Details"}
+        title={"Users"}
       />
 
       <Suspense>

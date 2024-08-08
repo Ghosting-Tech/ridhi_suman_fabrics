@@ -17,13 +17,12 @@ export async function GET(request) {
 
     await dbConnect();
 
-    const users = await User.find()
+    const users = await User.find({ createdBy: "user" })
       .skip(skip)
       .limit(limit)
       .select("-password -otp -updatedAt -shippingInfo -cart -wishlist")
       .exec();
-
-    const totalUsers = await User.countDocuments();
+    const totalUsers = await User.countDocuments({ createdBy: "user" });
     const totalPages = Math.ceil(totalUsers / limit);
 
     return NextResponse.json(

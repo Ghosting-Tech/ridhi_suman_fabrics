@@ -29,10 +29,10 @@ export async function POST(request) {
     }
 
     const order = await Order.create(data);
-    // await User.findByIdAndUpdate(order.user, {
-    //   $set: { cart: [] }, // Clear the cart
-    //   $push: { orders: order._id }, // Add the order ID to the orders array
-    // });
+    await User.findByIdAndUpdate(order.user, {
+      $set: { cart: [] }, // Clear the cart
+      $push: { orders: order._id }, // Add the order ID to the orders array
+    });
 
     const updatePromises = order.cartItems.map(async (item) => {
       try {
@@ -44,15 +44,19 @@ export async function POST(request) {
           console.error(`Product with ID ${item.productId} not found.`);
           return null; // Return null for missing product
         }
-    
+
         let isUpdated = false;
-    
+
         // Update sizes and colours
         product.sizes = product.sizes.map((size) => {
           if (size.size.toLowerCase() === item.size.toLowerCase()) {
             size.colours = size.colours.map((colour) => {
-              if (colour.colour.name.toLowerCase() === item.colour.name.toLowerCase()) {
-                colour.quantity = parseInt(colour.quantity, 10) - parseInt(item.quantity, 10);
+              if (
+                colour.colour.name.toLowerCase() ===
+                item.colour.name.toLowerCase()
+              ) {
+                colour.quantity =
+                  parseInt(colour.quantity, 10) - parseInt(item.quantity, 10);
                 isUpdated = true;
               }
               return colour;
@@ -60,11 +64,11 @@ export async function POST(request) {
           }
           return size;
         });
-    
+
         if (isUpdated) {
           // Save the updated product
           await product.save();
-    
+
           // Push order ID to product orders
           await Product.findByIdAndUpdate(
             item.productId,
@@ -72,17 +76,16 @@ export async function POST(request) {
             { new: true, runValidators: true }
           ).exec();
         }
-    
+
         return product;
       } catch (error) {
         console.error("Error processing cart item:", error);
         return null; // Return null on error
       }
     });
-    
+
     // Await all update promises
     await Promise.all(updatePromises);
-    
 
     return NextResponse.json(order, { status: 201 });
   } catch (err) {

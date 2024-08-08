@@ -14,6 +14,7 @@ import { MdInfoOutline } from "react-icons/md";
 
 const OrderInfoCard = ({ data, setData }) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [role, setRole] = useState();
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -58,7 +59,7 @@ const OrderInfoCard = ({ data, setData }) => {
           <DataCard
             icon={<TiCancelOutline size={20} />}
             title="Cancel By"
-            data={data.user.role}
+            data={role}
           />
         ) : (
           ""
@@ -88,7 +89,7 @@ const OrderInfoCard = ({ data, setData }) => {
         setOpen={setOpenDeleteDialog}
         id={data._id}
         setData={setData}
-        role={data.user.role}
+        setRole={setRole}
       />
     </div>
   );

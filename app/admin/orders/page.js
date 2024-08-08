@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import Link from "next/link";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const statusColors = {
   confirmed: "bg-blue-100 text-blue-800",
@@ -32,7 +33,6 @@ const statusColors = {
 const AdminOrders = () => {
   const searchParams = useSearchParams();
   const [meta, setMeta] = useState({});
-
   const [orders, setOrders] = useState([]);
 
   const handleStatusChange = async (id, field, newStatus) => {
@@ -84,6 +84,7 @@ const AdminOrders = () => {
   useEffect(() => {
     getOrders(currentPage);
   }, [currentPage]);
+
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -100,6 +101,14 @@ const AdminOrders = () => {
     />,
   ];
 
+  if (!orders) {
+    return (
+      <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
+        <AiOutlineLoading className="animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <Card className="h-full w-full shadow-none">
       <CardHeader className="py-3 shadow-none mt-2">
@@ -113,7 +122,7 @@ const AdminOrders = () => {
           buttons={btns}
         />
       </CardHeader>
-      <CardBody className="p-2 mx-8">
+      <CardBody className="p-2 mx-8  overflow-x-auto">
         <table className="w-full min-w-max table-auto text-left">
           <thead className="bg-gray-100">
             <tr className="text-center">
@@ -131,23 +140,28 @@ const AdminOrders = () => {
             {orders.map((order, index) => {
               const isLast = index === orders.length - 1;
               const classes = isLast ? "p-2" : "p-2 border-b border-gray-200";
-              console.log({ Order: order });
 
               return (
                 <tr key={order._id} className="text-center hover:bg-gray-50">
                   <td className={`${classes}  px-0 w-60 pl-5`}>
                     <div className="flex items-center gap-3">
-                      <Avatar
-                        src={order.user.image.url}
-                        alt="image"
-                        size="sm"
-                      />
+                      {order.user &&
+                      order.user.image &&
+                      order.user.image.url ? (
+                        <Avatar
+                          src={order.user.image.url}
+                          alt="image"
+                          size="sm"
+                        />
+                      ) : (
+                        <Avatar alt="image" size="sm" />
+                      )}
                       <div className="flex flex-col items-start">
                         <div className="font-bold capitalize">
-                          {order.user.name}
+                          {order.user ? order.user.name : "N/A"}
                         </div>
                         <div className="text-sm opacity-50">
-                          {order.user.phoneNumber}
+                          {order.user ? order.user.phoneNumber : "N/A"}
                         </div>
                       </div>
                     </div>

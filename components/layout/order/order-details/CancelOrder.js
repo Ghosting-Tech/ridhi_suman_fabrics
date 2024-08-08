@@ -8,23 +8,21 @@ import {
   Option,
   Select,
 } from "@material-tailwind/react";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { TiCancelOutline } from "react-icons/ti";
 import { toast } from "sonner";
 
-const CancelOrder = ({ open, setOpen, id, setData, role }) => {
+const CancelOrder = ({ open, setOpen, id, setData, setRole }) => {
+  const { data: session } = useSession();
   const [pending, setPending] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
   const handleOpen = () => setOpen(!open);
 
   const handleCancel = async (e, id, newStatus, cancellationReason) => {
     e.preventDefault();
-    // if (!cancellationReason.trim()) {
-    //   toast.error("Please provide a cancellation reason");
-    //   return;
-    // }
     setPending(true);
     try {
       const res = await fetch(`/api/private/order/${id}`, {
@@ -35,6 +33,7 @@ const CancelOrder = ({ open, setOpen, id, setData, role }) => {
         body: JSON.stringify({ status: newStatus, cancellationReason }),
       });
       if (res.ok) {
+        setRole(session.user.role);
         const data = await res.json();
         setData(data);
         handleOpen();
@@ -84,7 +83,7 @@ const CancelOrder = ({ open, setOpen, id, setData, role }) => {
           </div>
         </div>
         <div>
-          {role === "admin" ? (
+          {session.user.role === "admin" ? (
             <Input
               variant="static"
               label="Cancellation Reason"
