@@ -14,51 +14,62 @@ const OrderSchema = new Schema(
           type: Number,
           required: true,
         },
+
         size: {
           type: String,
           required: true,
           lowercase: true,
         },
+
         colour: {
           type: Object,
           required: true,
         },
       },
     ],
+
     shippingInfo: {
       name: {
         type: String,
         required: true,
       },
+
       phoneNumber: {
         type: String,
         required: true,
       },
+
       email: {
         type: String,
       },
+
       city: {
         type: String,
         required: true,
       },
+
       state: {
         type: String,
         required: true,
       },
+
       pincode: {
         type: String,
         required: true,
       },
+
       address: {
         type: String,
         required: true,
       },
     },
+
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
+
     totalAmount: {
       type: Number,
       required: true,
@@ -79,7 +90,7 @@ const OrderSchema = new Schema(
 
     status: {
       type: String,
-      enum: ["confirmed", "packed", "shipped", "delivered", "canceled"],
+      enum: ["confirmed", "pending", "delivered", "canceled"],
       required: true,
       default: "confirmed",
       lowercase: true,
@@ -88,6 +99,16 @@ const OrderSchema = new Schema(
     isPaid: {
       type: Boolean,
       default: false,
+      required: true,
+    },
+
+    shiprocketOrderId: {
+      type: String,
+      required: true,
+    },
+
+    shiprocketShipmentInfo: {
+      type: Number,
       required: true,
     },
   },
