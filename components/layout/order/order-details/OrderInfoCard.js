@@ -58,7 +58,7 @@ const OrderInfoCard = ({ data, setData }) => {
           <DataCard
             icon={<TiCancelOutline size={20} />}
             title="Cancel By"
-            data={data.user.role}
+            data={data.canceledBy}
           />
         ) : (
           ""
@@ -88,7 +88,6 @@ const OrderInfoCard = ({ data, setData }) => {
         setOpen={setOpenDeleteDialog}
         id={data._id}
         setData={setData}
-        role={data.user.role}
       />
     </div>
   );

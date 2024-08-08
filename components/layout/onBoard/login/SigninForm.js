@@ -87,10 +87,14 @@ const SigninForm = ({ isAnimated, setIsAnimated }) => {
               variant="standard"
               label="Your Number"
               placeholder="Number"
+              minLength={10}
+              maxLength={10}
               required
               name="login-number"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value.length <= 10) setPhoneNumber(e.target.value);
+              }}
               error={phoneNumber && phoneNumber.length < 10}
             />
 

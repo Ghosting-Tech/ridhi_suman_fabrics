@@ -1,25 +1,43 @@
+import Link from "next/link";
 import { Suspense } from "react";
 
 import CategoriesList from "../categories/CategoriesList";
 
 import SectionHeading from "@/components/ui/SectionHeading";
 import CategoryListSkeleton from "@/components/ui/skeletons/category/CategoryListSkeleton";
-import Link from "next/link";
 
 async function getCategories() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch categories",
+        status: res.status,
+        data: [],
+      };
+    }
+
+    const data = await res.json();
+
+    return {
+      success: true,
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the categories",
+      data: [],
+    };
   }
-
-  return res.json();
 }
 
 const CategoriesYouMayLike = async () => {
@@ -33,7 +51,7 @@ const CategoriesYouMayLike = async () => {
       />
 
       <Suspense fallback={<CategoryListSkeleton />}>
-        <CategoriesList categoryData={data} />
+        <CategoriesList categoryData={data.data} />
       </Suspense>
 
       <div className="mt-12 pb-6">

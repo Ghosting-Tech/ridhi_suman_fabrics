@@ -20,11 +20,9 @@ const NavHeader = () => {
 
   const [openNav, setOpenNav] = useState(false);
 
-  const fetchCartItems = async () => {
+  const fetchWishlist = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist`
-      );
+      const res = await fetch(`/api/user/wishlist`);
 
       const data = await res.json();
 
@@ -36,7 +34,7 @@ const NavHeader = () => {
   };
 
   useEffect(() => {
-    fetchCartItems();
+    fetchWishlist();
   }, []);
 
   useEffect(() => {

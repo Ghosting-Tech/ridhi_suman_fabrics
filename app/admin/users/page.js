@@ -3,19 +3,47 @@ import Heading from "@/components/ui/heading/Heading";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import React, { Suspense } from "react";
 import { RiCoupon4Line } from "react-icons/ri";
-async function getUsers(page, size) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/users?page=${page || 1}`,
-    {
-      cache: "no-store",
+
+async function getUsers(page = 1, size = 12) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/users?page=${page}&size=${size}`,
+      {
+        cache: "no-store",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch users",
+        status: res.status,
+        data: [],
+        meta: { page, size, totalPages: 1, totalItems: 0 },
+      };
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    const data = await res.json();
+
+    return {
+      success: true,
+      data: data.data,
+      meta: data.meta,
+    };
+  } catch (error) {
+    console.error("Error fetching users:", error);
+
+    return {
+      success: false,
+      message: "An error occurred while fetching the users",
+      data: [],
+      meta: { page, size, totalPages: 1, totalItems: 0 },
+    };
   }
-
-  return res.json();
 }
 
 const page = async ({ searchParams: { page, size } }) => {
@@ -29,7 +57,7 @@ const page = async ({ searchParams: { page, size } }) => {
             <RiCoupon4Line size={20} color="white" />
           </div>
         }
-        title={"Coupon Details"}
+        title={"Users"}
       />
 
       <Suspense>
