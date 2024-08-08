@@ -15,13 +15,20 @@ import { RxCross1 } from "react-icons/rx";
 import { TiCancelOutline } from "react-icons/ti";
 import { toast } from "sonner";
 
-const CancelOrder = ({ open, setOpen, id, setData, setRole }) => {
+const CancelOrder = ({ open, setOpen, id, setData }) => {
   const { data: session } = useSession();
   const [pending, setPending] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
+  const [canceledBy, setCanceledBy] = useState(session.user.role);
   const handleOpen = () => setOpen(!open);
 
-  const handleCancel = async (e, id, newStatus, cancellationReason) => {
+  const handleCancel = async (
+    e,
+    id,
+    newStatus,
+    cancellationReason,
+    canceledBy
+  ) => {
     e.preventDefault();
     setPending(true);
     try {
@@ -30,10 +37,13 @@ const CancelOrder = ({ open, setOpen, id, setData, setRole }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status: newStatus, cancellationReason }),
+        body: JSON.stringify({
+          status: newStatus,
+          cancellationReason,
+          canceledBy,
+        }),
       });
       if (res.ok) {
-        setRole(session.user.role);
         const data = await res.json();
         setData(data);
         handleOpen();
@@ -73,7 +83,9 @@ const CancelOrder = ({ open, setOpen, id, setData, setRole }) => {
         ]}
       />
       <form
-        onSubmit={(e) => handleCancel(e, id, "canceled", cancellationReason)}
+        onSubmit={(e) =>
+          handleCancel(e, id, "canceled", cancellationReason, canceledBy)
+        }
         className="flex flex-col gap-3"
       >
         <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 my-4 rounded-md">

@@ -46,7 +46,8 @@ export async function PUT(request, { params }) {
     await dbConnect();
 
     const { id } = params;
-    const { status, isPaid, cancellationReason } = await request.json();
+    const { status, isPaid, cancellationReason, canceledBy } =
+      await request.json();
     console.log({ Data: status, pay: isPaid, Cancel: cancellationReason });
 
     if (!id) {
@@ -58,6 +59,7 @@ export async function PUT(request, { params }) {
     if (typeof isPaid === "boolean") updateFields.isPaid = isPaid;
     if (cancellationReason)
       updateFields.cancellationReason = cancellationReason;
+    if (canceledBy) updateFields.canceledBy = canceledBy;
 
     const order = await Order.findByIdAndUpdate(id, updateFields, {
       new: true,
