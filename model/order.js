@@ -90,6 +90,9 @@ const OrderSchema = new Schema(
       default: false,
       required: true,
     },
+    transactionId: {
+      type: String,
+    },
   },
 
   {
