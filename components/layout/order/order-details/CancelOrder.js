@@ -8,23 +8,28 @@ import {
   Option,
   Select,
 } from "@material-tailwind/react";
+import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross1 } from "react-icons/rx";
 import { TiCancelOutline } from "react-icons/ti";
 import { toast } from "sonner";
 
-const CancelOrder = ({ open, setOpen, id, setData, role }) => {
+const CancelOrder = ({ open, setOpen, id, setData }) => {
+  const { data: session } = useSession();
   const [pending, setPending] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
+  const [canceledBy, setCanceledBy] = useState(session.user.role);
   const handleOpen = () => setOpen(!open);
 
-  const handleCancel = async (e, id, newStatus, cancellationReason) => {
+  const handleCancel = async (
+    e,
+    id,
+    newStatus,
+    cancellationReason,
+    canceledBy
+  ) => {
     e.preventDefault();
-    // if (!cancellationReason.trim()) {
-    //   toast.error("Please provide a cancellation reason");
-    //   return;
-    // }
     setPending(true);
     try {
       const res = await fetch(`/api/private/order/${id}`, {
@@ -32,7 +37,11 @@ const CancelOrder = ({ open, setOpen, id, setData, role }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status: newStatus, cancellationReason }),
+        body: JSON.stringify({
+          status: newStatus,
+          cancellationReason,
+          canceledBy,
+        }),
       });
       if (res.ok) {
         const data = await res.json();
@@ -74,7 +83,9 @@ const CancelOrder = ({ open, setOpen, id, setData, role }) => {
         ]}
       />
       <form
-        onSubmit={(e) => handleCancel(e, id, "canceled", cancellationReason)}
+        onSubmit={(e) =>
+          handleCancel(e, id, "canceled", cancellationReason, canceledBy)
+        }
         className="flex flex-col gap-3"
       >
         <div className="flex items-center gap-1 bg-red-50 text-red-700 px-4 py-1 my-4 rounded-md">
@@ -84,7 +95,7 @@ const CancelOrder = ({ open, setOpen, id, setData, role }) => {
           </div>
         </div>
         <div>
-          {role === "admin" ? (
+          {session.user.role === "admin" ? (
             <Input
               variant="static"
               label="Cancellation Reason"

@@ -69,6 +69,18 @@ const Page = () => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
+  const handleNumInputChange = (e) => {
+    const { name, value } = e.target;
+    const isValid = /^\d*$/.test(value);
+    if (isValid) {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    } else {
+      toast.error("Please enter digits only");
+    }
+  };
 
   const handleSwitchChange = (e) => {
     setFormData((prevState) => ({
@@ -223,7 +235,7 @@ const Page = () => {
             label="Price"
             name="price"
             value={formData.price}
-            onChange={handleInputChange}
+            onChange={handleNumInputChange}
           />
           <Input
             label="Discount"
@@ -234,7 +246,7 @@ const Page = () => {
                 toast.error("Discount should not be more than 100%.");
                 return;
               }
-              handleInputChange(e);
+              handleNumInputChange(e);
             }}
           />
         </div>
@@ -328,6 +340,7 @@ const Page = () => {
             type="file"
             multiple
             className="hidden"
+            accept="image/*"
             id="images"
             onChange={handleFileChange}
           />

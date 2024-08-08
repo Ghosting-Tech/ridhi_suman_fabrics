@@ -1,7 +1,6 @@
 import React from "react";
 
 const DataCard = ({ icon, title, data }) => {
-  console.log({ Email: data });
   return (
     <div className="flex gap-2">
       <div className="text-gray-500">{icon}</div>

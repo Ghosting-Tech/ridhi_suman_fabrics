@@ -33,6 +33,18 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
       });
     }
   };
+  const handleNumInputChange = (e) => {
+    const { name, value } = e.target;
+    const isValid = /^\d*$/.test(value);
+    if (isValid) {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    } else {
+      toast.error("Please enter digits only");
+    }
+  };
 
   const createAdminAccount = async (e) => {
     e.preventDefault();
@@ -150,14 +162,13 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           </Typography>
           <Input
             label="123456789"
+            name="phoneNumber"
             color="pink"
             minLength={10}
             maxLength={10}
             size="lg"
             value={formData.phoneNumber}
-            onChange={(e) =>
-              setFormData({ ...formData, phoneNumber: e.target.value })
-            }
+            onChange={handleNumInputChange}
           />
           <Typography className="-mb-2" variant="h6">
             Password
@@ -175,7 +186,7 @@ const CreateSubAdmin = ({ open, setOpen, setAdmins }) => {
           <Typography className="-mb-2" variant="h6">
             Profile Pic
           </Typography>
-          <input type="file" onChange={handleImageChange} />
+          <input type="file" accept="image/*" onChange={handleImageChange} />
           <Checkbox
             onChange={(e) => setNoteChecked(e.target.checked)}
             label={

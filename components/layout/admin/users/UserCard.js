@@ -44,7 +44,8 @@ export default function UserCard({ user }) {
       <div>
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1 text-pink-500">
-            <EnvelopeIcon className="w-4 h-4" /> {user.email}
+            <EnvelopeIcon className="w-4 h-4" />
+            <span className="truncate"> {user.email}</span>
           </div>
           <div className="flex items-center gap-1 text-teal-500">
             <PhoneIcon className="w-4 h-4" /> {user.phoneNumber}

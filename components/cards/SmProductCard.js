@@ -4,11 +4,13 @@ import React from "react";
 const SmProductCard = ({ product, qty, size, color }) => {
   const amt = product.price - (product.price * product.discount) / 100;
   return (
-    <div className=" bg-white border shadow-md rounded-lg overflow-hidden mb-2 relative">
-      <div className="absolute right-3 top-3">
-        <h1 className="text-green-400">
+    <div className=" bg-white border shadow-md rounded-lg overflow-hidden mb-2 relative w-full">
+      <div className="absolute right-3 top-3 text-sm">
+        <h1 className="text-green-400 ">
           {product.category}/
-          <span className="text-red-400">{product.subCategory.name}</span>
+          <span className="text-red-400 text-sm">
+            {product.subCategory.name}
+          </span>
         </h1>
       </div>
       <div className="flex items-center p-3 gap-2">
@@ -19,23 +21,27 @@ const SmProductCard = ({ product, qty, size, color }) => {
           className="rounded-lg mr-4"
           alt={product.title}
         />
-        <div className="flex gap-8">
-          <div className="flex flex-col gap-3">
+        <div className="flex w-full pt-3 md:pt-0">
+          <div className="flex flex-col gap-1 md:gap-3 w-full ">
             <h3 className="text-md font-semibold">{product.title}</h3>
-            <p className="text-sm text-[#11998E] font-bold">
-              &#x20B9;{amt}
-              {"   "}
-              <span className="line-through text-gray-400">
-                {" "}
-                &#x20B9;{product.price}
-              </span>
-            </p>
+            <div className="flex gap-5 md:gap-10 w-full">
+              <div className="flex flex-col gap-1 md:gap-3">
+                <p className="text-sm text-[#11998E] font-bold">
+                  &#x20B9;{amt}
+                  {"   "}
+                  <span className="line-through text-gray-400">
+                    {" "}
+                    &#x20B9;{product.price}
+                  </span>
+                </p>
 
-            <p className="text-sm text-gray-500">Quantity: {qty}</p>
-          </div>
-          <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-500">Size: {size}</p>
-            <p className="text-sm text-gray-500">Color: {color} </p>
+                <p className="text-sm text-gray-500">Quantity: {qty}</p>
+              </div>
+              <div className="flex flex-col gap-1 md:gap-3">
+                <p className="text-sm text-gray-500">Size: {size}</p>
+                <p className="text-sm text-gray-500">Color: {color} </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
