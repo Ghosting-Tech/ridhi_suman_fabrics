@@ -2,9 +2,15 @@ import React from "react";
 import CancelOrderButton from "./CancelOrderButton";
 import AcceptOrderButton from "./AcceptOrderButton";
 
-const AcceptOrder = ({ data }) => {
+const AcceptOrder = ({ order }) => {
   return (
-    <td>{data.isAccepted ? <CancelOrderButton /> : <AcceptOrderButton />}</td>
+    <td>
+      {order.isAccepted ? (
+        <CancelOrderButton order={order} />
+      ) : (
+        <AcceptOrderButton order={order} />
+      )}
+    </td>
   );
 };
 

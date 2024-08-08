@@ -25,8 +25,7 @@ import AcceptOrder from "@/components/layout/admin/orders/AcceptOrder";
 
 const statusColors = {
   confirmed: "bg-blue-100 text-blue-800",
-  packed: "bg-yellow-100 text-yellow-800",
-  shipped: "bg-indigo-100 text-indigo-800",
+  pending: "bg-yellow-100 text-yellow-800",
   delivered: "bg-green-100 text-green-800",
   canceled: "bg-red-100 text-red-800",
 };
@@ -140,8 +139,7 @@ const AdminOrders = () => {
               <th className="w-auto">Amount</th>
               <th className="w-auto">Order Date</th>
               <th className="w-auto">Status</th>
-              <th className="w-auto">Pay Status</th>
-              <th className="w-auto">Select</th>
+              <th className="w-auto">Order Select</th>
               <th className="w-auto">Action</th>
               <th className="w-auto">Accept Order</th>
             </tr>
@@ -209,24 +207,6 @@ const AdminOrders = () => {
                     />
                   </td>
 
-                  <td className={`${classes} w-16 text-center`}>
-                    <Select
-                      label="Select status"
-                      value={order.isPaid ? "paid" : "unpaid"}
-                      color="blue"
-                      onChange={(value) =>
-                        handleStatusChange(
-                          order._id,
-                          "isPaid",
-                          value === "paid"
-                        )
-                      }
-                    >
-                      <Option value="paid">Paid</Option>
-                      <Option value="unpaid">Unpaid</Option>
-                    </Select>
-                  </td>
-
                   <td className={`${classes} w-32`}>
                     <Select
                       label="Select status"
@@ -238,8 +218,7 @@ const AdminOrders = () => {
                       }
                     >
                       <Option value="confirmed">Confirmed</Option>
-                      <Option value="packed">Packed</Option>
-                      <Option value="shipped">Shipped</Option>
+                      <Option value="pending">Pending</Option>
                       <Option value="delivered">Delivered</Option>
                       <Option value="canceled" disabled>
                         Canceled
@@ -255,7 +234,7 @@ const AdminOrders = () => {
                     </Link>
                   </td>
 
-                  <AcceptOrder data={order} />
+                  <AcceptOrder order={order} />
                 </tr>
               );
             })}
