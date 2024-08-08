@@ -9,19 +9,9 @@ import { checkAuthorization } from "@/config/checkAuthorization";
 
 export async function POST(request) {
   try {
-    // const isAdmin = await checkAuthorization(request);
-
-    // if (isAdmin === "Unauthorized") {
-    //   return NextResponse.json("Unauthorized Request", { status: 401 });
-    // }
-
     await dbConnect();
 
     let data = await request.json();
-
-    // if (data.paymentMethod === "cod" || data.paymentMethod === "pod") {
-    //   data.isPaid = false;
-    // }
 
     const userExist = await User.findById(data.user);
     if (!userExist) {

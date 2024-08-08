@@ -14,6 +14,8 @@ export async function middleware(request) {
 
     const res = NextResponse.next();
 
+    res.headers.set("x-url", url.origin);
+
     // Add CORS headers
     // res.headers.append("Access-Control-Allow-Credentials", "true");
     // res.headers.append("Access-Control-Allow-Origin", "https://example.com");

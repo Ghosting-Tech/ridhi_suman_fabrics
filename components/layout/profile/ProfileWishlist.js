@@ -1,38 +1,68 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { HeartIcon } from "@heroicons/react/24/solid";
+
+import Link from "next/link";
 import React, { Suspense } from "react";
+import { cookies, headers } from "next/headers";
+
+import ProductCarousel from "../products/ProductCarousel";
 
 import Heading from "@/components/ui/heading/Heading";
-import { HeartIcon } from "@heroicons/react/24/solid";
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
-import ProductCarousel from "../products/ProductCarousel";
-import Link from "next/link";
 
 async function getWishlist(page = 1, size = 12) {
   const cookieStore = cookies();
-  const token = cookieStore.get("next-auth.session-token");
+  const headersList = headers();
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist?page=${page}&size=${size}&populate=true`,
-    {
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.value}`,
-      },
+  const activePath = headersList.get("x-url");
+  console.log(activePath);
+  // const token = cookieStore.get("next-auth.session-token");
+  // console.log(token);
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist?page=${page}&size=${size}&populate=true`,
+      {
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: `Bearer ${token.value}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch data",
+        status: res.status,
+        data: [],
+        meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
+      };
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    const data = await res.json();
+    console.log(data);
+
+    return {
+      success: true,
+      data: data.data,
+      meta: data.meta,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the wishlist",
+      data: [],
+      meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
+    };
   }
-
-  return res.json();
 }
 
 const ProfileWishlist = async () => {
   const products = await getWishlist();
+  console.log(products);
 
   return (
     <div className="block w-full space-y-2">
@@ -54,9 +84,9 @@ const ProfileWishlist = async () => {
         ]}
       />
 
-      <Suspense fallback={<ProductListSkeleton />}>
+      {/* <Suspense fallback={<ProductListSkeleton />}>
         {products && <ProductCarousel products={products.data} />}
-      </Suspense>
+      </Suspense> */}
     </div>
   );
 };

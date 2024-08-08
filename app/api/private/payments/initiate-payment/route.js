@@ -42,19 +42,17 @@ export async function POST(req) {
   }
   // Create payload
   const payload = {
-    merchantId: "PGTESTPAYUAT",
+    merchantId: "FABRICSUAT",
     merchantTransactionId, // Unique transaction ID
     merchantUserId: userId,
-    amount: amount * 100, // Convert to smallest currency unit
+    amount: 1 * 100, // Convert to smallest currency unit
     redirectUrl: `${PHONEPE_REDIRECT_URL}/${orderId}/payment`,
     redirectMode: "REDIRECT",
-    mobileNumber: userPhoneNumber,
+    mobileNumber: 8794571752,
     paymentInstrument: {
       type: "PAY_PAGE",
     },
   };
-
-  console.log("payload: ", payload);
 
   // Encode payload to Base64
   const jsonString = JSON.stringify(payload);
@@ -66,12 +64,11 @@ export async function POST(req) {
     "###" +
     saltIndex;
 
-  console.log("checksum: ", checksum);
   try {
     // Set request options for axios
     const options = {
       method: "POST",
-      url: `	https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay`,
+      url: `${PHONEPE_BASE_URL}${payEndPoint}`,
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
@@ -82,9 +79,10 @@ export async function POST(req) {
 
     // Send request to PhonePe
     const response = await axios.request(options);
-    console.log(response);
-    console.log("response data", response.data);
-    return NextResponse.json(response.data, { status: 200 });
+    return NextResponse.json(
+      response.data.data.instrumentResponse.redirectInfo.url,
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error during payment initiation:", error);
     return NextResponse.json(

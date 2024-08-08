@@ -2,8 +2,8 @@
 
 import { IoIosHeart } from "react-icons/io";
 
-import { cookies } from "next/headers";
 import React, { Suspense } from "react";
+import { cookies, headers } from "next/headers";
 
 import ProductList from "@/components/layout/products/ProductList";
 
@@ -13,28 +13,64 @@ import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSk
 
 async function getWishlist(page = 1, size = 12) {
   const cookieStore = cookies();
+  const headersList = headers();
+
+  const activePath = headersList.get("x-url");
   const token = cookieStore.get("next-auth.session-token");
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist?page=${page}&size=${size}&populate=true`,
-    {
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.value}`,
-      },
+  try {
+    const res = await fetch(
+      `${activePath}/api/user/wishlist?page=${page}&size=${size}&populate=true`,
+      {
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token.value}`,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch data",
+        status: res.status,
+        data: [],
+        meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
+      };
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
+    const data = await res.json();
+
+    return {
+      success: true,
+      data: data.data,
+      meta: data.meta,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the wishlist",
+      data: [],
+      meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
+    };
   }
-
-  return res.json();
 }
 
-const WishlistPage = async ({ searchParams: { page, size } }) => {
+const WishlistPage = async ({ searchParams: { page = 1, size = 12 } }) => {
+  page = parseInt(page) || 1;
+  size = parseInt(size) || 12;
+
   const data = await getWishlist(page, size);
+  console.log(data.data);
+
+  if (!data.success) {
+    return (
+      <main className="flex flex-col min-h-screen">
+        <div className="my-10 text-xl font-semibold">{data.message}</div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col min-h-screen">
@@ -49,7 +85,7 @@ const WishlistPage = async ({ searchParams: { page, size } }) => {
         />
 
         <Suspense fallback={<ProductListSkeleton />}>
-          <ProductList products={data.data} isWishlist={true} />
+          <ProductList products={data.data} isWishlist={false} />
         </Suspense>
 
         <PaginationBtn totalPages={data.meta.totalPages} />

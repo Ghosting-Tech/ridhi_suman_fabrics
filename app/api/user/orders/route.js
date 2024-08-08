@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 import User from "@/model/user";
+import Order from "@/model/order";
+
 import dbConnect from "@/config/db";
 
 const secret = process.env.NEXTAUTH_SECRET;
@@ -11,29 +13,29 @@ export const dynamic = "force-dynamic";
 export async function GET(req) {
   try {
     const token = await getToken({ req, secret });
+
     if (!token) {
       return NextResponse.json("Unauthorized", { status: 401 });
     }
+
     const searchParams = req.nextUrl.searchParams;
 
     const page = searchParams.get("page") || 1;
     const pageSize = searchParams.get("size") || 12;
+
     const skip = (page - 1) * pageSize;
+
     await dbConnect();
 
-    const orders = await User.findById(token._id).populate({
+    const user = await User.findById(token._id).populate({
       path: "orders",
+      model: Order,
       options: {
-        skip: parseInt(skip), // Skip the number of orders
-        limit: parseInt(pageSize), // Limit the number of orders
-      },
-      populate: {
-        path: "cartItems.productId",
-        model: "Product",
+        skip: parseInt(skip),
+        limit: parseInt(pageSize),
       },
     });
 
-    const user = await User.findById(token._id);
     const ordersCount = user.orders ? user.orders.length : 0;
 
     if (!user) {
@@ -42,7 +44,7 @@ export async function GET(req) {
 
     return NextResponse.json(
       {
-        data: orders.orders,
+        data: user.orders,
         meta: {
           page: page,
           pageSize: pageSize,
@@ -54,7 +56,6 @@ export async function GET(req) {
     );
   } catch (error) {
     console.error("Error fetching orders:", error);
-
     return NextResponse.json("Internal Server Error", { status: 500 });
   }
 }

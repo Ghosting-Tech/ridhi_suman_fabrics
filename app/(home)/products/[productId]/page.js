@@ -1,35 +1,60 @@
 import { Suspense } from "react";
+import { headers } from "next/headers";
 
 import ImageSlider from "@/components/layout/products/productDetails/ImageSlider";
 import ProductInfo from "@/components/layout/products/productDetails/ProductInfo";
 
 const getProductById = async (productId) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product/${productId}`,
-    {
+  const headersList = headers();
+
+  const activePath = headersList.get("x-url");
+
+  try {
+    const res = await fetch(`${activePath}/api/product/${productId}`, {
       method: "GET",
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
       },
+    });
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: "Failed to fetch Product Details",
+        status: res.status,
+        data: null,
+      };
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch Product Details");
+    const data = await res.json();
+
+    return {
+      success: true,
+      message: "Product details fetched successfully",
+      data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "An error occurred while fetching the product details",
+      data: null,
+    };
   }
-
-  return res.json();
 };
 
 export default async function ProductData({ params: { productId } }) {
   const productData = await getProductById(productId);
 
+  if (!productData.success) {
+    return <div>{productData.message}</div>;
+  }
+
   return (
     <Suspense>
       <div className="flex gap-6 flex-col md:flex-row justify-center">
-        <ImageSlider data={productData?.images} />
-        <ProductInfo product={productData} />
+        <ImageSlider data={productData.data?.images} />
+        <ProductInfo product={productData.data} />
       </div>
     </Suspense>
   );

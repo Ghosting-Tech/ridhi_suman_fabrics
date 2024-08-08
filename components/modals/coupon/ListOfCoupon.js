@@ -99,16 +99,21 @@ const ListOfCoupon = ({ open, setOpen, setTotalAmount }) => {
                 </p>
                 <p className="text-gray-700">{coupon.discount}% off</p>
               </div>
-              <p className="text-sm text-pink-500">
-                {cart.totalPrice < coupon.minAmt ? (
-                  <span>
-                    Purchase ₹{coupon.minAmt - cart.totalPrice} to get this
-                    coupon!
-                  </span>
-                ) : (
-                  <span>Min spent ₹{coupon.minAmt}</span>
-                )}
-              </p>
+              <div className="flex gap-1 items-center">
+                <p className="text-xs text-pink-500">
+                  {cart.totalPrice < coupon.minAmt ? (
+                    <span>
+                      Purchase ₹{coupon.minAmt - cart.totalPrice} to get this
+                      coupon!
+                    </span>
+                  ) : (
+                    <span>Min spent ₹{coupon.minAmt}</span>
+                  )}
+                </p> |
+                <p className="text-sm text-teal-700">
+                  Up to ₹{coupon.maxAmt}
+                </p>
+              </div>
             </div>
             <Button
               variant="outlined"
