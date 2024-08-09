@@ -106,7 +106,7 @@ const OrderSchema = new Schema(
       type: String,
     },
 
-    shiprocketShipmentInfo: {
+    shiprocketShipmentId: {
       type: Number,
     },
 
