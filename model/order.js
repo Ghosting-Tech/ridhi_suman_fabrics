@@ -104,12 +104,10 @@ const OrderSchema = new Schema(
 
     shiprocketOrderId: {
       type: String,
-      required: true,
     },
 
     shiprocketShipmentInfo: {
       type: Number,
-      required: true,
     },
 
     transactionId: {
