@@ -6,6 +6,8 @@ import dbConnect from "@/config/db";
 
 import mongoose from "mongoose";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req, { params }) {
   try {
     const { categoryId } = params;

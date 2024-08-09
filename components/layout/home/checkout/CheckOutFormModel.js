@@ -1,4 +1,5 @@
 import { Input, Textarea } from "@material-tailwind/react";
+import { toast } from "sonner";
 
 const CheckOutFormModel = ({ data, setData }) => {
   return (
@@ -12,12 +13,15 @@ const CheckOutFormModel = ({ data, setData }) => {
           }
         />
         <Input
+          type="number"
           label="Phone Number"
+          name="phoneNumber"
           variant="outlined"
           value={data.phoneNumber}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, phoneNumber: e.target.value }))
-          }
+          onChange={(e) => {
+            if (e.target.value.length <= 10)
+              setData((prev) => ({ ...prev, phoneNumber: e.target.value }));
+          }}
         />
       </div>
       <div className="flex flex-col lg:flex-row w-full gap-4">
@@ -48,12 +52,15 @@ const CheckOutFormModel = ({ data, setData }) => {
           }
         />
         <Input
+          type="number"
           label="Pincode"
+          name="picCode"
           variant="outlined"
           value={data.pincode}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, pincode: e.target.value }))
-          }
+          onChange={(e) => {
+            if (e.target.value.length <= 6)
+              setData((prev) => ({ ...prev, pincode: e.target.value }));
+          }}
         />
       </div>
       <Textarea

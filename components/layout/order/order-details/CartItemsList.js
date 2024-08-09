@@ -4,7 +4,7 @@ import SmProductCard from "@/components/cards/SmProductCard";
 import { toast } from "sonner";
 
 const CartItemsList = ({ product }) => {
-  const id = product.productId;
+  const id = product.productId._id;
   const qty = product.quantity;
   const size = product.size;
   const color = product.colour.name;

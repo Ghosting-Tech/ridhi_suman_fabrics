@@ -4,6 +4,8 @@ import Product from "@/model/product";
 
 import dbConnect from "@/config/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await dbConnect();
