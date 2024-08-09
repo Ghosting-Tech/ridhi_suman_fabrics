@@ -55,6 +55,14 @@ const CheckoutPage = () => {
         toast.error("All shipping data is required except email.");
         return;
       }
+      if (shippingData.phoneNumber.length < 10) {
+        toast.error("Phone number must be 10 digits");
+        return;
+      }
+      if (shippingData.pincode.length < 6) {
+        toast.error("Pincode  must be 6 digits");
+        return;
+      }
 
       if (!session.user._id) {
         toast.error("Login before continue!");

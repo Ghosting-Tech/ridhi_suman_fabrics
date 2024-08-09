@@ -4,14 +4,23 @@ import { bannerData } from "@/utils/HomePageData";
 
 const HomeBanner = () => {
   return (
-    <div className="flex w-full">
+    <div className="flex w-full px-2">
       {bannerData.slice(0, 3).map((banner, index) => (
-        <div className="relative w-1/3 h-80" key={index}>
+        <div
+          className={`relative h-80 ${
+            index === 0
+              ? "w-full md:w-1/2 xl:w-1/3"
+              : index === 1
+              ? "hidden sm:block md:w-1/2 xl:w-1/3"
+              : "hidden lg:block xl:w-1/3"
+          }`}
+          key={index}
+        >
           <Image
             src={banner.src}
             alt={banner.alt}
             fill
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            style={{ objectFit: "contain", objectPosition: "center" }}
           />
         </div>
       ))}
