@@ -3,7 +3,6 @@
 import ImageContainer from "@/components/ui/ImageContainer";
 
 const CheckoutProductCard = ({ data }) => {
-  console.log(data);
   return (
     <div className="border border-gray-300 rounded-xl p-2.5 flex gap-3 bg-white shadow-sm relative">
       <div className="w-4/12 min-h-28">
