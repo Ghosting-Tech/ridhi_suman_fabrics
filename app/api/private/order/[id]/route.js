@@ -23,7 +23,10 @@ export async function GET(request, { params }) {
 
     const order = await Order.findById(id)
       .populate("user", "name phoneNumber image")
-      .populate("cartItems.productId", "title price discount _id");
+      .populate(
+        "cartItems.productId",
+        "title price discount _id image category subCategory"
+      );
 
     if (!order) {
       return NextResponse.json("Order not found", { status: 404 });
@@ -46,20 +49,27 @@ export async function PUT(request, { params }) {
     await dbConnect();
 
     const { id } = params;
-    const { status, isPaid, cancellationReason, canceledBy } =
+
+    const { status, cancellationReason, canceledBy, order_id, shipment_id } =
       await request.json();
-    console.log({ Data: status, pay: isPaid, Cancel: cancellationReason });
 
     if (!id) {
       return NextResponse.json("Invalid order id", { status: 400 });
     }
 
     const updateFields = {};
+
     if (status) updateFields.status = status;
-    if (typeof isPaid === "boolean") updateFields.isPaid = isPaid;
+
     if (cancellationReason)
       updateFields.cancellationReason = cancellationReason;
+
     if (canceledBy) updateFields.canceledBy = canceledBy;
+
+    if (order_id && shipment_id) {
+      updateFields.shiprocketOrderId = order_id;
+      updateFields.shiprocketShipmentId = shipment_id;
+    }
 
     const order = await Order.findByIdAndUpdate(id, updateFields, {
       new: true,

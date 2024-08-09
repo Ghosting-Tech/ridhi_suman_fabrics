@@ -217,9 +217,16 @@ const AdminOrders = () => {
                         handleStatusChange(order._id, "status", value)
                       }
                     >
-                      <Option value="confirmed">Confirmed</Option>
+                      <Option value="confirmed" disabled>
+                        Confirmed
+                      </Option>
                       <Option value="pending">Pending</Option>
-                      <Option value="delivered">Delivered</Option>
+                      <Option
+                        value="delivered"
+                        disabled={order.status === "canceled"}
+                      >
+                        Delivered
+                      </Option>
                       <Option value="canceled" disabled>
                         Canceled
                       </Option>
@@ -234,7 +241,7 @@ const AdminOrders = () => {
                     </Link>
                   </td>
 
-                  <AcceptOrder order={order} />
+                  <AcceptOrder order={order} setOrders={setOrders} />
                 </tr>
               );
             })}
