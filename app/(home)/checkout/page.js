@@ -15,6 +15,7 @@ import ListOfCoupon from "@/components/modals/coupon/ListOfCoupon";
 
 import CheckOutFormModel from "@/components/layout/home/checkout/CheckOutFormModel";
 import CheckoutProductCard from "@/components/layout/home/checkout/CheckoutProductCard";
+import { clearCart } from "@/redux/slice/cartSlice";
 
 const CheckoutPage = () => {
   const cart = useSelector((state) => state.cart);
@@ -90,7 +91,7 @@ const CheckoutPage = () => {
         shippingInfo: shippingData,
         user: session.user._id,
         totalAmount: cart.totalPrice + 120,
-        paymentMethod: "Phone Pay",
+        paymentMethod: "PhonePe",
         isPaid: false,
       };
 
@@ -129,23 +130,24 @@ const CheckoutPage = () => {
 
           const phonePeRedirectUrl = await response.json();
 
+          console.log(phonePeRedirectUrl);
+
+          toast.success("Payment initiated!");
+          dispatch(clearCart());
+          setShippingData({
+            name: "",
+            phoneNumber: "",
+            email: "",
+            city: "",
+            state: "",
+            pincode: "",
+            address: "",
+          });
           router.push(phonePeRedirectUrl);
         } catch (err) {
           toast.error("Error while submitting payment");
         }
 
-        // toast.success("Order placed successfully!");
-        // dispatch(clearCart());
-        // setShippingData({
-        //   name: "",
-        //   phoneNumber: "",
-        //   email: "",
-        //   city: "",
-        //   state: "",
-        //   pincode: "",
-        //   address: "",
-        // });
-        // router.push("/my-orders");
       } else {
         toast.error("An error occurred while placing order!");
       }

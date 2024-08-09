@@ -21,19 +21,22 @@ import { useSearchParams } from "next/navigation";
 import PaginationBtn from "@/components/ui/PaginationBtn";
 import Link from "next/link";
 import { AiOutlineLoading } from "react-icons/ai";
+import AcceptOrder from "@/components/layout/admin/orders/AcceptOrder";
 
 const statusColors = {
   confirmed: "bg-blue-100 text-blue-800",
-  packed: "bg-yellow-100 text-yellow-800",
-  shipped: "bg-indigo-100 text-indigo-800",
+  pending: "bg-yellow-100 text-yellow-800",
   delivered: "bg-green-100 text-green-800",
   canceled: "bg-red-100 text-red-800",
 };
 
 const AdminOrders = () => {
   const searchParams = useSearchParams();
+
   const [meta, setMeta] = useState({});
   const [orders, setOrders] = useState([]);
+
+  const currentPage = searchParams.get("page");
 
   const handleStatusChange = async (id, field, newStatus) => {
     try {
@@ -44,9 +47,10 @@ const AdminOrders = () => {
         },
         body: JSON.stringify({ [field]: newStatus }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
-        toast.success("Status updated successfully");
         setOrders((prevOrders) => {
           return prevOrders.map((order) => {
             if (order._id === id) {
@@ -59,6 +63,8 @@ const AdminOrders = () => {
             return order;
           });
         });
+
+        toast.success("Status updated successfully");
       } else {
         toast.error("Failed to update status");
       }
@@ -70,9 +76,11 @@ const AdminOrders = () => {
   const getOrders = async (page) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/order?size=7&page=${page}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/order?page=${page}size=15`
       );
+
       const data = await res.json();
+
       setOrders(data.data);
       setMeta(data.pagination);
     } catch (e) {
@@ -80,13 +88,13 @@ const AdminOrders = () => {
     }
   };
 
-  const currentPage = searchParams.get("page");
   useEffect(() => {
     getOrders(currentPage);
   }, [currentPage]);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
+
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -101,7 +109,7 @@ const AdminOrders = () => {
     />,
   ];
 
-  if (!orders) {
+  if (orders.length === 0) {
     return (
       <div className="w-full flex gap-1 justify-center items-center my-10 text-2xl text-pink-500">
         <AiOutlineLoading className="animate-spin" />
@@ -122,6 +130,7 @@ const AdminOrders = () => {
           buttons={btns}
         />
       </CardHeader>
+
       <CardBody className="p-2 mx-8  overflow-x-auto">
         <table className="w-full min-w-max table-auto text-left">
           <thead className="bg-gray-100">
@@ -130,12 +139,12 @@ const AdminOrders = () => {
               <th className="w-auto">Amount</th>
               <th className="w-auto">Order Date</th>
               <th className="w-auto">Status</th>
-              <th className="w-auto">Payment Method</th>
-              <th className="w-auto">Pay Status</th>
-              <th className="w-auto">Select</th>
+              <th className="w-auto">Order Select</th>
               <th className="w-auto">Action</th>
+              <th className="w-auto">Accept Order</th>
             </tr>
           </thead>
+
           <tbody>
             {orders.map((order, index) => {
               const isLast = index === orders.length - 1;
@@ -166,6 +175,7 @@ const AdminOrders = () => {
                       </div>
                     </div>
                   </td>
+
                   <td className={classes}>
                     <Typography
                       variant="small"
@@ -175,6 +185,7 @@ const AdminOrders = () => {
                       &#8377;{order.totalAmount}
                     </Typography>
                   </td>
+
                   <td className={`${classes} px-5`}>
                     <Typography
                       variant="small"
@@ -184,6 +195,7 @@ const AdminOrders = () => {
                       {formatDate(order.createdAt)}
                     </Typography>
                   </td>
+
                   <td className={classes}>
                     <Chip
                       size="sm"
@@ -194,32 +206,7 @@ const AdminOrders = () => {
                       } py-2 px-0 text-center rounded-full`}
                     />
                   </td>
-                  <td className={classes}>
-                    <Typography
-                      variant="small"
-                      color="blue-gray"
-                      className="font-normal uppercase"
-                    >
-                      {order.paymentMethod}
-                    </Typography>
-                  </td>
-                  <td className={`${classes} w-16 text-center`}>
-                    <Select
-                      label="Select status"
-                      value={order.isPaid ? "paid" : "unpaid"}
-                      color="blue"
-                      onChange={(value) =>
-                        handleStatusChange(
-                          order._id,
-                          "isPaid",
-                          value === "paid"
-                        )
-                      }
-                    >
-                      <Option value="paid">Paid</Option>
-                      <Option value="unpaid">Unpaid</Option>
-                    </Select>
-                  </td>
+
                   <td className={`${classes} w-32`}>
                     <Select
                       label="Select status"
@@ -231,14 +218,14 @@ const AdminOrders = () => {
                       }
                     >
                       <Option value="confirmed">Confirmed</Option>
-                      <Option value="packed">Packed</Option>
-                      <Option value="shipped">Shipped</Option>
+                      <Option value="pending">Pending</Option>
                       <Option value="delivered">Delivered</Option>
                       <Option value="canceled" disabled>
                         Canceled
                       </Option>
                     </Select>
                   </td>
+
                   <td className={classes}>
                     <Link href={`/admin/orders/${order._id}`}>
                       <Button variant="outlined" color="blue">
@@ -246,12 +233,15 @@ const AdminOrders = () => {
                       </Button>
                     </Link>
                   </td>
+
+                  <AcceptOrder order={order} />
                 </tr>
               );
             })}
           </tbody>
         </table>
       </CardBody>
+
       <CardFooter>
         <PaginationBtn totalPages={meta.totalPages} />
       </CardFooter>

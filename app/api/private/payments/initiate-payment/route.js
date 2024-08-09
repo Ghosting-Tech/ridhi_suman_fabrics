@@ -6,7 +6,6 @@ export async function POST(req) {
   const { amount, orderId, userId, userPhoneNumber } = await req.json();
   const {
     PHONEPE_MERCHANT_ID,
-    PHONEPE_API_KEY,
     PHONEPE_BASE_URL,
     PHONEPE_REDIRECT_URL,
     PHONEPE_SALT_KEY,
@@ -31,6 +30,7 @@ export async function POST(req) {
     );
 
   const timestamp = Date.now().toString();
+  // "merchantTransactionId": "080824-002",
   let merchantTransactionId = `MT${timestamp}`;
 
   // Remove any special characters except underscores and hyphens
@@ -42,13 +42,14 @@ export async function POST(req) {
   }
   // Create payload
   const payload = {
-    merchantId: "FABRICSUAT",
+    merchantId: PHONEPE_MERCHANT_ID,
     merchantTransactionId, // Unique transaction ID
     merchantUserId: userId,
     amount: 1 * 100, // Convert to smallest currency unit
-    redirectUrl: `${PHONEPE_REDIRECT_URL}/${orderId}/payment`,
+    redirectUrl: `${PHONEPE_REDIRECT_URL}/status/${merchantTransactionId}?orderId=${orderId}`,
+    callbackUrl: `${PHONEPE_REDIRECT_URL}/status/${merchantTransactionId}?orderId=${orderId}`,
     redirectMode: "REDIRECT",
-    mobileNumber: 8794571752,
+    mobileNumber: `${userPhoneNumber}`,
     paymentInstrument: {
       type: "PAY_PAGE",
     },

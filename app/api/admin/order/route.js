@@ -27,10 +27,11 @@ export async function GET(request) {
     const orders = await Order.find()
       .skip(skip)
       .limit(limit)
-      .populate("user")
-      .select(
-        "cartItems user totalAmount paymentMethod status isPaid createdAt"
-      )
+      .populate({
+        path: "user",
+        select: "name image phoneNumber",
+      })
+      .select("user totalAmount status createdAt")
       .exec();
 
     const totalOrders = await Order.countDocuments();

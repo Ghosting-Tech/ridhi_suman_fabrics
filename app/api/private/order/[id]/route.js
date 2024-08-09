@@ -22,8 +22,8 @@ export async function GET(request, { params }) {
     await dbConnect();
 
     const order = await Order.findById(id)
-      .populate("user")
-      .populate("cartItems");
+      .populate("user", "name phoneNumber image")
+      .populate("cartItems.productId", "title price discount _id");
 
     if (!order) {
       return NextResponse.json("Order not found", { status: 404 });

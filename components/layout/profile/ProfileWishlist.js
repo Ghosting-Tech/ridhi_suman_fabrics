@@ -1,68 +1,74 @@
-"use server";
+"use client";
 
 import { HeartIcon } from "@heroicons/react/24/solid";
 
 import Link from "next/link";
-import React, { Suspense } from "react";
-import { cookies, headers } from "next/headers";
+import React, { Suspense, useEffect, useState } from "react";
 
 import ProductCarousel from "../products/ProductCarousel";
-
 import Heading from "@/components/ui/heading/Heading";
 import ProductListSkeleton from "@/components/ui/skeletons/product/ProductListSkeleton";
 
-async function getWishlist(page = 1, size = 12) {
-  const cookieStore = cookies();
-  const headersList = headers();
+const ProfileWishlist = () => {
+  const [wishlistData, setWishlistData] = useState({
+    success: false,
+    data: [],
+    meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
+  });
 
-  const activePath = headersList.get("x-url");
-  console.log(activePath);
-  // const token = cookieStore.get("next-auth.session-token");
-  // console.log(token);
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/wishlist?page=${page}&size=${size}&populate=true`,
-      {
+  const fetchWishlist = async () => {
+    try {
+      const res = await fetch(`/api/user/my-wishlist`, {
         cache: "no-cache",
         headers: {
           "Content-Type": "application/json",
-          // Authorization: `Bearer ${token.value}`,
         },
-      }
-    );
+      });
 
-    if (!res.ok) {
+      if (!res.ok) {
+        return {
+          success: false,
+          message: "Failed to fetch data",
+          status: res.status,
+          data: [],
+        };
+      }
+
+      const data = await res.json();
+
+      return {
+        success: true,
+        data: data.data,
+        meta: data.meta,
+      };
+    } catch (error) {
       return {
         success: false,
-        message: "Failed to fetch data",
-        status: res.status,
+        message: "An error occurred while fetching the wishlist",
         data: [],
-        meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
       };
     }
+  };
 
-    const data = await res.json();
-    console.log(data);
+  useEffect(() => {
+    const getWishlistData = async () => {
+      const products = await fetchWishlist();
+      setWishlistData(products);
+      console.log(products);
+    };
 
-    return {
-      success: true,
-      data: data.data,
-      meta: data.meta,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: "An error occurred while fetching the wishlist",
-      data: [],
-      meta: { page: 1, size: 12, totalPages: 1, totalItems: 0 },
-    };
+    getWishlistData();
+  }, []);
+
+  if (!wishlistData.success) {
+    return (
+      <main className="flex flex-col min-h-screen">
+        <div className="my-10 text-xl font-semibold">
+          {wishlistData.message}
+        </div>
+      </main>
+    );
   }
-}
-
-const ProfileWishlist = async () => {
-  const products = await getWishlist();
-  console.log(products);
 
   return (
     <div className="block w-full space-y-2">
@@ -84,9 +90,11 @@ const ProfileWishlist = async () => {
         ]}
       />
 
-      {/* <Suspense fallback={<ProductListSkeleton />}>
-        {products && <ProductCarousel products={products.data} />}
-      </Suspense> */}
+      <Suspense fallback={<ProductListSkeleton />}>
+        {wishlistData.success && (
+          <ProductCarousel products={wishlistData.data} />
+        )}
+      </Suspense>
     </div>
   );
 };
