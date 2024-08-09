@@ -12,11 +12,11 @@ const OrderSummary = ({ data }) => {
             <IoBagOutline size={22} />
             ORDER SUMMARY
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-xs md:text-base">
             The sum of total payments for goods there
           </p>
         </div>
-        <div className="overflow-auto max-h-96 px-3">
+        <div className="overflow-auto max-h-96 px-0">
           {cartItems.map((product, index) => (
             <CartItemsList key={index} product={product} data={data} />
           ))}
