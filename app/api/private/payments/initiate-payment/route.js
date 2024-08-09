@@ -80,10 +80,9 @@ export async function POST(req) {
 
     // Send request to PhonePe
     const response = await axios.request(options);
-    return NextResponse.json(
-      response.data.data.instrumentResponse.redirectInfo.url,
-      { status: 200 }
-    );
+    // console.log("response ", response);
+    // console.log("Response Data ", response.data);
+    return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     console.error("Error during payment initiation:", error);
     return NextResponse.json(

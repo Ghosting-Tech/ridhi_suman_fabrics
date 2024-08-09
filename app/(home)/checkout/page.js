@@ -128,26 +128,31 @@ const CheckoutPage = () => {
             return;
           }
 
-          const phonePeRedirectUrl = await response.json();
+          const data = await response.json();
+          if (data.success) {
+            const phonePeRedirectUrl =
+              data.data.instrumentResponse.redirectInfo.url;
+            router.push(phonePeRedirectUrl);
+          } else {
+            toast.error("Payment initialization failed!");
+            console.log(data);
+            return;
+          }
 
-          console.log(phonePeRedirectUrl);
-
-          toast.success("Payment initiated!");
-          dispatch(clearCart());
-          setShippingData({
-            name: "",
-            phoneNumber: "",
-            email: "",
-            city: "",
-            state: "",
-            pincode: "",
-            address: "",
-          });
-          router.push(phonePeRedirectUrl);
+          // toast.success("Payment initiated!");
+          // dispatch(clearCart());
+          // setShippingData({
+          //   name: "",
+          //   phoneNumber: "",
+          //   email: "",
+          //   city: "",
+          //   state: "",
+          //   pincode: "",
+          //   address: "",
+          // });
         } catch (err) {
           toast.error("Error while submitting payment");
         }
-
       } else {
         toast.error("An error occurred while placing order!");
       }
