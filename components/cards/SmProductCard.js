@@ -23,7 +23,7 @@ const SmProductCard = ({ product, qty, size, color, colorHex }) => {
                 <p className="text-sm text-teal-500 font-bold">
                   &#x20B9;{amt}{" "}
                   <span className="line-through text-gray-400">
-                    &#x20B9;{product.price}
+                    &#x20B9;{product.price.toFixed(2)}
                   </span>
                 </p>
                 <p className="text-sm text-gray-500">Quantity: {qty}</p>
